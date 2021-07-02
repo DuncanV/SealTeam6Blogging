@@ -1,0 +1,12 @@
+<mat-toolbar>
+  <img alt="#" src="" class="sts-icon"/>
+  <span> STSBlogging </span>
+  <span class="spacer"></span>
+  <button mat-icon-button class="profile-icon">
+    <mat-icon>account_box</mat-icon>
+  </button>
+  <button mat-icon-button class="auth-icon">
+    <mat-icon *ngIf="loggedIn">logout</mat-icon>
+    <mat-icon *ngIf="!loggedIn">login</mat-icon>
+  </button>
+</mat-toolbar>

@@ -1,1 +1,0 @@
-# SealTeam6Blogging
