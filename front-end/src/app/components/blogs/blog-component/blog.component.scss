@@ -1,0 +1,39 @@
+.container {
+  margin-top: 20px;
+}
+
+.card {
+  width: 300px;
+  height: 205px;
+  margin-bottom: 20px;
+
+  &-header {
+    position: relative;
+    left: -15px;
+  }
+
+  &-content {
+    min-height: 90px;
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+
+    &-date {
+      float: left;
+      margin-left: 10px;
+    }
+
+    &-buttons {
+      float: right;
+    }
+  }
+}
+
+.likes-amount {
+  margin-right: 3px;
+}
