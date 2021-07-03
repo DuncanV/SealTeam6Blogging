@@ -6,6 +6,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {FlexModule} from "@angular/flex-layout";
 import {CommonModule} from "@angular/common";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   exports: [
@@ -18,7 +19,8 @@ import {CommonModule} from "@angular/common";
     MatButtonModule,
     MatIconModule,
     FlexModule,
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ]
 })
 export class BlogsModule {}
