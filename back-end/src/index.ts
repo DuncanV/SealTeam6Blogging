@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 
 // start the Express server
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`server started at http://localhost:${port}`);
   try {
     await Mongo.connect(
