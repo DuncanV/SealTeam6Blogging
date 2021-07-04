@@ -1,5 +1,12 @@
 .container {
   margin-top: 20px;
+  height: 90vh;
+
+  .blog-menu-button {
+    position: absolute;
+    right: 20px;
+    bottom: 80px;
+  }
 }
 
 .card {

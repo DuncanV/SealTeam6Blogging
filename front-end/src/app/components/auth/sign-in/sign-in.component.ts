@@ -9,12 +9,15 @@ export class SignInComponent implements OnInit {
   signup: boolean = false;
   action: string ="Sign In";
   usernameSignUp:string = "";
-  nameSignup:string = "";
+  firstNameSignup:string = "";
+  lastNameSignup: string = "";
   emailSignup:string = "";
   passwordSignup:string = "";
   passwordConfirmSignup:string = "";
-  emailSignIn:string = "";
+
+  usernameSignIn:string = "";
   passwordSignIn:string = "";
+
   constructor() {
     this.signup = false;
     this.action = "Sign In";
@@ -31,11 +34,12 @@ export class SignInComponent implements OnInit {
 
   clearInputs(): void{
     this.usernameSignUp = "";
-    this.nameSignup = "";
+    this.firstNameSignup = "";
+    this.lastNameSignup = "";
     this.emailSignup = "";
     this.passwordSignup = "";
     this.passwordConfirmSignup = "";
-    this.emailSignIn = "";
+    this.usernameSignIn = "";
     this.passwordSignIn = "";
   }
 
