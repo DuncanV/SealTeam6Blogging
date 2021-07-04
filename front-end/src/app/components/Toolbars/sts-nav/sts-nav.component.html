@@ -1,12 +1,11 @@
 <mat-toolbar>
-  <img alt="#" src="" class="sts-icon"/>
+  <img alt="#" src="../../../../assets/images/Seal.png" class="sts-icon"/>
   <span> STSBlogging </span>
   <span class="spacer"></span>
-  <button mat-icon-button class="profile-icon" (click)="openProfileDialog()">
+  <button *ngIf="loggedIn" mat-icon-button class="profile-icon" (click)="openProfileDialog()">
     <mat-icon>account_box</mat-icon>
   </button>
   <button mat-icon-button class="auth-icon">
-    <mat-icon *ngIf="loggedIn">logout</mat-icon>
-    <mat-icon *ngIf="!loggedIn">login</mat-icon>
+    <mat-icon (click)="toggleLogin()">{{action}}</mat-icon>
   </button>
 </mat-toolbar>

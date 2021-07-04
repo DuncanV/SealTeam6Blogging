@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IContent, IUser} from "../../../common/Interfaces";
+import {IUser} from "../../../common/Interfaces";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {BlogModalComponent} from "../../blogs/blog-modal/blog-modal.component";
 import {ProfileComponent} from "../../profile/profile.component";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {UsersService} from "../../../services/users.service";
+import {SignInComponent} from "../../auth/sign-in/sign-in.component";
 
 @Component({
   selector: 'sts-nav',
@@ -12,12 +12,16 @@ import {UsersService} from "../../../services/users.service";
   styleUrls: ['./sts-nav.component.scss']
 })
 export class StsNavComponent implements OnInit, OnDestroy {
-  loggedIn: boolean = false;
+  loggedIn: boolean;
   userData: IUser | undefined;
+  action: string;
 
   private subscriptions = new Subscription();
 
-  constructor(private service: UsersService, public dialog: MatDialog) { }
+  constructor(private service: UsersService, public dialog: MatDialog) {
+    this.loggedIn = false;
+    this.action = "login"
+  }
 
   ngOnInit(): void {
     this.setupSubscriptions();
@@ -52,4 +56,24 @@ export class StsNavComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
+  toggleLogin(): void {
+    if (!this.loggedIn) {
+      this.login()
+    } else {
+      this.logout()
+    }
+    this.loggedIn = !this.loggedIn;
+    this.action = !this.loggedIn ? "login" : "logout";
+  }
+
+  login(): void {
+    const loginDialogConfig = new MatDialogConfig();
+
+    loginDialogConfig.width = '600px';
+
+    this.dialog.open(SignInComponent, loginDialogConfig);
+  }
+
+  logout(): void {}
 }
