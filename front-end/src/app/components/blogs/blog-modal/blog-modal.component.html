@@ -4,8 +4,9 @@
     <h4 class="blog-subtitle">@{{ blog.userId }}</h4>
   </div>
   <div class="button-container">
-    <button mat-icon-button><mat-icon>edit</mat-icon></button>
     <button mat-icon-button><mat-icon>delete_forever</mat-icon></button>
+    <button mat-icon-button><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button><mat-icon>{{blog.visibile? "visibility":"visibility_off"}}</mat-icon></button>
   </div>
 </div>
 
