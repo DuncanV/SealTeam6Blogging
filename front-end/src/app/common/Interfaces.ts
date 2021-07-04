@@ -23,8 +23,8 @@ export interface IUser extends IObject {
   username: string;
   passwordHash: string;
   salt: string;
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   roles: ERole[];
 }
