@@ -9,14 +9,15 @@ export interface ICreated {
 }
 
 export interface IObject extends ICreated, IDeletable {
-  id: string;
+  id: number;
 }
 
 export interface IContent extends IObject {
-  userId: string;
+  username: string;
   title: string;
   likes: string[];
   content: string;
+  visible: boolean;
 }
 
 export interface IUser extends IObject {

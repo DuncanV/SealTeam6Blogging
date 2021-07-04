@@ -21,7 +21,7 @@ export class UsersService {
       deleted: false,
       email: "gerrit.burger@bbd.co.za",
       firstName: "Gerrit",
-      id: "1",
+      id: 1,
       lastName: "Burger",
       passwordHash: "sdafgaf323!@$!@#ujdfs",
       roles: [ERole.user],
