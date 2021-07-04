@@ -1,1 +1,28 @@
-<p>sign-in works!</p>
+<div class="signin-header">
+  <div class="signin-titles-container">
+    <h2 mat-dialog-title class="signin-title">{{action}}</h2>
+    <div *ngIf="signup; else signin">
+      <input class="signin-siginin-inputs" type="text" id="usernameSignUp" name="username" placeholder="Enter Username"><br>
+      <input class="signin-siginin-inputs" type="text" id="nameSignup" name="name" placeholder="Enter Name"><br>
+      <input class="signin-siginin-inputs" type="text" id="surnameSignup" name="surname" placeholder="Enter Surname"><br>
+      <input class="signin-siginin-inputs" type="text" id="emailSignup" name="email" placeholder="Enter Email Address"><br>
+      <input class="signin-siginin-inputs" type="password" id="passwordSignup" name="password" placeholder="Enter Password"><br>
+      <input class="signin-siginin-inputs" type="password" id="passwordConfirmSignup" name="passwordConfirm" placeholder="Confirm Password"><br>
+      <button class="signin-siginin-inputs" (click)="signUp()">Sign Up</button><br>
+      <button class="astext signin-siginin-inputs" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
+    </div>
+    <ng-template #signin>
+      <input class="signin-siginin-inputs" type="text" id="emailSignIn" name="email" placeholder="Enter Email Address"><br>
+      <input class="signin-siginin-inputs" type="password" id="passwordSignIn" name="password" placeholder="Enter Password"><br>
+      <button class="signin-siginin-inputs" (click)="signIn()">Sign In</button><br>
+      <button class="astext signin-siginin-inputs" (click)="forgotPassword()">Forgot Password?</button><br>
+      <button class="astext signin-siginin-inputs" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+    </ng-template>
+  </div>
+</div>
+
+<mat-dialog-actions align="end">
+  <div class="signin-action-buttons">
+    <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+  </div>
+</mat-dialog-actions>
