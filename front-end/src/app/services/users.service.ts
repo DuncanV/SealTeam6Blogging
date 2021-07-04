@@ -25,7 +25,6 @@ export class UsersService {
       lastName: "Burger",
       passwordHash: "sdafgaf323!@$!@#ujdfs",
       roles: [ERole.user],
-      salt: "someSalt",
       username: "GerritBurger"
 
     });

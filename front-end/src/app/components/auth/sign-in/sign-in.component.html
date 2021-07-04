@@ -7,7 +7,7 @@
       >
         <mat-form-field appearance="fill">
           <mat-label>{{ field.label }}</mat-label>
-          <input matInput type="text" [(ngModel)]="field.value">
+          <input matInput [type]=field.type [(ngModel)]="field.value">
           <button *ngIf="field.value" matSuffix mat-icon-button aria-label="Clear" (click)="field.value=''">
             <mat-icon>close</mat-icon>
           </button>
