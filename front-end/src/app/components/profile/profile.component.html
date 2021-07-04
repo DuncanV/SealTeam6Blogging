@@ -1,1 +1,63 @@
-<p>profile works!</p>
+<h1 mat-dialog-title>User Profile</h1>
+<mat-dialog-content class="mat-typography">
+  <ng-container *ngIf="userData as user">
+    <div class="names-container">
+      <h3>Change Names</h3>
+      <mat-form-field class="first-name-form-field" appearance="fill">
+        <mat-label>{{ user.firstName }}</mat-label>
+        <input matInput type="text" [(ngModel)]="firstName">
+        <button *ngIf="firstName" matSuffix mat-icon-button aria-label="Clear" (click)="firstName=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="last-name-form-field" appearance="fill">
+        <mat-label>{{ user.lastName }}</mat-label>
+        <input matInput type="text" [(ngModel)]="lastName">
+        <button *ngIf="lastName" matSuffix mat-icon-button aria-label="Clear" (click)="lastName=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="username-container">
+      <h3>Change Username</h3>
+      <mat-form-field class="username-form-field" appearance="fill">
+        <mat-label>{{ user.username }}</mat-label>
+        <input matInput type="text" [(ngModel)]="username">
+        <button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="password-container">
+      <h3>Change password</h3>
+      <mat-form-field class="password-form-field" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput type="text" [(ngModel)]="password">
+        <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <h3>Change Email</h3>
+      <mat-form-field class="email-form-field" appearance="fill">
+        <mat-label>{{ user.email }}</mat-label>
+        <input matInput type="text" [(ngModel)]="email">
+        <button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!userData">
+    USER NOT FOUND, PLEASE CONTACT THE ADMIN.
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Confirm</button>
+</mat-dialog-actions>

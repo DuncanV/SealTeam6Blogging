@@ -12,7 +12,7 @@ import {BlogModalComponent} from "../blog-modal/blog-modal.component";
 })
 export class BlogComponent implements OnInit {
   blogs$: Observable<IContent[]> | undefined;
-  // subscriptions: Subscription;
+  // private subscriptions = new Subscription();
 
   constructor(private service: BlogsService, public dialog: MatDialog) { }
 

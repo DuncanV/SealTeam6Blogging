@@ -1,20 +1,26 @@
 import {NgModule} from "@angular/core";
 import {SignInComponent} from "./sign-in/sign-in.component";
-import {SignOutComponent} from "./sign-out/sign-out.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatIconModule} from "@angular/material/icon";
 import {CommonModule} from "@angular/common";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     exports: [
-        SignInComponent,
-        SignOutComponent
+        SignInComponent
     ],
-    declarations: [SignInComponent, SignOutComponent],
+    declarations: [SignInComponent],
   imports: [
     MatDialogModule,
     MatIconModule,
-    CommonModule
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule
   ]
 })
 export class AuthModule {}
