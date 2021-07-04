@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {IContent} from "../common/Interfaces";
 import {Observable, of} from "rxjs";
+import {UsersService} from "./users.service";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +32,8 @@ export class BlogsService {
     },
     {
       id: 3,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
+      username: 'DunkinDonuts',
+      title: 'A post by Duncan',
       likes: ['Duncan', 'Wesley'],
       content: 'This is static content for testing purposes only',
       created: new Date(),
@@ -60,8 +62,8 @@ export class BlogsService {
     },
     {
       id: 7,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
+      username: 'DunkinDonuts',
+      title: 'A post by Duncan',
       likes: ['Duncan', 'Wesley'],
       content: 'This is static content for testing purposes only',
       created: new Date(),
@@ -90,9 +92,32 @@ export class BlogsService {
     }
   ]
 
-  constructor() { }
+  constructor(private usersService: UsersService) { }
+
+  getAllBlogs(): Observable<IContent[]> {
+    return of(this.blogs$);
+  }
 
   getBlogs(): Observable<IContent[]> {
-    return of(this.blogs$);
+    let blogs: IContent[] = [];
+    const username: string = this.usersService.geUserName();
+
+    blogs = this.blogs$.filter(blog => blog.username !== username);
+
+    return of(blogs);
+  }
+
+  getMyBlogs(): Observable<IContent[]> {
+    let myBlogs: IContent[] = [];
+    const username: string = this.usersService.geUserName();
+
+    this.getAllBlogs().subscribe(blogs => {
+      blogs.map(value => {
+        console.log(value.username);
+      })
+      myBlogs = blogs.filter(blog => blog.username === username);
+    });
+
+    return of(myBlogs);
   }
 }
