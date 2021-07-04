@@ -5,7 +5,7 @@ import * as userRoutes from "./routes/user";
 
 const app = express();
 app.use(express.json());
-dotenv.config({path: __dirname+'/.env'});
+dotenv.config({path: __dirname+'./../.env'});
 
 const port = process.env.SERVER_PORT; // default port to listen
 
