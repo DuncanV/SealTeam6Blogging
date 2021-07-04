@@ -30,4 +30,12 @@
       </mat-card-actions>
     </mat-card>
   </div>
+
+  <mat-menu #blogMenu="matMenu" yPosition="above">
+    <ng-template matMenuContent>
+      <button mat-menu-item>Add Post</button>
+    </ng-template>
+  </mat-menu>
+
+  <button class="blog-menu-button" mat-fab [matMenuTriggerFor]="blogMenu"><mat-icon>add</mat-icon></button>
 </div>

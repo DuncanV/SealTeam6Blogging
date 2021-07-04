@@ -1,22 +1,43 @@
 <div class="signin-header">
   <div class="signin-titles-container">
     <h2 mat-dialog-title class="signin-title">{{action}}</h2>
-    <div *ngIf="signup; else signin">
-      <input class="signin-siginin-inputs" type="text" id="usernameSignUp" name="username" placeholder="Enter Username"><br>
-      <input class="signin-siginin-inputs" type="text" id="nameSignup" name="name" placeholder="Enter Name"><br>
-      <input class="signin-siginin-inputs" type="text" id="surnameSignup" name="surname" placeholder="Enter Surname"><br>
-      <input class="signin-siginin-inputs" type="text" id="emailSignup" name="email" placeholder="Enter Email Address"><br>
-      <input class="signin-siginin-inputs" type="password" id="passwordSignup" name="password" placeholder="Enter Password"><br>
-      <input class="signin-siginin-inputs" type="password" id="passwordConfirmSignup" name="passwordConfirm" placeholder="Confirm Password"><br>
-      <button class="signin-siginin-inputs" (click)="signUp()">Sign Up</button><br>
-      <button class="astext signin-siginin-inputs" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
+    <div class="signup-container" *ngIf="signup; else signin">
+      <ng-container
+        *ngFor="let field of signUpForm"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput type="text" [(ngModel)]="field.value">
+          <button *ngIf="field.value" matSuffix mat-icon-button aria-label="Clear" (click)="field.value=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </ng-container>
+
+      <button mat-raised-button (click)="signUp()">Sign Up</button><br>
+      <button class="astext" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
     </div>
+
     <ng-template #signin>
-      <input class="signin-siginin-inputs" type="text" id="emailSignIn" name="email" placeholder="Enter Email Address"><br>
-      <input class="signin-siginin-inputs" type="password" id="passwordSignIn" name="password" placeholder="Enter Password"><br>
-      <button class="signin-siginin-inputs" (click)="signIn()">Sign In</button><br>
-      <button class="astext signin-siginin-inputs" (click)="forgotPassword()">Forgot Password?</button><br>
-      <button class="astext signin-siginin-inputs" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+      <div class="singin-container">
+        <mat-form-field class="singin-username-input" appearance="fill">
+          <mat-label>Enter Username</mat-label>
+          <input matInput type="text" [(ngModel)]="usernameSignIn">
+          <button *ngIf="usernameSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="usernameSignIn=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field class="singin-password-input" appearance="fill">
+          <mat-label>Enter Password</mat-label>
+          <input matInput type="text" [(ngModel)]="passwordSignIn">
+          <button *ngIf="passwordSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="passwordSignIn=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-raised-button (click)="signIn()">Sign In</button><br>
+        <button class="astext" (click)="forgotPassword()">Forgot Password?</button><br>
+        <button class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+      </div>
     </ng-template>
   </div>
 </div>
