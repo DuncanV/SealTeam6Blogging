@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-sign-in',
@@ -7,16 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignInComponent implements OnInit {
   signup: boolean = false;
-  action: string ="Sign In";
-  usernameSignUp:string = "";
-  firstNameSignup:string = "";
-  lastNameSignup: string = "";
-  emailSignup:string = "";
-  passwordSignup:string = "";
-  passwordConfirmSignup:string = "";
+  action: string = "Sign In";
+  signUpForm: any;
 
-  usernameSignIn:string = "";
-  passwordSignIn:string = "";
+  usernameSignIn: string = "";
+  passwordSignIn: string = "";
 
   constructor() {
     this.signup = false;
@@ -24,34 +19,59 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setupSignUpForm();
   }
 
-  toggleSignup(): void{
+  toggleSignup(): void {
     this.signup = !this.signup;
-    this.action = this.signup?"Sign Up":"Sign in";
+    this.action = this.signup ? "Sign Up" : "Sign in";
     this.clearInputs()
   }
 
-  clearInputs(): void{
-    this.usernameSignUp = "";
-    this.firstNameSignup = "";
-    this.lastNameSignup = "";
-    this.emailSignup = "";
-    this.passwordSignup = "";
-    this.passwordConfirmSignup = "";
+  setupSignUpForm() {
+    this.signUpForm = [
+      {
+        label: 'Enter Username',
+        value: ''
+      },
+      {
+        label: 'Enter First Name',
+        value: ''
+      },
+      {
+        label: 'Enter Last Name',
+        value: ''
+      },
+      {
+        label: 'Enter Email Address',
+        value: ''
+      },
+      {
+        label: 'Enter Password',
+        value: ''
+      },
+      {
+        label: 'Confirm Password',
+        value: ''
+      }
+    ];
+  }
+
+  clearInputs(): void {
+    this.setupSignUpForm();
     this.usernameSignIn = "";
     this.passwordSignIn = "";
   }
 
-  signIn():void{
+  signIn(): void {
 
   }
 
-  signUp():void{
+  signUp(): void {
 
   }
 
-  forgotPassword():void{
+  forgotPassword(): void {
 
   }
 

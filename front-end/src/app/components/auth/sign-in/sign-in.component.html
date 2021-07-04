@@ -2,53 +2,17 @@
   <div class="signin-titles-container">
     <h2 mat-dialog-title class="signin-title">{{action}}</h2>
     <div class="signup-container" *ngIf="signup; else signin">
-      <mat-form-field appearance="fill">
-        <mat-label>Enter Username</mat-label>
-        <input matInput type="text" [(ngModel)]="usernameSignUp">
-        <button *ngIf="usernameSignUp" matSuffix mat-icon-button aria-label="Clear" (click)="usernameSignUp=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Enter First Name</mat-label>
-        <input matInput type="text" [(ngModel)]="firstNameSignup">
-        <button *ngIf="firstNameSignup" matSuffix mat-icon-button aria-label="Clear" (click)="firstNameSignup=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Enter Last Name</mat-label>
-        <input matInput type="text" [(ngModel)]="lastNameSignup">
-        <button *ngIf="lastNameSignup" matSuffix mat-icon-button aria-label="Clear" (click)="lastNameSignup=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Enter Email Address</mat-label>
-        <input matInput type="text" [(ngModel)]="emailSignup">
-        <button *ngIf="emailSignup" matSuffix mat-icon-button aria-label="Clear" (click)="emailSignup=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Enter Password</mat-label>
-        <input matInput type="text" [(ngModel)]="passwordSignup">
-        <button *ngIf="passwordSignup" matSuffix mat-icon-button aria-label="Clear" (click)="passwordSignup=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput type="text" [(ngModel)]="passwordConfirmSignup">
-        <button *ngIf="passwordConfirmSignup" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmSignup=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+      <ng-container
+        *ngFor="let field of signUpForm"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput type="text" [(ngModel)]="field.value">
+          <button *ngIf="field.value" matSuffix mat-icon-button aria-label="Clear" (click)="field.value=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </ng-container>
 
       <button mat-raised-button (click)="signUp()">Sign Up</button><br>
       <button class="astext" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
