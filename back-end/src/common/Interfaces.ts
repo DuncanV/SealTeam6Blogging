@@ -23,8 +23,8 @@ export interface IContent extends IObject {
 export interface IUser extends IObject {
   username: string;
   passwordHash: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  surname: string;
   email: string;
   roles: ERole[];
 }
@@ -34,3 +34,7 @@ export interface IRole {
   permissions: EPermission[];
 }
 
+export interface Response{
+  message:string;
+  data:object;
+}
