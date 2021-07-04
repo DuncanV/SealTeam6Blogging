@@ -27,9 +27,7 @@ app.get("/", (req, res) => {
 app.listen(port, async () => {
   console.log(`server started at http://localhost:${port}`);
   try {
-    await Mongo.connect(
-      `mongodb+srv://sealteam:Se@lTeam123!@sealteam6blogging.jcabz.mongodb.net/SealTeam6Blogging?retryWrites=true&w=majority`
-    ); // process.env.MONGO_CONNECTION_URL);
+    await Mongo.connect(process.env.MONGO_CONNECTION_URL);
     const db = process.env.MONGO_DATABASE;
     console.info(`MongoDB Status: Connected`);
   } catch (error) {
