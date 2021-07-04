@@ -1,1 +1,23 @@
-<p>blog-modal works!</p>
+<div class="blog-header">
+  <div class="blog-titles-container">
+    <h2 mat-dialog-title class="blog-title">{{ blog.title }}</h2>
+    <h4 class="blog-subtitle">@{{ blog.userId }}</h4>
+  </div>
+  <div class="button-container">
+    <button mat-icon-button><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button><mat-icon>delete_forever</mat-icon></button>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <p>{{ blog.content }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="blog-date">
+    CreatedOn: {{ blog.created | date }}
+  </div>
+  <div class="blog-action-buttons">
+    <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+  </div>
+</mat-dialog-actions>

@@ -23,7 +23,7 @@
         </div>
         <div class="card-footer-buttons">
           <span class="likes-amount"> {{ blog.likes.length }} </span><button mat-icon-button><mat-icon>favorite</mat-icon></button>
-          <button mat-icon-button><mat-icon>open_in_full</mat-icon></button>
+          <button mat-icon-button (click)="openBlogDialog(blog)"><mat-icon>open_in_full</mat-icon></button>
         </div>
       </mat-card-actions>
     </mat-card>
