@@ -1,0 +1,30 @@
+.blog {
+  &-header {
+    display: flex;
+
+    .button-container {
+      width: 100%;
+
+      button {
+        float: right;
+      }
+    }
+  }
+
+  &-titles-container {
+    width: 500px;
+  }
+
+  &-title {
+    margin-bottom: 0;
+  }
+
+  &-date {
+    width: 100%;
+    display: flex;
+  }
+
+  &-action-buttons {
+    position: absolute;
+  }
+}
