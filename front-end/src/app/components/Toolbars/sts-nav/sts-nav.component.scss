@@ -1,6 +1,13 @@
+.nav-bar {
+  position: fixed;
+  top: 0;
+  z-index: 2;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
+
 img {
   height:80%;
 }
