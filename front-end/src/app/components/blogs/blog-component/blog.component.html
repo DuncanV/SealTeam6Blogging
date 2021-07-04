@@ -13,6 +13,8 @@
       <mat-card-header class="card-header">
         <mat-card-title>{{ blog.title }}</mat-card-title>
         <mat-card-subtitle>{{ blog.userId }}</mat-card-subtitle>
+<!--    TODO Only show this for items you have created and when logged in-->
+        <mat-icon>{{blog.visibile? "visibility":"visibility_off"}}</mat-icon>
       </mat-card-header>
       <mat-card-content class="card-content">
         <p> {{ blog.content }} </p>

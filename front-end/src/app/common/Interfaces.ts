@@ -17,6 +17,7 @@ export interface IContent extends IObject {
   title: string;
   likes: string[];
   content: string;
+  visibile: boolean;
 }
 
 export interface IUser extends IObject {
