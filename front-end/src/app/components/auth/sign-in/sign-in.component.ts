@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {createInjectableType} from "@angular/compiler";
 
 @Component({
   selector: 'app-sign-in',
@@ -32,27 +33,33 @@ export class SignInComponent implements OnInit {
     this.signUpForm = [
       {
         label: 'Enter Username',
-        value: ''
+        value: '',
+        type:"text"
       },
       {
         label: 'Enter First Name',
-        value: ''
+        value: '',
+        type:"text"
       },
       {
         label: 'Enter Last Name',
-        value: ''
+        value: '',
+        type:"text"
       },
       {
         label: 'Enter Email Address',
-        value: ''
+        value: '',
+        type:"text"
       },
       {
         label: 'Enter Password',
-        value: ''
+        value: '',
+        type:"password"
       },
       {
         label: 'Confirm Password',
-        value: ''
+        value: '',
+        type:"password"
       }
     ];
   }
@@ -68,11 +75,22 @@ export class SignInComponent implements OnInit {
   }
 
   signUp(): void {
-
+    if(!this.CheckRegex(this.signUpForm.filter((input: { label: string })=> input.label =="Enter Password"))){
+      //Display password invalid
+    }
+    let password = this.signUpForm.filter((input: { label: string })=> input.label.includes("Enter Password"))[0];
+    let passwordConfirm = this.signUpForm.filter((input: { label: string })=> input.label.includes("Confirm Password"))[0];
+    if(password.value !== passwordConfirm.value){
+      //display passwords dont match error
+    }
   }
 
   forgotPassword(): void {
 
+  }
+
+  CheckRegex(input:any): RegExpMatchArray | null{
+    return input[0].value.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{10,})');
   }
 
 }
