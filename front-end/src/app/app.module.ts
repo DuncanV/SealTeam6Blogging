@@ -13,6 +13,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
+import {FlexModule} from "@angular/flex-layout";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import {MatInputModule} from "@angular/material/input";
     MatFormFieldModule,
     MatIconModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    FlexModule,
+    MatDividerModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
