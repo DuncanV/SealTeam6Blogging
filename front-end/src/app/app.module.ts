@@ -7,6 +7,12 @@ import { ProfileComponent } from './components/profile/profile.component';
 import {BlogsModule} from "./components/blogs/blogs.module";
 import {AuthModule} from "./components/auth/auth.module";
 import {ToolbarsModule} from "./components/Toolbars/toolbars.module";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -18,7 +24,13 @@ import {ToolbarsModule} from "./components/Toolbars/toolbars.module";
     BrowserAnimationsModule,
     ToolbarsModule,
     BlogsModule,
-    AuthModule
+    AuthModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
