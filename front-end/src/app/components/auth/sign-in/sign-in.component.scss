@@ -1,0 +1,51 @@
+.signin {
+  &-header {
+    display: flex;
+
+    .button-container {
+      width: 100%;
+
+      button {
+        float: right;
+      }
+    }
+  }
+
+  &-titles-container {
+    width: 500px;
+  }
+
+  &-title {
+    margin-bottom: 0;
+  }
+
+  &-date {
+    width: 100%;
+    display: flex;
+  }
+
+  &-action-buttons {
+    position: absolute;
+  }
+
+  &-sigin-buttons{
+
+  }
+
+  &-siginin-inputs{
+    width: 90%;
+    margin: 1px 0px 0px 0px;
+    padding: 7px 0px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+.astext {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #bfbfbf;
+  text-decoration: underline;
+  cursor: pointer;
+}
