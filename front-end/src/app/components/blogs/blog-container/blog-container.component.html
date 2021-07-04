@@ -1,0 +1,55 @@
+<div
+  class="container"
+>
+  <div
+    fxLayout="row wrap"
+    fxLayoutGap="16px"
+    fxLayoutAlign="center"
+    class="my-blogs"
+    [ngClass]="{ 'show': showMyBlogs }"
+  >
+    <ng-container
+      *ngFor="let blog of myBlogs$ | async"
+    >
+      <app-blog-component [blog]="blog" [loggedIn]="loggedIn ? loggedIn : false" [username]="userData ? userData.username : ''"></app-blog-component>
+    </ng-container>
+  </div>
+
+
+  <div class="expand-button-container">
+    <button mat-raised-button (click)="toggleMyBlogs()">
+      <span *ngIf="showMyBlogs">Hide My Blogs</span>
+      <mat-icon *ngIf="showMyBlogs">expand_less</mat-icon>
+      <span *ngIf="!showMyBlogs">Show My Blogs</span>
+      <mat-icon *ngIf="!showMyBlogs">expand_more</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider
+    class="blog-divider"
+    [ngClass]="{
+      'show': showMyBlogs
+    }"
+    *ngIf="showMyBlogs"
+  ></mat-divider>
+
+  <div
+    fxLayout="row wrap"
+    fxLayoutGap="16px"
+    fxLayoutAlign="center"
+  >
+    <ng-container
+      *ngFor="let blog of blogs$ | async"
+    >
+      <app-blog-component [blog]="blog" [loggedIn]="loggedIn ? loggedIn : false" [username]="userData ? userData.username : ''"></app-blog-component>
+    </ng-container>
+  </div>
+
+  <mat-menu #blogMenu="matMenu" yPosition="above">
+    <ng-template matMenuContent>
+      <button mat-menu-item>Add Post</button>
+    </ng-template>
+  </mat-menu>
+
+  <button class="blog-menu-button" mat-fab [matMenuTriggerFor]="blogMenu"><mat-icon>add</mat-icon></button>
+</div>

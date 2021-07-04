@@ -37,4 +37,12 @@ export class UsersService {
   getUserData(): Observable<IUser> {
     return this.user$.asObservable();
   }
+
+  geUserName(): string {
+    let username: string = '';
+
+    this.user$.subscribe(value => username = value.username);
+
+    return username;
+  }
 }

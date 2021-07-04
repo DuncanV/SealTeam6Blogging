@@ -1,41 +1,25 @@
-<div
-  class="container"
+<mat-card
+  class="card"
 >
-  <div
-    fxLayout="row wrap"
-    fxLayoutGap="16px"
-    fxLayoutAlign="center"
-  >
-    <mat-card
-      *ngFor="let blog of (blogs$ | async)"
-      class="card"
+  <mat-card-header class="card-header">
+    <mat-card-title>{{ blog.title }}</mat-card-title>
+    <mat-card-subtitle>{{ blog.username }}</mat-card-subtitle>
+    <mat-icon
+      *ngIf="displayVisibilityIcon(blog)"
     >
-      <mat-card-header class="card-header">
-        <mat-card-title>{{ blog.title }}</mat-card-title>
-        <mat-card-subtitle>{{ blog.username }}</mat-card-subtitle>
-<!--    TODO Only show this for items you have created and when logged in-->
-        <mat-icon>{{blog.visible? "visibility":"visibility_off"}}</mat-icon>
-      </mat-card-header>
-      <mat-card-content class="card-content">
-        <p> {{ blog.content }} </p>
-      </mat-card-content>
-      <mat-card-actions class="card-footer">
-        <div class="card-footer-date">
-          createdOn: {{ blog.created | date }}
-        </div>
-        <div class="card-footer-buttons">
-          <span class="likes-amount"> {{ blog.likes.length }} </span><button mat-icon-button><mat-icon>favorite</mat-icon></button>
-          <button mat-icon-button (click)="openBlogDialog(blog)"><mat-icon>open_in_full</mat-icon></button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-
-  <mat-menu #blogMenu="matMenu" yPosition="above">
-    <ng-template matMenuContent>
-      <button mat-menu-item>Add Post</button>
-    </ng-template>
-  </mat-menu>
-
-  <button class="blog-menu-button" mat-fab [matMenuTriggerFor]="blogMenu"><mat-icon>add</mat-icon></button>
-</div>
+      {{blog.visible? "visibility":"visibility_off"}}
+    </mat-icon>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <p> {{ blog.content }} </p>
+  </mat-card-content>
+  <mat-card-actions class="card-footer">
+    <div class="card-footer-date">
+      createdOn: {{ blog.created | date }}
+    </div>
+    <div class="card-footer-buttons">
+      <span class="likes-amount"> {{ blog.likes.length }} </span><button mat-icon-button><mat-icon>favorite</mat-icon></button>
+      <button mat-icon-button (click)="openBlogDialog(blog)"><mat-icon>open_in_full</mat-icon></button>
+    </div>
+  </mat-card-actions>
+</mat-card>
