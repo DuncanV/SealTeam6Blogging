@@ -34,3 +34,7 @@ export interface IRole {
   permissions: EPermission[];
 }
 
+export interface Response{
+  message:string;
+  data:object;
+}
