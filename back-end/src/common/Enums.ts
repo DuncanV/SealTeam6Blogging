@@ -1,7 +1,6 @@
 export enum ERole {
   user = "user",
-  admin = "admin",
-  visitor = "visitor"
+  admin = "admin"
 }
 
 export enum EPermission {
