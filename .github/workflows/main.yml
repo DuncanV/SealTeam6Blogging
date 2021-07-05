@@ -41,13 +41,11 @@ jobs:
       
       - name: npm run build
         run: |
+          cd front-end/
           sudo apt-get update 
           sudo apt-get install sshpass -y
           npm install -g @angular/cli@6.2
           npm update
           ng update
           ng update --all --force
-          cd front-end/
-          npm run build
-          cd front-end/
           npm run build
