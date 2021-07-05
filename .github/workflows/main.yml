@@ -32,9 +32,3 @@ jobs:
         
       - name: npm setup
         uses: ng-easy/npm-setup@v1.7.2
-
-
-
-      # Runs a set of commands using the runners shell
-
-            ng build
