@@ -116,7 +116,7 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
       throw new Error("Invalid blog ID")
-    
+
     let liked = false;
     if (!queryResult.likes.includes(user)){
         liked = true;
@@ -124,7 +124,6 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     }
 
     if(liked){
-      console.log(queryResult.likes);
       await getConnection().updateOne(query, {$set:{likes: queryResult.likes}}, (err, result) =>{
         if(err) throw new Error("Cannot Like Blog")
         res.status(200).json({message:"Blog Liked"});
