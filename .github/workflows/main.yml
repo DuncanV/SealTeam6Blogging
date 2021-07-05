@@ -26,6 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       
+      - name: install puppeteer
+        run: npm install Puppeteer --save-dev
+      
       - name: Cache node modules
         uses: actions/cache@v1
         with:
@@ -41,5 +44,10 @@ jobs:
       
       - name: npm run build
         run: |
+          sudo apt-get update 
+          sudo apt-get install sshpass -y
+          npm install -g @angular/cli@6.2
+          cd front-end/
+          npm run build
           cd front-end/
           npm run build
