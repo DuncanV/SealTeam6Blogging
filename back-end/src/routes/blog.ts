@@ -72,9 +72,9 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
 /*
 Required: id - id of the blog to be 'altered' - in the url
 Obtain: username - from JWT,
-        visible - from body,
-        content - from body,
-        title: from body
+        visible - from body (optional),
+        content - from body (optional),,
+        title: from body (optional),
  */
 BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
   const user = req.body.user.username;
@@ -163,8 +163,10 @@ BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
       username: req.body.user.username,
       visible: true
     }
-    await getConnection().insertOne(objToAdd);
-    res.status(201).json({message:"Blog Created"})
+    getConnection().insertOne(objToAdd, (err, result) => {
+      if(err) throw new Error("Cannot Create Blog")
+      res.status(201).json({message:"Blog Created"})
+    });
   }catch(e) {
     // TODO log error
     res.status(400).json({message:e.message})
