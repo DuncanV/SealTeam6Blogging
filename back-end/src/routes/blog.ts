@@ -3,7 +3,6 @@ import { authenticateAccessToken } from "../middleware/auth";
 import {IContent, IResponse} from "../common/Interfaces";
 const BlogsRouter = express.Router();
 import { Mongo } from "../db/dbconfig";
-import {create} from "domain";
 
 const getConnection = () => {
   try{
@@ -73,14 +72,71 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
 /*
 Required: id - id of the blog to be 'altered' - in the url
 Obtain: username - from JWT,
-        likes - from body ,
         visible - from body,
         content - from body,
         title: from body
  */
-BlogsRouter.put("/blogs/:id", authenticateAccessToken, (req, res) => {
-  const collection = getConnection();
-  res.sendStatus(501);
+BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
+  const user = req.body.user.username;
+  try{
+    const query = {id: parseInt(req.params.id, 10)};
+
+    const queryResult = await getConnection().findOne(query);
+    if(isEmpty(queryResult))
+      throw new Error("Invalid blog ID")
+
+    if(queryResult.username !== user)
+      throw new Error("Unauthorised To Update Blog")
+
+    const objToAdd = {
+      content: isEmpty(req.body.content)?queryResult.content: req.body.content ,
+      title: isEmpty(req.body.title)?queryResult.title: req.body.title ,
+      visible: req.body.visible? true: false
+    }
+
+    await getConnection().updateOne(query, {$set:objToAdd}, (err, result) =>{
+      if(err) throw new Error("Cannot Update Blog")
+      res.status(200).json({message:"Blog Updated"});
+    });
+  }catch(e) {
+    // TODO log error
+    res.status(400).json({message:e.message})
+  }
+});
+
+/*
+Required: id - id of the blog to be liked - in the url
+Obtain: username - from JWT
+*/
+BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => {
+  const user = req.body.user.username;
+  try{
+    const query = {id: parseInt(req.params.id, 10)};
+
+    const queryResult = await getConnection().findOne(query);
+    if(isEmpty(queryResult))
+      throw new Error("Invalid blog ID")
+    
+    let liked = false;
+    if (!queryResult.likes.includes(user)){
+        liked = true;
+        queryResult.likes.push(user);
+    }
+
+    if(liked){
+      console.log(queryResult.likes);
+      await getConnection().updateOne(query, {$set:{likes: queryResult.likes}}, (err, result) =>{
+        if(err) throw new Error("Cannot Like Blog")
+        res.status(200).json({message:"Blog Liked"});
+      });
+    }else{
+      res.status(200).json({message:"Blog Liked"});
+    }
+
+  }catch(e) {
+    // TODO log error
+    res.status(400).json({message:e.message})
+  }
 });
 
 /*
