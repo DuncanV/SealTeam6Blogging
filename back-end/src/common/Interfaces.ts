@@ -27,6 +27,7 @@ export interface IUser extends IObject {
   surname: string;
   email: string;
   roles: ERole[];
+  refreshToken:string;
 }
 
 export interface IRole {
@@ -34,7 +35,7 @@ export interface IRole {
   permissions: EPermission[];
 }
 
-export interface Response{
+export interface IResponse{
   message:string;
   data:object;
 }

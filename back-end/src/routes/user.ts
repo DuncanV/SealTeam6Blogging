@@ -10,8 +10,22 @@ import { Mongo } from "../db/dbconfig";
 
 const UserRouter = express.Router();
 const getConnection = () => {
-  return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
+  try{
+    return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
+  } catch{
+    throw new Error("Invalid Connection to DB")
+  }
 }
+
+async function getNextSequenceValue (){
+  const db = Mongo.client.db(process.env.MONGO_DATABASE).collection("counters");
+  const sequenceDocument = await db.findOneAndUpdate(
+      {_id: "userId"},
+      {$inc: {sequence_value: 1}}
+  );
+  return sequenceDocument.value.sequence_value;
+}
+
 
 UserRouter.post("/login", async (req, res) => {
   try {
@@ -19,7 +33,7 @@ UserRouter.post("/login", async (req, res) => {
     // user found and passwords match
     const collection = getConnection();
     const username = req.body.username;
-    const user = { user: username };
+    const user = { username };
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     res.json({ accessToken, refreshToken });
@@ -47,15 +61,15 @@ UserRouter.post("/signup", async (req, res) => {
 UserRouter.post("/refresh", (req, res) => {
   // refresh the jwt token
   const collection = getConnection();
-  const refreshToken = req.body.token;
+  const refreshToken = req.body.refreshToken;
   // find the refresh tokens in the db
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     (err: any, user: any) => {
       if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({ name: user.name });
-      res.json({ accesstoken: accessToken });
+      const accessToken = generateAccessToken({ username: user.username });
+      res.json({ accessToken });
     }
   );
 });
