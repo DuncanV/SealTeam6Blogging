@@ -19,16 +19,30 @@ jobs:
   build-front-end:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [12.x]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.2.0
-      
-      - name: Install angular package
+      - name: Checkout front-end
         run: cd front-end/
-        
-      - name: npm setup
-        uses: ng-easy/npm-setup@v1.7.2
+      
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: npm ci and npm run build
+        run: |
+          npm ci
+          npm run build:ci
