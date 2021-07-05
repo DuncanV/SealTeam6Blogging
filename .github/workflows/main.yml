@@ -26,9 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       
-      - name: install puppeteer
-        run: npm install Puppeteer --save-dev
-      
       - name: Cache node modules
         uses: actions/cache@v1
         with:
