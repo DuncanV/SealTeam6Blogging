@@ -8,7 +8,7 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "cd ./../front-end && ng build && cd ./../back-end && node .",
-    "test": "npm run build && cd ./../front-end && ng build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
