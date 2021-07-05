@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-
+import {logTest} from "../middleware/logger";
 export function authenticateAccessToken(req: any, res:any, next:any){
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
@@ -14,7 +14,9 @@ export function authenticateAccessToken(req: any, res:any, next:any){
 }
 
 export function generateAccessToken(user:any){
+    logTest("worked");
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.TOKEN_TIMEOUT});
+    
 }
 
 export function generateRefreshToken(user:any){

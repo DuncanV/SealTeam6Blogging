@@ -7,6 +7,7 @@ import {
 } from "../middleware/auth";
 import jwt from "jsonwebtoken";
 import { Mongo } from "../db/dbconfig";
+import {logTest} from "../middleware/logger";
 
 const UserRouter = express.Router();
 const getConnection = () => {
@@ -38,6 +39,7 @@ UserRouter.post("/login", async (req, res) => {
     const username = req.body.username;
     const user = { username };
     const accessToken = generateAccessToken(user);
+    logTest("Logged in");
     const refreshToken = generateRefreshToken(user);
     res.json({ accessToken, refreshToken });
     // }else{
