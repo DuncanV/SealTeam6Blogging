@@ -152,7 +152,9 @@ export class BlogsService {
 
   updateBlog(blog: IContent): Observable<HttpResponse<Object>> {
     const payload = {
-      blog,
+      visible: blog.visible,
+      content: blog.content,
+      title: blog.title
     };
     const url =
       baseURL + apiEndpoints.updateBlogs.replace('{id}', String(blog.id));
@@ -171,7 +173,7 @@ export class BlogsService {
     });
   }
 
-  postBlog(blog: IContent): Observable<HttpResponse<Object>> {
+  createBlog(blog: IContent): Observable<HttpResponse<Object>> {
     const payload = {
       blog,
     };

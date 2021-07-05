@@ -17,12 +17,12 @@ import { FlexModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import {
-  HttpClient,
+  HTTP_INTERCEPTORS,
   HttpClientModule,
-  HttpHandler,
 } from '@angular/common/http';
 import { BlogsService } from './services/blogs.service';
 import { UsersService } from './services/users.service';
+import {AuthInterceptor} from "./common/AuthInterceptor";
 
 @NgModule({
   declarations: [AppComponent, ProfileComponent],
@@ -43,7 +43,11 @@ import { UsersService } from './services/users.service';
     MatMenuModule,
     HttpClientModule,
   ],
-  providers: [BlogsService, UsersService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    BlogsService,
+    UsersService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
