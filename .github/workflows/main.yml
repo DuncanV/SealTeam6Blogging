@@ -26,9 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       
-      - name: Checkout front-end
-        run: cd front-end/
-      
       - name: Cache node modules
         uses: actions/cache@v1
         with:
@@ -44,4 +41,5 @@ jobs:
       
       - name: npm run build
         run: |
+          cd front-end/
           npm run build
