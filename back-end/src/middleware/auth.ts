@@ -8,8 +8,8 @@ export function authenticateAccessToken(req: any, res:any, next:any){
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: any) =>{
         if(err) return res.status(403).json({message:"Invalid Token"});
-        req.body.user = user
-        next()
+        req.body.user = user;
+        next();
     })
 }
 
