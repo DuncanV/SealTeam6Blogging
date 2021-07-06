@@ -50,15 +50,15 @@ Can possibly check the roles to see if an admin can delete a blog
  */
 BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
   const user = req.body.user.username;
-  const role = req.body.user.role;
+  const role = req.body.role;
   try{
     const query = {id: parseInt(req.params.id, 10)};
-
     const queryResult = await getConnection().findOne(query);
+
     if(isEmpty(queryResult))
       throw new Error("Invalid blog ID")
 
-    if(queryResult.username !== user || role != ERole.admin)
+    if(role !== ERole.admin && queryResult.username !== user)
       throw new Error("Unauthorised To Delete Blog")
 
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{

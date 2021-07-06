@@ -225,7 +225,7 @@ UserRouter.put("/user", authenticateAccessToken, async (req, res) => {
         // Must change all blogs with that username as well as the user therefore need a transaction
         if (!isEmpty(req.body.username)) {
             const alreadyUser = await getConnection().findOne({username:req.body.username});
-            if(alreadyUser)
+            if(alreadyUser && alreadyUser.username !== user)
                 throw new Error("Cannot Use Given Username");
             const session = Mongo.client.startSession();
 
