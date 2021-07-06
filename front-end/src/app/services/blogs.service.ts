@@ -107,6 +107,14 @@ export class BlogsService {
     // return this.http.get(baseURL + apiEndpoints.blogs, {
     //   observe: 'response',
     // });
+    const test = this.http.get(baseURL + apiEndpoints.blogs, {
+        observe: 'response',
+      });
+
+    test.subscribe(value => {
+      console.log(value);
+    })
+
     return of(this.blogs$);
   }
 
