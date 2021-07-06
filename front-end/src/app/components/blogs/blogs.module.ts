@@ -27,6 +27,6 @@ import {BlogContainerComponent} from "./blog-container/blog-container.component"
     MatDialogModule,
     MatMenuModule,
     MatDividerModule
-  ]
+  ],
 })
 export class BlogsModule {}

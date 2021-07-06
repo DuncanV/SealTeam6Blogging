@@ -63,6 +63,7 @@ export class StsNavComponent implements OnInit, OnDestroy {
     } else {
       this.logout()
     }
+
     this.loggedIn = !this.loggedIn;
     this.action = !this.loggedIn ? "login" : "logout";
   }
