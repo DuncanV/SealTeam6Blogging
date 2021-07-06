@@ -20,13 +20,14 @@ export interface IContent extends IObject {
   visible: boolean;
 }
 
-export interface IUser extends IObject {
+export interface IUser {
   username: string;
-  passwordHash: string;
+  password: string;
   firstName: string;
   lastName: string;
   email: string;
   roles: ERole[];
+  deleted: boolean;
 }
 
 export interface IRole {
@@ -34,3 +35,7 @@ export interface IRole {
   permissions: EPermission[];
 }
 
+export interface IToken {
+  accessToken: string,
+  refreshToken: string
+}
