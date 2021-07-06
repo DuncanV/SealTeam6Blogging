@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55e71380-a138-418d-bfba-62e0e9df7c40" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/blog.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.animations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/common/AuthInterceptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/common/AuthInterceptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blogs.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blogs.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/services/blogs.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/services/blogs.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +28,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path" value="node" />
+    <property name="ts.external.directory.path" value="C:\Users\bbdnet1634\Documents\Grad\SealTeam6Blogging\front-end\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -37,6 +43,7 @@
       <option name="presentableId" value="Default" />
       <updated>1625233519769</updated>
       <workItem from="1625233521148" duration="64000" />
+      <workItem from="1625552005033" duration="4688000" />
     </task>
     <servers />
   </component>
@@ -53,5 +60,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
