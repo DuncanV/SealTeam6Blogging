@@ -25,8 +25,8 @@ export interface IUser extends IObject {
   passwordHash: string;
   firstname: string;
   lastname: string;
-  email: string;
-  roles: ERole[];
+  // email: string;
+  role: ERole;
   refreshToken:string;
 }
 
