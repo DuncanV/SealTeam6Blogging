@@ -23,14 +23,6 @@ app.get("/", (req, res) => {
     );
 });
 
-app.use((error:any, req:any, res:any, next:any) => {
-  if(error instanceof SyntaxError){ // Handle SyntaxError here.
-    return res.status(500).send({data : "Invalid data"});
-  } else {
-    next();
-  }
-});
-
 // start the Express server
 app.listen(port, async () => {
   console.log(`server started at http://localhost:${port}`);
