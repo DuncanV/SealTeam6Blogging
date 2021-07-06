@@ -3,11 +3,13 @@ import { authenticateAccessToken } from "../middleware/auth";
 import {IContent, IResponse} from "../common/Interfaces";
 const BlogsRouter = express.Router();
 import { Mongo } from "../db/dbconfig";
+import { logBlogs } from "../middleware/logger";
 
 const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs");
   } catch{
+    logBlogs("Invalid Connection to DB","error");
     throw new Error("Invalid Connection to DB")
   }
 }
@@ -38,6 +40,7 @@ BlogsRouter.get("/blogs", async (req, res) => {
     });
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });
@@ -54,17 +57,28 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new Error("Invalid blog ID")
+    {
+      logBlogs("Invalid blog ID","error");
+      throw new Error("Invalid blog ID");
+    }      
 
     if(queryResult.username !== user)
-      throw new Error("Unauthorised To Delete Blog")
+    {
+      logBlogs("Unauthorised to Delete Blog", "error");
+      throw new Error("Unauthorised To Delete Blog");
+    }
 
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{
-      if(err) throw new Error("Cannot Delete Blog")
+      if(err) 
+      {
+        logBlogs("Cannot Delete Blog","error");
+        throw new Error("Cannot Delete Blog");
+      }
       res.status(200).json({message:"Blog Deleted"});
     });
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });
