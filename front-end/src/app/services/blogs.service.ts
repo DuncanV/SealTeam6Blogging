@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { IContent } from '../common/Interfaces';
-import { Observable, of } from 'rxjs';
-import { UsersService } from './users.service';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import {map, tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {IContent} from '../common/Interfaces';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {UsersService} from './users.service';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 const baseURL = 'http://localhost:3000';
 
@@ -16,10 +16,14 @@ const apiEndpoints = {
   providedIn: 'root',
 })
 export class BlogsService {
+  blogs$: Observable<IContent[]> | undefined;
+  myBlogs$: Observable<IContent[]> | undefined;
+  getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private usersService: UsersService, private http: HttpClient) {}
 
   getAllBlogs() {
-    return this.http.get<IContent[]>(baseURL + apiEndpoints.blogs, {
+    return this.http.get(baseURL + apiEndpoints.blogs, {
       observe: 'response',
     });
   }
@@ -27,21 +31,24 @@ export class BlogsService {
   getBlogs() {
     const username: string = this.usersService.geUserName();
 
-    return this.getAllBlogs().pipe(
+    const allBlogs = this.getAllBlogs();
+
+    this.blogs$ = allBlogs.pipe(
       map((response: HttpResponse<any>) => {
-        return response.body.data.filter((blog: IContent) => blog.username !== username);
+        const allBlogs: IContent[] = response.body.data;
+        return allBlogs.filter((blog: IContent) => blog.username !== username && !blog.deleted);
       })
     );
-  }
 
-  getMyBlogs(): Observable<IContent[]> {
-    const username: string = this.usersService.geUserName();
-
-    return this.getAllBlogs().pipe(
+    this.myBlogs$ = allBlogs.pipe(
       map((response: HttpResponse<any>) => {
-        return response.body.data.filter((blog: IContent) => blog.username === username);
+        const allBlogs: IContent[] = response.body.data;
+
+        return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
       })
     );
+
+    this.getBlogs$.next(false);
   }
 
   updateBlog(blog: IContent): Observable<HttpResponse<Object>> {
@@ -58,23 +65,37 @@ export class BlogsService {
     });
   }
 
-  deleteBlog(blog: IContent): Observable<HttpResponse<Object>> {
+  deleteBlog(blog: IContent) {
     const url =
       baseURL + apiEndpoints.updateBlogs.replace('{id}', String(blog.id));
 
-    return this.http.delete(url, {
+    this.http.delete(url, {
       observe: 'response',
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) {
+        this.getBlogs$.next(true);
+      }
     });
   }
 
-  createBlog(blog: IContent): Observable<HttpResponse<Object>> {
+  createBlog(blog: IContent): boolean {
     const payload = {
       title: blog.title,
       content: blog.content
     };
 
-    return this.http.post(baseURL + apiEndpoints.blogs, payload, {
+    let isSuccessful = false;
+
+    this.http.post(baseURL + apiEndpoints.blogs, payload, {
       observe: 'response',
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 201) {
+        this.getBlogs$.next(true);
+
+        isSuccessful = true;
+      }
     });
+
+    return isSuccessful;
   }
 }
