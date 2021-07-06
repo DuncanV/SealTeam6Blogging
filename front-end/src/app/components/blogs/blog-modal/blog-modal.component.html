@@ -4,7 +4,7 @@
     <h4 class="blog-subtitle">@{{ blog.username }}</h4>
   </div>
   <div class="button-container">
-    <button mat-icon-button><mat-icon>delete_forever</mat-icon></button>
+    <button mat-icon-button (click)="deleteBlog(blog)"><mat-icon>delete_forever</mat-icon></button>
     <button mat-icon-button><mat-icon>edit</mat-icon></button>
     <button mat-icon-button><mat-icon>{{blog.visible? "visibility":"visibility_off"}}</mat-icon></button>
   </div>
@@ -16,7 +16,7 @@
 
 <mat-dialog-actions align="end">
   <div class="blog-date">
-    CreatedOn: {{ blog.created | date }}
+    CreatedOn: {{ blog.created | date:'short' }}
   </div>
   <div class="blog-action-buttons">
     <button mat-button mat-dialog-close cdkFocusInitial>Close</button>

@@ -15,7 +15,7 @@
   </mat-card-content>
   <mat-card-actions class="card-footer">
     <div class="card-footer-date">
-      createdOn: {{ blog.created | date }}
+      createdOn: {{ blog.created | date:'short' }}
     </div>
     <div class="card-footer-buttons">
       <span class="likes-amount"> {{ blog.likes.length }} </span><button mat-icon-button><mat-icon>favorite</mat-icon></button>
