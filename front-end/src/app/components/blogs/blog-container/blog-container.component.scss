@@ -1,7 +1,6 @@
 .container {
   margin-top: 20px;
   padding: 60px 0 100px 0;
-  height: 90vh;
 
   .blog-menu-button {
     position: fixed;
@@ -11,17 +10,18 @@
 }
 
 .my-blogs {
-  -webkit-transition: max-height 1s;
-  -moz-transition: max-height 1s;
-  -ms-transition: max-height 1s;
-  -o-transition: max-height 1s;
-  transition: max-height 1s;
   overflow: hidden;
-  max-height: 0;
-
-  &.show {
-    max-height: 100%;
-  }
+  //-webkit-transition: max-height 1s;
+  //-moz-transition: max-height 1s;
+  //-ms-transition: max-height 1s;
+  //-o-transition: max-height 1s;
+  //transition: max-height 1s;
+  //overflow: hidden;
+  //max-height: 0;
+  //
+  //&.show {
+  //  max-height: 100%;
+  //}
 }
 
 .blog-divider {

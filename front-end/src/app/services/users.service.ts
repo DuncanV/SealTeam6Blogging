@@ -1,47 +1,101 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {IUser} from "../common/Interfaces";
-import {ERole} from "../common/Enums";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {IToken, IUser} from '../common/Interfaces';
+import {ERole} from '../common/Enums';
+import {HttpClient, HttpResponse} from "@angular/common/http";
+
+const BaseURL = 'http://localhost:3000';
+
+const ApiEndpoints = {
+  login: '/login',
+  signUp: '/signup',
+  logout: '/logout',
+  updateUser: '/user',
+  refreshToken: '/refresh',
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsersService {
   signedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>({} as IUser);
 
-  constructor() {
-    this.signedIn$.next(true);
+  constructor(private http: HttpClient) {
     this.getUser();
   }
 
   getUser(): void {
     this.user$.next({
-      created: new Date(),
       deleted: false,
-      email: "gerrit.burger@bbd.co.za",
-      firstName: "Gerrit",
-      id: 1,
-      lastName: "Burger",
-      passwordHash: "sdafgaf323!@$!@#ujdfs",
+      email: 'gerrit.burger@bbd.co.za',
+      firstName: 'Gerrit',
+      lastName: 'Burger',
       roles: [ERole.user],
-      username: "GerritBurger"
-
-    });
+      username: 'GerritBurger',
+    } as IUser);
     // TODO: call login endpoint.
 
     // if successful: this.signedIn$.next(true);
   }
 
-  getUserData(): Observable<IUser> {
-    return this.user$.asObservable();
-  }
-
   geUserName(): string {
     let username: string = '';
 
-    this.user$.subscribe(value => username = value.username);
+    this.user$.subscribe((value) => (username = value.username));
 
     return username;
+  }
+
+  login(username: string, password: string): void {
+    const payload = {
+      username: username,
+      password: password
+    }
+
+    let accessToken = undefined;
+    let refreshToken = undefined;
+    let userData: IUser = {} as IUser;
+
+    this.http.post(BaseURL + ApiEndpoints.login, payload, {
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
+      const result = response?.body;
+
+      accessToken = result.accessToken;
+      refreshToken = result.refreshToken;
+      userData = result.userData;
+    });
+
+    if (accessToken && refreshToken) {
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+
+      this.user$.next(userData);
+      this.signedIn$.next(true);
+    }
+  }
+
+  signup(data: IUser): void {
+    const payload = {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+      username: data.username
+    }
+
+    this.http.post(BaseURL + ApiEndpoints.signUp, payload, {
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) this.login(data.username, data.password);
+    });
+  }
+
+  logout() {
+    this.user$.next({} as IUser);
+    this.signedIn$.next(false);
+
+    sessionStorage.clear();
   }
 }
