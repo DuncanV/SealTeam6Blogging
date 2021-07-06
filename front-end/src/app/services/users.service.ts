@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {IToken, IUser} from '../common/Interfaces';
+import {BehaviorSubject} from 'rxjs';
+import {IUser} from '../common/Interfaces';
 import {ERole} from '../common/Enums';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 
@@ -53,27 +53,23 @@ export class UsersService {
       password: password
     }
 
-    let accessToken = undefined;
-    let refreshToken = undefined;
     let userData: IUser = {} as IUser;
 
     this.http.post(BaseURL + ApiEndpoints.login, payload, {
       observe: 'response'
     }).subscribe((response: HttpResponse<any>) => {
-      const result = response?.body;
+      const result = response.body;
 
-      accessToken = result.accessToken;
-      refreshToken = result.refreshToken;
-      userData = result.userData;
+      sessionStorage.setItem('accessToken', result.accessToken);
+      sessionStorage.setItem('refreshToken', result.refreshToken);
+      // userData = result.userData;
+      this.signedIn$.next(true);
     });
 
-    if (accessToken && refreshToken) {
-      sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-
-      this.user$.next(userData);
-      this.signedIn$.next(true);
-    }
+    // if (accessToken && refreshToken) {
+    //   this.user$.next(userData);
+      // this.signedIn$.next(true);
+    // }
   }
 
   signup(data: IUser): void {

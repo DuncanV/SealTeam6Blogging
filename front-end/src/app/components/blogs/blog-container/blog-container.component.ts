@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
 import {IContent, IUser} from "../../../common/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
@@ -11,7 +11,7 @@ import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.anima
   styleUrls: ['./blog-container.component.scss'],
   animations: [showMyBlogsAnimation, showDividerAnimation]
 })
-export class BlogContainerComponent implements OnInit {
+export class BlogContainerComponent implements OnInit, OnDestroy {
   blogs$: Observable<IContent[]> | undefined;
   myBlogs$: Observable<IContent[]> | undefined;
   loggedIn: boolean | undefined;
@@ -24,12 +24,17 @@ export class BlogContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogs$ = this.blogsService.getBlogs();
-    this.myBlogs$ = this.blogsService.getMyBlogs();
+    this.getBlogs();
     this.setupSubscriptions();
   }
 
-  setupSubscriptions() {
+  getBlogs(): void {
+    this.blogsService.getBlogs();
+    this.blogs$ = this.blogsService.blogs$;
+    this.myBlogs$ = this.blogsService.myBlogs$;
+  }
+
+  setupSubscriptions(): void {
     this.subscriptions.add(
       this.usersService.signedIn$.subscribe(value => {
         this.loggedIn = value;
@@ -43,13 +48,37 @@ export class BlogContainerComponent implements OnInit {
     );
 
     this.subscriptions.add(
-      this.myBlogs$?.subscribe(blogs => {
+      this.myBlogs$?.subscribe((blogs: IContent[]) => {
         this.myBlogsIsEmpty = blogs.length === 0;
       })
-    )
+    );
+
+    this.subscriptions.add(
+      this.blogsService.getBlogs$.subscribe(value => {
+        if (value) {
+          console.log(value);
+          this.getBlogs();
+        }
+      })
+    );
   }
 
   toggleMyBlogs() {
     this.showMyBlogs = !this.showMyBlogs;
+  }
+
+  postBlog() {
+    const blog: IContent = {
+      title: 'Test Title',
+      content: 'Test Content'
+    } as IContent;
+
+    if (this.blogsService.createBlog(blog)) {
+      this.getBlogs();
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

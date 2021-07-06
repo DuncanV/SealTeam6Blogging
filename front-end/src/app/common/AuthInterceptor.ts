@@ -5,9 +5,7 @@ import {Observable} from "rxjs";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // const token = localStorage.token;
-
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkdlcnJpdEJ1cmdlciIsImlhdCI6MTYyNTU1NjYyMywiZXhwIjoxNjI1NTU3MjIzfQ.3wvOoxt_cl_8mb45L-fvBE68VtuNf635FTK82ntbTms";
+    const token = sessionStorage.getItem('accessToken');
 
     if (!token) return next.handle(req);
 
