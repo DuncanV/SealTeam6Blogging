@@ -3,6 +3,7 @@ import { authenticateAccessToken } from "../middleware/auth";
 import {IContent, IResponse} from "../common/Interfaces";
 const BlogsRouter = express.Router();
 import { Mongo } from "../db/dbconfig";
+import { ERole } from "../common/Enums";
 
 const getConnection = () => {
   try{
@@ -49,6 +50,7 @@ Can possibly check the roles to see if an admin can delete a blog
  */
 BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
   const user = req.body.user.username;
+  const role = req.body.user.role;
   try{
     const query = {id: parseInt(req.params.id, 10)};
 
@@ -56,7 +58,7 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
     if(isEmpty(queryResult))
       throw new Error("Invalid blog ID")
 
-    if(queryResult.username !== user)
+    if(queryResult.username !== user || role != ERole.admin)
       throw new Error("Unauthorised To Delete Blog")
 
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{
