@@ -26,7 +26,10 @@ async function getNextSequenceValue (){
   return sequenceDocument.value.sequence_value;
 }
 
-
+/*
+Required:
+Obtain:
+ */
 UserRouter.post("/login", async (req, res) => {
   try {
     // if(await bcrypt.compare(req.body.password, user.passwordHash)){
@@ -46,6 +49,10 @@ UserRouter.post("/login", async (req, res) => {
   }
 });
 
+/*
+Required:
+Obtain:
+ */
 UserRouter.post("/signup", async (req, res) => {
   try {
     // bcrypt stores the salt so no need to store salt in the db
@@ -58,6 +65,10 @@ UserRouter.post("/signup", async (req, res) => {
   }
 });
 
+/*
+Required:
+Obtain:
+ */
 UserRouter.post("/refresh", (req, res) => {
   // refresh the jwt token
   const collection = getConnection();
@@ -74,12 +85,20 @@ UserRouter.post("/refresh", (req, res) => {
   );
 });
 
+/*
+Required:
+Obtain:
+ */
 UserRouter.delete("/logout", (req, res) => {
   // delete the refresh token from the db
   const collection = getConnection();
   res.sendStatus(501);
 });
 
+/*
+Required:
+Obtain:
+ */
 UserRouter.put("/user", authenticateAccessToken, (req, res) => {
   const collection = getConnection();
   res.sendStatus(501);
