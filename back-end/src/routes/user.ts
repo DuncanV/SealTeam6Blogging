@@ -7,13 +7,14 @@ import {
 } from "../middleware/auth";
 import jwt from "jsonwebtoken";
 import { Mongo } from "../db/dbconfig";
-import {logTest} from "../middleware/logger";
+import { logUsers } from "../middleware/logger";
 
 const UserRouter = express.Router();
 const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
   } catch{
+    logUsers("Invalid Connection to DB","error");
     throw new Error("Invalid Connection to DB")
   }
 }
@@ -39,7 +40,7 @@ UserRouter.post("/login", async (req, res) => {
     const username = req.body.username;
     const user = { username };
     const accessToken = generateAccessToken(user);
-    logTest("Logged in");
+    logUsers(username+" logged in","info");
     const refreshToken = generateRefreshToken(user);
     res.json({ accessToken, refreshToken });
     // }else{
@@ -47,6 +48,7 @@ UserRouter.post("/login", async (req, res) => {
     //     res.status(401).send()
     // }
   } catch {
+    logUsers("Login failed for "+req.body.username,"info");
     res.sendStatus(500);
   }
 });
@@ -62,7 +64,9 @@ UserRouter.post("/signup", async (req, res) => {
     const collection = getConnection();
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     res.status(201).send();
+    logUsers("Signed up!","info");
   } catch {
+    logUsers("SignUp failed","error");
     res.sendStatus(500);
   }
 });
@@ -80,8 +84,13 @@ UserRouter.post("/refresh", (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     (err: any, user: any) => {
-      if (err) return res.sendStatus(403);
+      if (err)
+      {
+        logUsers("Refresh failed "+user.username+"!","error");
+        return res.sendStatus(403);
+      }
       const accessToken = generateAccessToken({ username: user.username });
+      logUsers("Refresh worked for "+user.username+"!","info");
       res.json({ accessToken });
     }
   );
@@ -94,6 +103,8 @@ Obtain:
 UserRouter.delete("/logout", (req, res) => {
   // delete the refresh token from the db
   const collection = getConnection();
+    logUsers(" logged out","info");
+
   res.sendStatus(501);
 });
 
