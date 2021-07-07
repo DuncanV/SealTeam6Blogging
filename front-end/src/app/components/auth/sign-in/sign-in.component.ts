@@ -11,9 +11,12 @@ export class SignInComponent implements OnInit {
   signup: boolean = false;
   action: string = "Sign In";
   signUpForm: any;
+  hide: boolean = true;
 
   usernameSignIn: string = "";
   passwordSignIn: string = "";
+
+  signedIn: boolean | undefined;
 
   constructor(private service: UsersService) {
     this.signup = false;
@@ -21,6 +24,10 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.service.signedIn$.subscribe(value => {
+      this.signedIn = value;
+    })
+
     this.setupSignUpForm();
   }
 
@@ -48,11 +55,6 @@ export class SignInComponent implements OnInit {
         type:"text"
       },
       {
-        label: 'Enter Email',
-        value: '',
-        type:"text"
-      },
-      {
         label: 'Enter Password',
         value: '',
         type:"password"
@@ -72,7 +74,7 @@ export class SignInComponent implements OnInit {
   }
 
   signIn(): void {
-
+    this.service.login(this.usernameSignIn, this.passwordSignIn);
   }
 
   signUp(): void {
@@ -101,8 +103,7 @@ export class SignInComponent implements OnInit {
       username: this.signUpForm[0].value,
       firstname: this.signUpForm[1].value,
       lastname: this.signUpForm[2].value,
-      email: this.signUpForm[3].value,
-      password: this.signUpForm[4].value,
+      password: this.signUpForm[3].value,
       passwordConfirmed: this.signUpForm[4].value,
     };
   }

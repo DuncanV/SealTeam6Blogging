@@ -16,7 +16,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   firstname: string | undefined;
   lastname: string | undefined;
   password: string | undefined;
-  email: string | undefined;
   username: string | undefined;
 
   constructor(private service: UsersService, @Inject(MAT_DIALOG_DATA) data: any) {

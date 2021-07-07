@@ -41,17 +41,6 @@
         </button>
       </mat-form-field>
     </div>
-
-    <div>
-      <h3>Change Email</h3>
-      <mat-form-field class="email-form-field" appearance="fill">
-        <mat-label>{{ user.email }}</mat-label>
-        <input matInput type="text" [(ngModel)]="email">
-        <button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
   </ng-container>
   <ng-container *ngIf="!userData">
     USER NOT FOUND, PLEASE CONTACT THE ADMIN.

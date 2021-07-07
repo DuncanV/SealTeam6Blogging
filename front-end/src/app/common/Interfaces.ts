@@ -25,7 +25,6 @@ export interface IUser {
   password: string;
   firstname: string;
   lastname: string;
-  email: string;
   roles: ERole[];
   deleted: boolean;
 }

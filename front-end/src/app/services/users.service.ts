@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {IUser} from '../common/Interfaces';
-import {ERole} from '../common/Enums';
 import {HttpClient, HttpResponse} from "@angular/common/http";
+import {MatDialog} from "@angular/material/dialog";
 
 const BaseURL = 'http://localhost:3000';
 
@@ -21,7 +21,18 @@ export class UsersService {
   signedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>({} as IUser);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public dialog: MatDialog) {
+    if (this.isLoggedIn) {
+      this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
+    } else {
+      localStorage.clear();
+      sessionStorage.clear();
+    }
+  }
+
+  get isLoggedIn(): boolean {
+    return localStorage.getItem('accessToken') !== '' || sessionStorage.getItem('accessToken') !== '';
+  }
 
   geUserName(): string {
     let username: string = '';
@@ -47,13 +58,20 @@ export class UsersService {
       if (response.status === 200) {
         sessionStorage.setItem('accessToken', result.accessToken);
         sessionStorage.setItem('refreshToken', result.refreshToken);
+        localStorage.setItem('accessToken', result.accessToken);
+        localStorage.setItem('refreshToken', result.refreshToken);
 
         userData.username = response.body.username;
         userData.firstname = response.body.firstname;
         userData.lastname = response.body.lastname;
 
         this.user$.next(userData);
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+
         this.signedIn$.next(true);
+
+        this.dialog.closeAll();
       }
     });
   }
@@ -65,21 +83,34 @@ export class UsersService {
       password: data.password,
       passwordConfirmed: data.passwordConfirmed,
       username: data.username,
-      email: data.email
     }
 
     this.http.post(BaseURL + ApiEndpoints.signUp, payload, {
       observe: 'response'
     }).subscribe((response: HttpResponse<any>) => {
 
-      if (response.status === 200) this.login(data.username, data.password);
+      if (response.status === 201) {
+        this.login(data.username, data.password);
+      }
     });
   }
 
   logout() {
-    this.user$.next({} as IUser);
-    this.signedIn$.next(false);
+    this.http.request('delete', BaseURL + ApiEndpoints.logout, {
+      body: {
+        "refreshToken": sessionStorage.getItem('refreshToken')
+      }
+    }).subscribe(
+      data => {
+        this.user$.next({} as IUser);
+        this.signedIn$.next(false);
 
-    sessionStorage.clear();
+        sessionStorage.clear();
+        localStorage.clear();
+      },
+      error => {
+        console.log("BAD! Couldn't log out.")
+      }
+    );
   }
 }
