@@ -13,8 +13,8 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 export class ProfileComponent implements OnInit, OnDestroy {
   userData: IUser | undefined;
   private subscriptions = new Subscription();
-  firstName: string | undefined;
-  lastName: string | undefined;
+  firstname: string | undefined;
+  lastname: string | undefined;
   password: string | undefined;
   email: string | undefined;
   username: string | undefined;

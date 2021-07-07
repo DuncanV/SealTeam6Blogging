@@ -21,23 +21,7 @@ export class UsersService {
   signedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>({} as IUser);
 
-  constructor(private http: HttpClient) {
-    this.getUser();
-  }
-
-  getUser(): void {
-    this.user$.next({
-      deleted: false,
-      email: 'gerrit.burger@bbd.co.za',
-      firstName: 'Gerrit',
-      lastName: 'Burger',
-      roles: [ERole.user],
-      username: 'GerritBurger',
-    } as IUser);
-    // TODO: call login endpoint.
-
-    // if successful: this.signedIn$.next(true);
-  }
+  constructor(private http: HttpClient) {}
 
   geUserName(): string {
     let username: string = '';
@@ -60,30 +44,34 @@ export class UsersService {
     }).subscribe((response: HttpResponse<any>) => {
       const result = response.body;
 
-      sessionStorage.setItem('accessToken', result.accessToken);
-      sessionStorage.setItem('refreshToken', result.refreshToken);
-      // userData = result.userData;
-      this.signedIn$.next(true);
-    });
+      if (response.status === 200) {
+        sessionStorage.setItem('accessToken', result.accessToken);
+        sessionStorage.setItem('refreshToken', result.refreshToken);
 
-    // if (accessToken && refreshToken) {
-    //   this.user$.next(userData);
-      // this.signedIn$.next(true);
-    // }
+        userData.username = response.body.username;
+        userData.firstname = response.body.firstname;
+        userData.lastname = response.body.lastname;
+
+        this.user$.next(userData);
+        this.signedIn$.next(true);
+      }
+    });
   }
 
-  signup(data: IUser): void {
+  signup(data: any): void {
     const payload = {
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      firstname: data.firstname,
+      lastname: data.lastname,
       password: data.password,
-      username: data.username
+      passwordConfirmed: data.passwordConfirmed,
+      username: data.username,
+      email: data.email
     }
 
     this.http.post(BaseURL + ApiEndpoints.signUp, payload, {
       observe: 'response'
     }).subscribe((response: HttpResponse<any>) => {
+
       if (response.status === 200) this.login(data.username, data.password);
     });
   }
