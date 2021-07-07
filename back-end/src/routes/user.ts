@@ -64,7 +64,8 @@ UserRouter.post("/login", async (req, res) => {
                 refreshToken,
                 firstname: userResult.firstname,
                 lastname: userResult.lastname,
-                username: userResult.username
+                username: userResult.username,
+                role: userResult.role
             };
             getConnection().updateOne(userResult, {$set: {refreshToken}}, (err, result) => {
                 if (err) return res.status(500).json({message: "Could not update refresh token"})
