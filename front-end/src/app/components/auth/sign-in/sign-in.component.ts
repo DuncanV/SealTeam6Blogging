@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {createInjectableType} from "@angular/compiler";
+import {UsersService} from "../../../services/users.service";
+import {IUser} from '../../../common/Interfaces';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,16 +11,23 @@ export class SignInComponent implements OnInit {
   signup: boolean = false;
   action: string = "Sign In";
   signUpForm: any;
+  hide: boolean = true;
 
   usernameSignIn: string = "";
   passwordSignIn: string = "";
 
-  constructor() {
+  signedIn: boolean | undefined;
+
+  constructor(private service: UsersService) {
     this.signup = false;
     this.action = "Sign In";
   }
 
   ngOnInit(): void {
+    this.service.signedIn$.subscribe(value => {
+      this.signedIn = value;
+    })
+
     this.setupSignUpForm();
   }
 
@@ -47,11 +55,6 @@ export class SignInComponent implements OnInit {
         type:"text"
       },
       {
-        label: 'Enter Email Address',
-        value: '',
-        type:"text"
-      },
-      {
         label: 'Enter Password',
         value: '',
         type:"password"
@@ -71,18 +74,38 @@ export class SignInComponent implements OnInit {
   }
 
   signIn(): void {
-
+    this.service.login(this.usernameSignIn, this.passwordSignIn);
   }
 
   signUp(): void {
+    let validSignUp = true;
+
     if(!this.CheckRegex(this.signUpForm.filter((input: { label: string })=> input.label =="Enter Password"))){
       //Display password invalid
+      validSignUp = false;
     }
+
     let password = this.signUpForm.filter((input: { label: string })=> input.label.includes("Enter Password"))[0];
     let passwordConfirm = this.signUpForm.filter((input: { label: string })=> input.label.includes("Confirm Password"))[0];
+
     if(password.value !== passwordConfirm.value){
       //display passwords dont match error
+      validSignUp = false;
     }
+
+    if (validSignUp) {
+      this.service.signup(this.buildUser());
+    }
+  }
+
+  buildUser() {
+    return {
+      username: this.signUpForm[0].value,
+      firstname: this.signUpForm[1].value,
+      lastname: this.signUpForm[2].value,
+      password: this.signUpForm[3].value,
+      passwordConfirmed: this.signUpForm[4].value,
+    };
   }
 
   forgotPassword(): void {

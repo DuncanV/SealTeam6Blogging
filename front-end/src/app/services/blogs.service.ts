@@ -40,13 +40,15 @@ export class BlogsService {
       })
     );
 
-    this.myBlogs$ = allBlogs.pipe(
-      map((response: HttpResponse<any>) => {
-        const allBlogs: IContent[] = response.body.data;
+    if (username) {
+      this.myBlogs$ = allBlogs.pipe(
+        map((response: HttpResponse<any>) => {
+          const allBlogs: IContent[] = response.body.data;
 
-        return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
-      })
-    );
+          return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
+        })
+      );
+    }
 
     this.getBlogs$.next(false);
   }

@@ -56,7 +56,6 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.blogsService.getBlogs$.subscribe(value => {
         if (value) {
-          console.log(value);
           this.getBlogs();
         }
       })

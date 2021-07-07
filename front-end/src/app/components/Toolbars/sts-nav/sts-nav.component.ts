@@ -12,25 +12,33 @@ import {SignInComponent} from "../../auth/sign-in/sign-in.component";
   styleUrls: ['./sts-nav.component.scss']
 })
 export class StsNavComponent implements OnInit, OnDestroy {
-  loggedIn: boolean;
+  loggedIn: boolean | undefined;
   userData: IUser | undefined;
-  action: string;
+  action: string | undefined;
 
   private subscriptions = new Subscription();
 
-  constructor(private service: UsersService, public dialog: MatDialog) {
-    this.loggedIn = false;
-    this.action = "login"
-  }
+  constructor(private service: UsersService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.getLoggedInStatus();
     this.setupSubscriptions();
+  }
+
+  get isLoggedIn(): boolean {
+    return localStorage.getItem('accessToken') !== '' || sessionStorage.getItem('accessToken') !== '';
+  }
+
+  getLoggedInStatus() {
+    this.loggedIn = this.isLoggedIn;
+    this.action = this.isLoggedIn ? "logout" : "login";
   }
 
   setupSubscriptions() {
     this.subscriptions.add(
       this.service.signedIn$.subscribe((value) => {
         this.loggedIn = value;
+        this.action = !value ? "login" : "logout";
       })
     );
 
@@ -63,9 +71,6 @@ export class StsNavComponent implements OnInit, OnDestroy {
     } else {
       this.logout()
     }
-
-    this.loggedIn = !this.loggedIn;
-    this.action = !this.loggedIn ? "login" : "logout";
   }
 
   login(): void {
@@ -74,9 +79,9 @@ export class StsNavComponent implements OnInit, OnDestroy {
     loginDialogConfig.width = '600px';
 
     this.dialog.open(SignInComponent, loginDialogConfig);
-
-    this.service.login('GerritBurger', 'Password123*')
   }
 
-  logout(): void {}
+  logout(): void {
+    this.service.logout();
+  }
 }

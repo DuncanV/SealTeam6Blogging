@@ -23,9 +23,8 @@ export interface IContent extends IObject {
 export interface IUser {
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  firstname: string;
+  lastname: string;
   roles: ERole[];
   deleted: boolean;
 }

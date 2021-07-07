@@ -4,17 +4,17 @@
     <div class="names-container">
       <h3>Change Names</h3>
       <mat-form-field class="first-name-form-field" appearance="fill">
-        <mat-label>{{ user.firstName }}</mat-label>
-        <input matInput type="text" [(ngModel)]="firstName">
-        <button *ngIf="firstName" matSuffix mat-icon-button aria-label="Clear" (click)="firstName=''">
+        <mat-label>{{ user.firstname }}</mat-label>
+        <input matInput type="text" [(ngModel)]="firstname">
+        <button *ngIf="firstname" matSuffix mat-icon-button aria-label="Clear" (click)="firstname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
       <mat-form-field class="last-name-form-field" appearance="fill">
-        <mat-label>{{ user.lastName }}</mat-label>
-        <input matInput type="text" [(ngModel)]="lastName">
-        <button *ngIf="lastName" matSuffix mat-icon-button aria-label="Clear" (click)="lastName=''">
+        <mat-label>{{ user.lastname }}</mat-label>
+        <input matInput type="text" [(ngModel)]="lastname">
+        <button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -37,17 +37,6 @@
         <mat-label>Password</mat-label>
         <input matInput type="text" [(ngModel)]="password">
         <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
-
-    <div>
-      <h3>Change Email</h3>
-      <mat-form-field class="email-form-field" appearance="fill">
-        <mat-label>{{ user.email }}</mat-label>
-        <input matInput type="text" [(ngModel)]="email">
-        <button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>

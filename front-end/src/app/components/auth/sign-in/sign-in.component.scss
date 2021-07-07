@@ -5,6 +5,28 @@
   }
 }
 
+.input-button-container {
+  width: 100%;
+  position: absolute;
+
+  &-content {
+    position: relative;
+    top: -35px;
+    float: right;
+    display: flex;
+    align-items: center;
+  }
+
+  .no-button {
+    position: relative;
+    top: -28px;
+  }
+
+  mat-icon {
+    cursor: pointer;
+  }
+}
+
 .signup {
   &-container {
     display: flex;
