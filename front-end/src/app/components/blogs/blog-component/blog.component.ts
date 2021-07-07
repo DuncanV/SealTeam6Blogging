@@ -1,10 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
-import {IContent, IUser} from "../../../common/Interfaces";
-import {BlogsService} from "../../../services/blogs.service";
+import {IContent} from "../../../common/Interfaces";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {BlogModalComponent} from "../blog-modal/blog-modal.component";
-import {UsersService} from "../../../services/users.service";
 
 @Component({
   selector: 'app-blog-component',

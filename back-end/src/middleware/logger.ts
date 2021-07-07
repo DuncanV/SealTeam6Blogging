@@ -42,7 +42,7 @@ const loggerBlogs = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: 'BlogLogs.log' })
+    new winston.transports.File({ filename: './../logs/BlogLogs.log' })
   ]
 });
 
@@ -55,6 +55,6 @@ const loggerUsers = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: 'UserLogs.log' })
+    new winston.transports.File({ filename: './../logs/userLogs.log' })
   ]
 });

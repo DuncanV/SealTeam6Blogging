@@ -1,123 +1,101 @@
-import { Injectable } from '@angular/core';
-import {IContent} from "../common/Interfaces";
-import {Observable, of} from "rxjs";
-import {UsersService} from "./users.service";
-import {tap} from "rxjs/operators";
+import {Injectable} from '@angular/core';
+import {IContent} from '../common/Interfaces';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {UsersService} from './users.service';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+
+const baseURL = 'http://localhost:3000';
+
+const apiEndpoints = {
+  blogs: '/blogs',
+  updateBlogs: '/blogs/{id}',
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlogsService {
-  // blogs$: Observable<IContent[]>;
-  blogs$: IContent[] = [
-    {
-      id: 1,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only, dsaf sdf asdf asuidfgui asdkgfui ewquiebqwf uiebwfuil asbjifbsl fbasjklfbeuiw asdfvbashdfk jasdv fkjasvdf kasdvas dkfjavsdf jdf askdjlf kasjdhf klasjhd fkjbwe dlfkqjwe b asdfb asjkldfb jkasdfbl askjfbadsfjkl ',
-      created: new Date(),
-      deleted: false,
-      visible: true
-    },
-    {
-      id: 2,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: true
-    },
-    {
-      id: 3,
-      username: 'DunkinDonuts',
-      title: 'A post by Duncan',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: false
-    },
-    {
-      id: 4,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: false
-    },
-    {
-      id: 5,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: true
-    },
-    {
-      id: 7,
-      username: 'DunkinDonuts',
-      title: 'A post by Duncan',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: false
-    },
-    {
-      id: 8,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: true
-    },
-    {
-      id: 9,
-      username: 'GerritBurger',
-      title: 'First post by Gerrit',
-      likes: ['Duncan', 'Wesley'],
-      content: 'This is static content for testing purposes only',
-      created: new Date(),
-      deleted: false,
-      visible: false
-    }
-  ]
+  blogs$: Observable<IContent[]> | undefined;
+  myBlogs$: Observable<IContent[]> | undefined;
+  getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService, private http: HttpClient) {}
 
-  getAllBlogs(): Observable<IContent[]> {
-    return of(this.blogs$);
+  getAllBlogs() {
+    return this.http.get(baseURL + apiEndpoints.blogs, {
+      observe: 'response',
+    });
   }
 
-  getBlogs(): Observable<IContent[]> {
-    let blogs: IContent[] = [];
+  getBlogs() {
     const username: string = this.usersService.geUserName();
 
-    blogs = this.blogs$.filter(blog => blog.username !== username);
+    const allBlogs = this.getAllBlogs();
 
-    return of(blogs);
-  }
-
-  getMyBlogs(): Observable<IContent[]> {
-    let myBlogs: IContent[] = [];
-    const username: string = this.usersService.geUserName();
-
-    this.getAllBlogs().subscribe(blogs => {
-      blogs.map(value => {
-        console.log(value.username);
+    this.blogs$ = allBlogs.pipe(
+      map((response: HttpResponse<any>) => {
+        const allBlogs: IContent[] = response.body.data;
+        return allBlogs.filter((blog: IContent) => blog.username !== username && !blog.deleted);
       })
-      myBlogs = blogs.filter(blog => blog.username === username);
+    );
+
+    this.myBlogs$ = allBlogs.pipe(
+      map((response: HttpResponse<any>) => {
+        const allBlogs: IContent[] = response.body.data;
+
+        return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
+      })
+    );
+
+    this.getBlogs$.next(false);
+  }
+
+  updateBlog(blog: IContent): Observable<HttpResponse<Object>> {
+    const payload = {
+      visible: blog.visible,
+      content: blog.content,
+      title: blog.title
+    };
+    const url =
+      baseURL + apiEndpoints.updateBlogs.replace('{id}', String(blog.id));
+
+    return this.http.put(url, payload, {
+      observe: 'response',
+    });
+  }
+
+  deleteBlog(blog: IContent) {
+    const url =
+      baseURL + apiEndpoints.updateBlogs.replace('{id}', String(blog.id));
+
+    this.http.delete(url, {
+      observe: 'response',
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) {
+        this.getBlogs$.next(true);
+      }
+    });
+  }
+
+  createBlog(blog: IContent): boolean {
+    const payload = {
+      title: blog.title,
+      content: blog.content
+    };
+
+    let isSuccessful = false;
+
+    this.http.post(baseURL + apiEndpoints.blogs, payload, {
+      observe: 'response',
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 201) {
+        this.getBlogs$.next(true);
+
+        isSuccessful = true;
+      }
     });
 
-    return of(myBlogs);
+    return isSuccessful;
   }
 }

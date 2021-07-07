@@ -6,17 +6,24 @@
     fxLayoutGap="16px"
     fxLayoutAlign="center"
     class="my-blogs"
-    [ngClass]="{ 'show': showMyBlogs }"
+    [@showMore]="showMyBlogs"
   >
     <ng-container
       *ngFor="let blog of myBlogs$ | async"
     >
-      <app-blog-component [blog]="blog" [loggedIn]="loggedIn ? loggedIn : false" [username]="userData ? userData.username : ''"></app-blog-component>
+      <app-blog-component
+        [blog]="blog"
+        [loggedIn]="loggedIn ? loggedIn : false"
+        [username]="userData ? userData.username : ''"
+      ></app-blog-component>
     </ng-container>
   </div>
 
 
-  <div class="expand-button-container">
+  <div
+    class="expand-button-container"
+    *ngIf="!myBlogsIsEmpty"
+  >
     <button mat-raised-button (click)="toggleMyBlogs()">
       <span *ngIf="showMyBlogs">Hide My Blogs</span>
       <mat-icon *ngIf="showMyBlogs">expand_less</mat-icon>
@@ -27,10 +34,8 @@
 
   <mat-divider
     class="blog-divider"
-    [ngClass]="{
-      'show': showMyBlogs
-    }"
-    *ngIf="showMyBlogs"
+    [@showDivider]="showMyBlogs"
+    *ngIf="!myBlogsIsEmpty"
   ></mat-divider>
 
   <div
@@ -47,7 +52,7 @@
 
   <mat-menu #blogMenu="matMenu" yPosition="above">
     <ng-template matMenuContent>
-      <button mat-menu-item>Add Post</button>
+      <button mat-menu-item (click)="postBlog()">Add Post</button>
     </ng-template>
   </mat-menu>
 
