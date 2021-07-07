@@ -107,9 +107,9 @@ UserRouter.post("/signup", async (req, res) => {
         if (req.body.passwordConfirmed !== req.body.password)
             throw new Error("Passwords Don't Match");
         if (isEmpty(req.body.firstname))
-            throw new Error("Missing Username");
+            throw new Error("Missing firstname");
         if (isEmpty(req.body.lastname))
-            throw new Error("Missing Password")
+            throw new Error("Missing lastname")
         // TODO possibly add email and use regex
         const currentUser = await getConnection().findOne({username:req.body.username});
         if(currentUser)
