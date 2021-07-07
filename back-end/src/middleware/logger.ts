@@ -1,7 +1,8 @@
 import *  as winston from "winston";
-import { createLogger } from "winston";
-import { format } from "winston";
-import { transports } from "winston";
+
+const format = winston.format;
+const createLogger = winston.createLogger;
+const transports = winston.transports;
 const { combine, timestamp, label, prettyPrint  } = format;
 
 
