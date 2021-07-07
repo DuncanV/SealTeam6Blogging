@@ -4,11 +4,13 @@ import {IContent, IResponse} from "../common/Interfaces";
 const BlogsRouter = express.Router();
 import { Mongo } from "../db/dbconfig";
 import {ERole} from "../common/Enums";
+import { logBlogs } from "../middleware/logger";
 
 const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs");
   } catch{
+    logBlogs("Invalid Connection to DB","error");
     throw new Error("Invalid Connection to DB")
   }
 }
@@ -34,11 +36,18 @@ BlogsRouter.get("/blogs", async (req, res) => {
   try{
     const sort = {created:-1}
     await getConnection().find().sort(sort).toArray( (err, result) => {
-      if(err) throw new Error("Failed to retrieve blogs");
+      if(err)
+      {
+        logBlogs("Failed to retrieve blogs","error");
+         throw new Error("Failed to retrieve blogs");
+      }
+      logBlogs("Blogs retrieved","info");
+
       res.status(200).json({message:"Blogs retrieved", data:result})
     });
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });
@@ -56,18 +65,31 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new Error("Invalid blog ID")
+    {
+      logBlogs("Invalid blog ID","error");
+      throw new Error("Invalid blog ID");
+    }
 
-
+    if(queryResult.username !== user)
+	{
     if(role !== ERole.admin && queryResult.username !== user)
-      throw new Error("Unauthorised To Delete Blog")
-
+    {
+      logBlogs("Unauthorised to Delete Blog", "error");
+      throw new Error("Unauthorised To Delete Blog");
+    }
+}
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{
-      if(err) throw new Error("Cannot Delete Blog")
+      if(err)
+      {
+        logBlogs("Cannot Delete Blog","error");
+        throw new Error("Cannot Delete Blog");
+      }
+      logBlogs("Blogs Deleted","info");
       res.status(200).json({message:"Blog Deleted"});
     });
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });
@@ -98,7 +120,12 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
     }
 
     await getConnection().updateOne(query, {$set:objToAdd}, (err, result) =>{
-      if(err) throw new Error("Cannot Update Blog")
+      if(err)
+       {
+         logBlogs("Cannot Update Blog","error");
+         throw new Error("Cannot Update Blog")
+       }
+       logBlogs("Blog updated","info");
       res.status(200).json({message:"Blog Updated"});
     });
   }catch(e) {
@@ -137,6 +164,7 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
 
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });
@@ -167,11 +195,17 @@ BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
       visible: true
     }
     getConnection().insertOne(objToAdd, (err, result) => {
-      if(err) throw new Error("Cannot Create Blog")
+      if(err)
+      {
+        logBlogs("Cannot Create Blog","error");
+        throw new Error("Cannot Create Blog");
+      }
+      logBlogs("Blog Created","info");
       res.status(201).json({message:"Blog Created"})
     });
   }catch(e) {
     // TODO log error
+    logBlogs(e.message,"error");
     res.status(400).json({message:e.message})
   }
 });

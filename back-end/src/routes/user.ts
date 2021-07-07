@@ -6,14 +6,16 @@ import {Mongo} from "../db/dbconfig";
 import {IUser} from "../common/Interfaces";
 import {ERole} from "../common/Enums";
 import {TransactionOptions} from "mongodb";
+import { logUsers } from "../middleware/logger";
 
 const UserRouter = express.Router();
 const getConnection = () => {
-    try {
-        return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
-    } catch {
-        throw new Error("Invalid Connection to DB")
-    }
+  try{
+    return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
+  } catch{
+    logUsers("Invalid Connection to DB","error");
+    throw new Error("Invalid Connection to DB")
+  }
 }
 
 async function getNextSequenceValue() {
@@ -69,12 +71,14 @@ UserRouter.post("/login", async (req, res) => {
             };
             getConnection().updateOne(userResult, {$set: {refreshToken}}, (err, result) => {
                 if (err) return res.status(500).json({message: "Could not update refresh token"})
+				logUsers(" logged in","info");
                 return res.status(200).json(objToReturn);
             });
         } else {
             return res.status(401).send({message: "Username and Password Incorrect"})
         }
     } catch (e) {
+		logUsers("Login failed for "+req.body.username,"info");
         return res.status(401).json({message: e.message})
     }
 });
@@ -131,11 +135,13 @@ UserRouter.post("/signup", async (req, res) => {
 
             await getConnection().insertOne(objToAdd, (insErr, result) => {
                 if (insErr) return res.status(400).json({message: "Cannot Create User"})
+				logUsers("Signed up!","info");
                 return res.status(201).json({message: "User Created"})
             });
         });
     } catch (e) {
         // TODO log error
+		logUsers("SignUp failed","error");
         return res.status(400).json({message: e.message})
     }
 });
@@ -154,8 +160,13 @@ UserRouter.post("/refresh", async (req, res) => {
                 refreshToken,
                 process.env.REFRESH_TOKEN_SECRET,
                 (err: any, user: any) => {
-                    if (err) return res.status(403).json({message: "Invalid Refresh Token"});
+                    if (err)
+					{
+						logUsers("Refresh failed "+user.username+"!","error");
+						return res.status(403).json({message: "Invalid Refresh Token"});
+					}
                     const accessToken = generateAccessToken({username: user.username});
+      				logUsers("Refresh worked for "+user.username+"!","info");
                     return res.status(200).json({accessToken});
                 }
             );
@@ -177,6 +188,7 @@ UserRouter.delete("/logout", (req, res) => {
         const query = {refreshToken: req.body.refreshToken};
         getConnection().updateOne(query, {$set: {refreshToken: null}}, (err, result) => {
             if (err) return res.status(400).json({message: "Cannot Log User Out"});
+			logUsers(" logged out","info");
             return res.status(200).json({message: "User Logged Out"})
         });
     } catch (e) {
