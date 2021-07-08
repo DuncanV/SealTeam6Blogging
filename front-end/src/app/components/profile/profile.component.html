@@ -4,17 +4,17 @@
     <div class="names-container">
       <h3>Change Names</h3>
       <mat-form-field class="first-name-form-field" appearance="fill">
-        <mat-label>{{ user.firstName }}</mat-label>
-        <input matInput type="text" [(ngModel)]="firstName">
-        <button *ngIf="firstName" matSuffix mat-icon-button aria-label="Clear" (click)="firstName=''">
+        <mat-label>{{ user.firstname }}</mat-label>
+        <input matInput type="text" [(ngModel)]="userData.firstname">
+        <button *ngIf="userData.firstname" matSuffix mat-icon-button aria-label="Clear" (click)="userData.firstname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
       <mat-form-field class="last-name-form-field" appearance="fill">
-        <mat-label>{{ user.lastName }}</mat-label>
-        <input matInput type="text" [(ngModel)]="lastName">
-        <button *ngIf="lastName" matSuffix mat-icon-button aria-label="Clear" (click)="lastName=''">
+        <mat-label>{{ user.lastname }}</mat-label>
+        <input matInput type="text" [(ngModel)]="userData.lastname">
+        <button *ngIf="userData.lastname" matSuffix mat-icon-button aria-label="Clear" (click)="userData.lastname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -24,30 +24,27 @@
       <h3>Change Username</h3>
       <mat-form-field class="username-form-field" appearance="fill">
         <mat-label>{{ user.username }}</mat-label>
-        <input matInput type="text" [(ngModel)]="username">
-        <button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+        <input matInput type="text" [(ngModel)]="userData.username">
+        <button *ngIf="userData.username" matSuffix mat-icon-button aria-label="Clear" (click)="userData.username=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
     </div>
 
     <div class="password-container">
-      <h3>Change password</h3>
+      <h3>Change Password</h3>
       <mat-form-field class="password-form-field" appearance="fill">
         <mat-label>Password</mat-label>
-        <input matInput type="text" [(ngModel)]="password">
-        <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+        <input matInput type="text" [(ngModel)]="userData.password">
+        <button *ngIf="userData.password" matSuffix mat-icon-button aria-label="Clear" (click)="userData.password=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-    </div>
 
-    <div>
-      <h3>Change Email</h3>
-      <mat-form-field class="email-form-field" appearance="fill">
-        <mat-label>{{ user.email }}</mat-label>
-        <input matInput type="text" [(ngModel)]="email">
-        <button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+      <mat-form-field class="confirm-password-form-field" appearance="fill">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="text" [(ngModel)]="passwordConfirm">
+        <button *ngIf="passwordConfirm" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirm=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -59,5 +56,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Confirm</button>
+  <button mat-button cdkFocusInitial (click)="updateProfile()">Update</button>
 </mat-dialog-actions>

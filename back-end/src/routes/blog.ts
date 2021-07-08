@@ -4,12 +4,15 @@ import {IContent, IResponse} from "../common/Interfaces";
 const BlogsRouter = express.Router();
 import { Mongo } from "../db/dbconfig";
 import {ERole} from "../common/Enums";
+import { logBlogs } from "../middleware/logger";
+import { BlogError } from "../errors/BlogError";
+import sanitize from 'mongo-sanitize';
 
 const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs");
   } catch{
-    throw new Error("Invalid Connection to DB")
+    throw new BlogError("Invalid Connection to DB", "error");
   }
 }
 
@@ -32,13 +35,18 @@ Required: Nothing
  */
 BlogsRouter.get("/blogs", async (req, res) => {
   try{
-    const sort = {created:-1}
-    await getConnection().find().sort(sort).toArray( (err, result) => {
-      if(err) throw new Error("Failed to retrieve blogs");
+    const notDeleted = {deleted:false};
+    const sort = {created:-1};
+    await getConnection().find(notDeleted).sort(sort).toArray( (err, result) => {
+      if(err)
+      {
+         throw new BlogError("Failed to retrieve blogs", "error");
+      }
+      logBlogs("Blogs retrieved","info");
+
       res.status(200).json({message:"Blogs retrieved", data:result})
     });
   }catch(e) {
-    // TODO log error
     res.status(400).json({message:e.message})
   }
 });
@@ -56,18 +64,26 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new Error("Invalid blog ID")
+    {
+      throw new BlogError("Invalid blog ID", "error");
+    }
 
-
+    if(queryResult.username !== user)
+	{
     if(role !== ERole.admin && queryResult.username !== user)
-      throw new Error("Unauthorised To Delete Blog")
-
+    {
+      throw new BlogError("Unauthorised To Delete Blog", "error");
+    }
+}
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{
-      if(err) throw new Error("Cannot Delete Blog")
+      if(err)
+      {
+        throw new BlogError("Cannot Delete Blog", "error");
+      }
+      logBlogs("Blogs Deleted","info");
       res.status(200).json({message:"Blog Deleted"});
     });
   }catch(e) {
-    // TODO log error
     res.status(400).json({message:e.message})
   }
 });
@@ -86,10 +102,10 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new Error("Invalid blog ID")
+      throw new BlogError("Invalid blog ID", "error");
 
     if(queryResult.username !== user)
-      throw new Error("Unauthorised To Update Blog")
+      throw new BlogError("Unauthorised To Update Blog", "error");
 
     const objToAdd = {
       content: isEmpty(req.body.content)?queryResult.content: req.body.content ,
@@ -97,12 +113,15 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
       visible: req.body.visible? true: false
     }
 
-    await getConnection().updateOne(query, {$set:objToAdd}, (err, result) =>{
-      if(err) throw new Error("Cannot Update Blog")
+    await getConnection().updateOne(query, {$set:sanitize(objToAdd)}, (err, result) =>{
+      if(err)
+       {
+         throw new BlogError("Cannot Update Blog", "error");
+       }
+       logBlogs("Blog updated","info");
       res.status(200).json({message:"Blog Updated"});
     });
   }catch(e) {
-    // TODO log error
     res.status(400).json({message:e.message})
   }
 });
@@ -118,7 +137,7 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new Error("Invalid blog ID")
+      throw new BlogError("Invalid blog ID", "error");
 
     let liked = false;
     if (!queryResult.likes.includes(user)){
@@ -127,7 +146,7 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     }
 
     if(liked){
-      await getConnection().updateOne(query, {$set:{likes: queryResult.likes}}, (err, result) =>{
+      await getConnection().updateOne(query, {$set:{likes: sanitize(queryResult.likes)}}, (err, result) =>{
         if(err) throw new Error("Cannot Like Blog")
         res.status(200).json({message:"Blog Liked"});
       });
@@ -136,7 +155,6 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     }
 
   }catch(e) {
-    // TODO log error
     res.status(400).json({message:e.message})
   }
 });
@@ -153,9 +171,9 @@ Obtain: id - from sequence
 BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
   try{
     if(isEmpty(req.body.content))
-      throw new Error("No Content")
+      throw new BlogError("No Content", "error");
     if(isEmpty(req.body.title))
-      throw new Error("No Title")
+      throw new BlogError("No Title", "error");
     const objToAdd: IContent = {
       content: req.body.content,
       created: new Date(),
@@ -166,12 +184,15 @@ BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
       username: req.body.user.username,
       visible: true
     }
-    getConnection().insertOne(objToAdd, (err, result) => {
-      if(err) throw new Error("Cannot Create Blog")
+    getConnection().insertOne(sanitize(objToAdd), (err, result) => {
+      if(err)
+      {
+        throw new BlogError("Cannot Create Blog", "error");
+      }
+      logBlogs("Blog Created","info");
       res.status(201).json({message:"Blog Created"})
     });
   }catch(e) {
-    // TODO log error
     res.status(400).json({message:e.message})
   }
 });

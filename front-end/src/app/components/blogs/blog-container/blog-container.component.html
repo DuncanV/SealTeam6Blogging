@@ -52,9 +52,16 @@
 
   <mat-menu #blogMenu="matMenu" yPosition="above">
     <ng-template matMenuContent>
-      <button mat-menu-item (click)="postBlog()">Add Post</button>
+      <button mat-menu-item (click)="openCreateBlogDialog()">Add Post</button>
     </ng-template>
   </mat-menu>
 
-  <button class="blog-menu-button" mat-fab [matMenuTriggerFor]="blogMenu"><mat-icon>add</mat-icon></button>
+  <button
+    class="blog-menu-button"
+    mat-fab
+    [matMenuTriggerFor]="blogMenu"
+    *ngIf="loggedIn"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

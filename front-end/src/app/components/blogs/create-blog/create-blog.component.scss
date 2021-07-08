@@ -1,0 +1,14 @@
+.create-blog {
+  &-container {
+    width: 20vw;
+  }
+
+  &-form {
+    display: grid;
+
+    &-content textarea {
+      height: 120px;
+      resize: none;
+    }
+  }
+}

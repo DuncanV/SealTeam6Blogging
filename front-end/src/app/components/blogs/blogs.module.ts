@@ -10,6 +10,9 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatDividerModule} from "@angular/material/divider";
 import {BlogContainerComponent} from "./blog-container/blog-container.component";
+import {FormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   exports: [
@@ -26,7 +29,10 @@ import {BlogContainerComponent} from "./blog-container/blog-container.component"
     CommonModule,
     MatDialogModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
 })
 export class BlogsModule {}

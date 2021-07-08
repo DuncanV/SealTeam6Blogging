@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {UsersService} from './users.service';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {MatDialog} from "@angular/material/dialog";
 
 const baseURL = 'http://localhost:3000';
 
@@ -20,7 +21,7 @@ export class BlogsService {
   myBlogs$: Observable<IContent[]> | undefined;
   getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private usersService: UsersService, private http: HttpClient) {}
+  constructor(private usersService: UsersService, private http: HttpClient, public dialog: MatDialog) {}
 
   getAllBlogs() {
     return this.http.get(baseURL + apiEndpoints.blogs, {
@@ -29,29 +30,46 @@ export class BlogsService {
   }
 
   getBlogs() {
-    const username: string = this.usersService.geUserName();
+    const username: string = this.usersService.getUserName();
 
     const allBlogs = this.getAllBlogs();
 
-    this.blogs$ = allBlogs.pipe(
-      map((response: HttpResponse<any>) => {
-        const allBlogs: IContent[] = response.body.data;
-        return allBlogs.filter((blog: IContent) => blog.username !== username && !blog.deleted);
-      })
-    );
+    if (username) {
+      this.blogs$ = allBlogs.pipe(
+        map((response: HttpResponse<any>) => {
+          const allBlogs: IContent[] = response.body.data;
+          return allBlogs.filter((blog: IContent) => blog.username !== username && !blog.deleted);
+        })
+      );
 
-    this.myBlogs$ = allBlogs.pipe(
-      map((response: HttpResponse<any>) => {
-        const allBlogs: IContent[] = response.body.data;
+      if (username) {
+        this.myBlogs$ = allBlogs.pipe(
+          map((response: HttpResponse<any>) => {
+            const allBlogs: IContent[] = response.body.data;
 
-        return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
-      })
-    );
+            return allBlogs.filter((blog: IContent) => blog.username === username && !blog.deleted);
+          })
+        );
+      }
+    } else {
+      this.blogs$ = allBlogs.pipe(
+        map((response: HttpResponse<any>) => {
+          const allBlogs: IContent[] = response.body.data;
+          return allBlogs.filter((blog: IContent) => !blog.deleted);
+        })
+      );
+
+      this.myBlogs$ = allBlogs.pipe(
+        map((response: HttpResponse<any>) => {
+          return [] as IContent[];
+        })
+      );
+    }
 
     this.getBlogs$.next(false);
   }
 
-  updateBlog(blog: IContent): Observable<HttpResponse<Object>> {
+  updateBlog(blog: IContent) {
     const payload = {
       visible: blog.visible,
       content: blog.content,
@@ -60,8 +78,16 @@ export class BlogsService {
     const url =
       baseURL + apiEndpoints.updateBlogs.replace('{id}', String(blog.id));
 
-    return this.http.put(url, payload, {
+    this.http.put(url, payload, {
       observe: 'response',
+    }).subscribe((response: HttpResponse<any>) => {
+
+
+      if (response.status === 200) {
+        this.getBlogs$.next(true);
+
+        this.dialog.closeAll();
+      }
     });
   }
 
@@ -74,17 +100,17 @@ export class BlogsService {
     }).subscribe((response: HttpResponse<any>) => {
       if (response.status === 200) {
         this.getBlogs$.next(true);
+
+        this.dialog.closeAll();
       }
     });
   }
 
-  createBlog(blog: IContent): boolean {
+  createBlog(blog: IContent) {
     const payload = {
       title: blog.title,
       content: blog.content
     };
-
-    let isSuccessful = false;
 
     this.http.post(baseURL + apiEndpoints.blogs, payload, {
       observe: 'response',
@@ -92,10 +118,9 @@ export class BlogsService {
       if (response.status === 201) {
         this.getBlogs$.next(true);
 
-        isSuccessful = true;
+        this.dialog.closeAll();
+        this.getBlogs$.next(true);
       }
     });
-
-    return isSuccessful;
   }
 }
