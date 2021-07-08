@@ -10,12 +10,12 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
   userData: IUser | undefined;
-  private subscriptions = new Subscription();
   firstname: string | undefined;
   lastname: string | undefined;
   password: string | undefined;
+  passwordConfirm: string | undefined;
   username: string | undefined;
 
   constructor(private service: UsersService, @Inject(MAT_DIALOG_DATA) data: any) {
@@ -23,13 +23,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setupSubscriptions();
   }
 
-  setupSubscriptions() {
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+  updateProfile(): void {
+    if (this.userData) {
+      if (this.password === this.passwordConfirm) {
+        this.service.updateProfile(this.userData);
+      } else {
+        // ERROR HERE
+      }
+    }
   }
 }

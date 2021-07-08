@@ -23,9 +23,10 @@ import {
 import { BlogsService } from './services/blogs.service';
 import { UsersService } from './services/users.service';
 import {AuthInterceptor} from "./common/AuthInterceptor";
+import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.component';
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent],
+  declarations: [AppComponent, ProfileComponent, CreateBlogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

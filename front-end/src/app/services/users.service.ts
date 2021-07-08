@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {IUser} from '../common/Interfaces';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
+import {BlogsService} from "./blogs.service";
 
 const BaseURL = 'http://localhost:3000';
 
@@ -20,21 +21,32 @@ const ApiEndpoints = {
 export class UsersService {
   signedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>({} as IUser);
+  getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
     if (this.isLoggedIn) {
-      this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
+      if (!localStorage.getItem('userData') && sessionStorage.getItem('userData')) {
+        localStorage.setItem('userData', <string>sessionStorage.getItem('userData'));
+        localStorage.setItem('accessToken', <string>sessionStorage.getItem('accessToken'));
+        localStorage.setItem('refreshToken', <string>sessionStorage.getItem('refreshToken'));
+        this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
+      } else if (localStorage.getItem('userData')) {
+        this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
+      }
+
+      this.signedIn$.next(true);
     } else {
+      this.signedIn$.next(false);
       localStorage.clear();
       sessionStorage.clear();
     }
   }
 
   get isLoggedIn(): boolean {
-    return localStorage.getItem('accessToken') !== '' || sessionStorage.getItem('accessToken') !== '';
+    return localStorage.getItem('accessToken') !== null || sessionStorage.getItem('accessToken') !== null;
   }
 
-  geUserName(): string {
+  getUserName(): string {
     let username: string = '';
 
     this.user$.subscribe((value) => (username = value.username));
@@ -68,8 +80,10 @@ export class UsersService {
         this.user$.next(userData);
 
         localStorage.setItem('userData', JSON.stringify(userData));
+        sessionStorage.setItem('userData', JSON.stringify(userData));
 
         this.signedIn$.next(true);
+        this.getBlogs$.next(true);
 
         this.dialog.closeAll();
       }
@@ -107,10 +121,28 @@ export class UsersService {
 
         sessionStorage.clear();
         localStorage.clear();
+
+        this.getBlogs$.next(true);
       },
       error => {
         console.log("BAD! Couldn't log out.")
       }
     );
+  }
+
+  updateProfile(user: IUser) {
+    const payload = {
+      user
+    }
+
+    this.http.put(BaseURL + ApiEndpoints.updateUser, payload, {
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) {
+        this.user$.next(user);
+
+        this.dialog.closeAll();
+      }
+    });
   }
 }
