@@ -6,6 +6,7 @@ import { Mongo } from "../db/dbconfig";
 import {ERole} from "../common/Enums";
 import { logBlogs } from "../middleware/logger";
 import { BlogError } from "../errors/BlogError";
+var sanitize = require('mongo-sanitize');
 
 const getConnection = () => {
   try{
@@ -111,7 +112,7 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
       visible: req.body.visible? true: false
     }
 
-    await getConnection().updateOne(query, {$set:objToAdd}, (err, result) =>{
+    await getConnection().updateOne(query, {$set:sanitize(objToAdd)}, (err, result) =>{
       if(err)
        {
          throw new BlogError("Cannot Update Blog", "error");
@@ -144,8 +145,8 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     }
 
     if(liked){
-      await getConnection().updateOne(query, {$set:{likes: queryResult.likes}}, (err, result) =>{
-        if(err) throw new BlogError("Cannot Like Blog", "error");
+      await getConnection().updateOne(query, {$set:{likes: sanitize(queryResult.likes)}}, (err, result) =>{
+        if(err) throw new Error("Cannot Like Blog")
         res.status(200).json({message:"Blog Liked"});
       });
     }else{
@@ -182,7 +183,7 @@ BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
       username: req.body.user.username,
       visible: true
     }
-    getConnection().insertOne(objToAdd, (err, result) => {
+    getConnection().insertOne(sanitize(objToAdd), (err, result) => {
       if(err)
       {
         throw new BlogError("Cannot Create Blog", "error");

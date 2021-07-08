@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import {Mongo} from "../db/dbconfig";
+var sanitize = require('mongo-sanitize');
 
 const getConnection = () => {
     try {
@@ -17,7 +18,7 @@ export function authenticateAccessToken(req: any, res:any, next:any){
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err: any, user: any) =>{
         if(err) return res.status(403).json({message:"Invalid Token"});
-        const query = {username: user.username};
+        const query = {username: sanitize(user.username)};
         const result = await getConnection().findOne(query);
         req.body.role = result.role;
         req.body.user = user;
