@@ -1,5 +1,6 @@
 <mat-card
   class="card"
+  *ngIf="displayBlog(blog)"
 >
   <mat-card-header class="card-header">
     <mat-card-title>{{ blog.title }}</mat-card-title>

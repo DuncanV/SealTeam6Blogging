@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
+    console.log(this.userData)
     if (this.userData) {
       if (this.password === this.passwordConfirm) {
         this.service.updateProfile(this.userData);

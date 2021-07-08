@@ -43,7 +43,7 @@
 
       <mat-form-field class="confirm-password-form-field" appearance="fill">
         <mat-label>Confirm Password</mat-label>
-        <input matInput type="text" [(ngModel)]="passwordConfirm">
+        <input matInput type="text" [(ngModel)]="userData.passwordConfirm">
         <button *ngIf="passwordConfirm" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirm=''">
           <mat-icon>close</mat-icon>
         </button>

@@ -131,17 +131,35 @@ export class UsersService {
   }
 
   updateProfile(user: IUser) {
-    const payload = {
-      user
-    }
-
+    const payload = user;
     this.http.put(BaseURL + ApiEndpoints.updateUser, payload, {
       observe: 'response'
     }).subscribe((response: HttpResponse<any>) => {
       if (response.status === 200) {
+        console.log(this.user$);
         this.user$.next(user);
-
+        sessionStorage.setItem('accessToken',response.body.accessToken);
+        localStorage.setItem('accessToken',response.body.accessToken)
         this.dialog.closeAll();
+      }
+    });
+  }
+
+  refreshToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    const payload = {
+      refreshToken
+    }
+
+    this.http.post(BaseURL + ApiEndpoints.refreshToken, payload, {
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) {
+        const token = response.body.accessToken;
+
+        localStorage.setItem('accessToken', token);
+        sessionStorage.setItem('accessToken', token);
       }
     });
   }
