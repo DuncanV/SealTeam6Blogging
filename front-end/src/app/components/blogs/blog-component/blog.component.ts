@@ -18,6 +18,10 @@ export class BlogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  displayBlog(blog:IContent):boolean{
+    return blog.visible || blog.username === this.username;
+  }
+
   displayVisibilityIcon(blog: IContent): boolean {
     return this.loggedIn ? this.loggedIn && (blog.username === this.username) : false;
   }
