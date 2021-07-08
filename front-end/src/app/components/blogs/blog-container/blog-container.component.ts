@@ -4,6 +4,8 @@ import {IContent, IUser} from "../../../common/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
 import {UsersService} from "../../../services/users.service";
 import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.animations";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateBlogComponent} from "../create-blog/create-blog.component";
 
 @Component({
   selector: 'app-blog-container',
@@ -20,7 +22,7 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   myBlogsIsEmpty: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private blogsService: BlogsService, private usersService: UsersService) {
+  constructor(private blogsService: BlogsService, private usersService: UsersService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -32,6 +34,10 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
     this.blogsService.getBlogs();
     this.blogs$ = this.blogsService.blogs$;
     this.myBlogs$ = this.blogsService.myBlogs$;
+
+    this.myBlogs$?.subscribe((blogs: IContent[]) => {
+      this.myBlogsIsEmpty = blogs.length === 0;
+    })
   }
 
   setupSubscriptions(): void {
@@ -48,15 +54,18 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.add(
-      this.myBlogs$?.subscribe((blogs: IContent[]) => {
-        this.myBlogsIsEmpty = blogs.length === 0;
+      this.blogsService.getBlogs$.subscribe(value => {
+        if (value) {
+          this.getBlogs();
+        }
       })
     );
 
     this.subscriptions.add(
-      this.blogsService.getBlogs$.subscribe(value => {
+      this.usersService.getBlogs$.subscribe(value => {
         if (value) {
           this.getBlogs();
+          this.usersService.getBlogs$.next(false);
         }
       })
     );
@@ -66,15 +75,8 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
     this.showMyBlogs = !this.showMyBlogs;
   }
 
-  postBlog() {
-    const blog: IContent = {
-      title: 'Test Title',
-      content: 'Test Content'
-    } as IContent;
-
-    if (this.blogsService.createBlog(blog)) {
-      this.getBlogs();
-    }
+  openCreateBlogDialog() {
+    this.dialog.open(CreateBlogComponent);
   }
 
   ngOnDestroy() {

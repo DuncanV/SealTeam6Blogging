@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UsersService} from "../../../services/users.service";
 import {IUser} from '../../../common/Interfaces';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
   signup: boolean = false;
   action: string = "Sign In";
   signUpForm: any;
@@ -18,17 +19,25 @@ export class SignInComponent implements OnInit {
 
   signedIn: boolean | undefined;
 
+  private subscriptions = new Subscription();
+
   constructor(private service: UsersService) {
     this.signup = false;
     this.action = "Sign In";
   }
 
   ngOnInit(): void {
-    this.service.signedIn$.subscribe(value => {
-      this.signedIn = value;
-    })
+    this.setupSubscriptions();
 
     this.setupSignUpForm();
+  }
+
+  setupSubscriptions() {
+    this.subscriptions.add(
+      this.service.signedIn$.subscribe(value => {
+        this.signedIn = value;
+      })
+    );
   }
 
   toggleSignup(): void {
@@ -116,4 +125,7 @@ export class SignInComponent implements OnInit {
     return input[0].value.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{10,})');
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

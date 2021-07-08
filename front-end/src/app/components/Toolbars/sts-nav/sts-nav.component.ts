@@ -21,17 +21,7 @@ export class StsNavComponent implements OnInit, OnDestroy {
   constructor(private service: UsersService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.getLoggedInStatus();
     this.setupSubscriptions();
-  }
-
-  get isLoggedIn(): boolean {
-    return localStorage.getItem('accessToken') !== '' || sessionStorage.getItem('accessToken') !== '';
-  }
-
-  getLoggedInStatus() {
-    this.loggedIn = this.isLoggedIn;
-    this.action = this.isLoggedIn ? "logout" : "login";
   }
 
   setupSubscriptions() {
@@ -61,10 +51,6 @@ export class StsNavComponent implements OnInit, OnDestroy {
     this.dialog.open(ProfileComponent, profileDialogConfig);
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
-
   toggleLogin(): void {
     if (!this.loggedIn) {
       this.login()
@@ -83,5 +69,9 @@ export class StsNavComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.service.logout();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
