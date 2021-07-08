@@ -145,4 +145,23 @@ export class UsersService {
       }
     });
   }
+
+  refreshToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    const payload = {
+      refreshToken
+    }
+
+    this.http.post(BaseURL + ApiEndpoints.refreshToken, payload, {
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
+      if (response.status === 200) {
+        const token = response.body.accessToken;
+
+        localStorage.setItem('accessToken', token);
+        sessionStorage.setItem('accessToken', token);
+      }
+    });
+  }
 }
