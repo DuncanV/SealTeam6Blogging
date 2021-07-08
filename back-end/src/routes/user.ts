@@ -235,13 +235,13 @@ UserRouter.put("/user", authenticateAccessToken, async (req, res) => {
         }
         const objToAdd = {
             username: isEmpty(req.body.username) ? queryResult.username : req.body.username,
-            passwordHash: isEmpty(req.body.password) ? queryResult.password : passwordHash,
+            passwordHash: isEmpty(req.body.password) ? queryResult.passwordHash : passwordHash,
             firstname: isEmpty(req.body.firstname) ? queryResult.firstname : req.body.firstname,
             lastname: isEmpty(req.body.lastname) ? queryResult.lastname : req.body.lastname
         }
 
         // Must change all blogs with that username as well as the user therefore need a transaction
-        if (!isEmpty(req.body.username)) {
+        if (!isEmpty(req.body.username) && req.body.username !== req.body.user.username) {
             const alreadyUser = await getConnection().findOne({username:sanitize(req.body.username)});
             if(alreadyUser)
                 throw new UserError("Cannot Use Given Username", "error");
