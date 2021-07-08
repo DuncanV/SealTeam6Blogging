@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+    - PUID=1000
+    - PGID=1000
+    ports:
+    - 27018:27017
+    build:
+      dockerfile: Dockerfile
+      context: mongo
+    restart: unless-stopped
+
+  # nginx_gw:
+  #   image: nginx:stable
+  #   volumes:
+  #     - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+  #   ports:
+  #     - target: 80
+  #       published: 80
+
+  blogging_app:
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - SERVER_PORT=${SERVER_PORT}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - TOKEN_TIMEOUT=${TOKEN_TIMEOUT}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_CONNECTION_URL=${MONGO_CONNECTION_URL}
+    ports:
+      - "4000:${SERVER_PORT}"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - mongodb
