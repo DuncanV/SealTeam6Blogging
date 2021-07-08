@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import {Mongo} from "../db/dbconfig";
-var sanitize = require('mongo-sanitize');
+import sanitize from "mongo-sanitize";
 
 const getConnection = () => {
     try {

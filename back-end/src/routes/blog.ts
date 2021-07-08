@@ -6,7 +6,7 @@ import { Mongo } from "../db/dbconfig";
 import {ERole} from "../common/Enums";
 import { logBlogs } from "../middleware/logger";
 import { BlogError } from "../errors/BlogError";
-var sanitize = require('mongo-sanitize');
+import sanitize from 'mongo-sanitize';
 
 const getConnection = () => {
   try{
@@ -35,8 +35,9 @@ Required: Nothing
  */
 BlogsRouter.get("/blogs", async (req, res) => {
   try{
-    const sort = {created:-1}
-    await getConnection().find().sort(sort).toArray( (err, result) => {
+    const notDeleted = {deleted:false};
+    const sort = {created:-1};
+    await getConnection().find(notDeleted).sort(sort).toArray( (err, result) => {
       if(err)
       {
          throw new BlogError("Failed to retrieve blogs", "error");

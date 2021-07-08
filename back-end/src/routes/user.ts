@@ -8,7 +8,7 @@ import {ERole} from "../common/Enums";
 import {TransactionOptions} from "mongodb";
 import { logUsers } from "../middleware/logger";
 import { UserError } from "../errors/UserError"
-var sanitize = require('mongo-sanitize');
+import sanitize from 'mongo-sanitize';
 
 const UserRouter = express.Router();
 const getConnection = () => {
