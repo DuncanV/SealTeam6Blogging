@@ -42,7 +42,7 @@ export class StsNavComponent implements OnInit, OnDestroy {
   openProfileDialog() {
     const profileDialogConfig = new MatDialogConfig();
 
-    profileDialogConfig.width = '500px';
+    profileDialogConfig.width = '535px';
 
     profileDialogConfig.data = {
       userData: this.userData

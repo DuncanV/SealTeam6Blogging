@@ -5,16 +5,16 @@
       <h3>Change Names</h3>
       <mat-form-field class="first-name-form-field" appearance="fill">
         <mat-label>{{ user.firstname }}</mat-label>
-        <input matInput type="text" [(ngModel)]="userData.firstname">
-        <button *ngIf="userData.firstname" matSuffix mat-icon-button aria-label="Clear" (click)="userData.firstname=''">
+        <input matInput type="text" [(ngModel)]="firstname">
+        <button *ngIf="firstname" matSuffix mat-icon-button aria-label="Clear" (click)="firstname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
       <mat-form-field class="last-name-form-field" appearance="fill">
         <mat-label>{{ user.lastname }}</mat-label>
-        <input matInput type="text" [(ngModel)]="userData.lastname">
-        <button *ngIf="userData.lastname" matSuffix mat-icon-button aria-label="Clear" (click)="userData.lastname=''">
+        <input matInput type="text" [(ngModel)]="lastname">
+        <button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -24,8 +24,8 @@
       <h3>Change Username</h3>
       <mat-form-field class="username-form-field" appearance="fill">
         <mat-label>{{ user.username }}</mat-label>
-        <input matInput type="text" [(ngModel)]="userData.username">
-        <button *ngIf="userData.username" matSuffix mat-icon-button aria-label="Clear" (click)="userData.username=''">
+        <input matInput type="text" [(ngModel)]="username">
+        <button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -35,16 +35,16 @@
       <h3>Change Password</h3>
       <mat-form-field class="password-form-field" appearance="fill">
         <mat-label>Password</mat-label>
-        <input matInput type="text" [(ngModel)]="userData.password">
-        <button *ngIf="userData.password" matSuffix mat-icon-button aria-label="Clear" (click)="userData.password=''">
+        <input matInput type="text" [(ngModel)]="password">
+        <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
       <mat-form-field class="confirm-password-form-field" appearance="fill">
         <mat-label>Confirm Password</mat-label>
-        <input matInput type="text" [(ngModel)]="userData.passwordConfirm">
-        <button *ngIf="passwordConfirm" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirm=''">
+        <input matInput type="text" [(ngModel)]="passwordConfirmed">
+        <button *ngIf="passwordConfirmed" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmed=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>

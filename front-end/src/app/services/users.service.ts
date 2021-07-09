@@ -29,6 +29,7 @@ export class UsersService {
         localStorage.setItem('userData', <string>sessionStorage.getItem('userData'));
         localStorage.setItem('accessToken', <string>sessionStorage.getItem('accessToken'));
         localStorage.setItem('refreshToken', <string>sessionStorage.getItem('refreshToken'));
+
         this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
       } else if (localStorage.getItem('userData')) {
         this.user$.next(JSON.parse(<string>localStorage.getItem('userData')));
@@ -130,16 +131,46 @@ export class UsersService {
     );
   }
 
-  updateProfile(user: IUser) {
-    const payload = user;
+  updateProfile(data: any, userData: IUser) {
+    let payload = {}
+
+    if (data.username && (data.username !== userData.username)) {
+      Object.assign(payload, {username: data.username});
+    } else {
+      data.username = userData.username;
+    }
+
+    if (data.firstname) {
+      Object.assign(payload, {firstname: data.firstname});
+    } else {
+      data.firstname = userData.firstname
+      Object.assign(payload, {firstname: userData.firstname});
+    }
+
+    if (data.lastname) {
+      Object.assign(payload, {lastname: data.lastname});
+    } else {
+      data.lastname = userData.lastname
+      Object.assign(payload, {lastname: userData.lastname});
+    }
+
+    if (data.password) Object.assign(payload, {password: data.password});
+    if (data.passwordConfirmed) Object.assign(payload, {passwordConfirmed: data.passwordConfirmed});
+
     this.http.put(BaseURL + ApiEndpoints.updateUser, payload, {
       observe: 'response'
     }).subscribe((response: HttpResponse<any>) => {
       if (response.status === 200) {
-        console.log(this.user$);
-        this.user$.next(user);
-        sessionStorage.setItem('accessToken',response.body.accessToken);
-        localStorage.setItem('accessToken',response.body.accessToken)
+        sessionStorage.setItem('accessToken', response.body.accessToken);
+        localStorage.setItem('accessToken', response.body.accessToken);
+
+        delete data.passwordConfirmed;
+        this.user$.next(data as IUser);
+
+        delete data.password;
+        sessionStorage.setItem('userData', JSON.stringify(data));
+        localStorage.setItem('userData', JSON.stringify(data));
+
         this.dialog.closeAll();
       }
     });
