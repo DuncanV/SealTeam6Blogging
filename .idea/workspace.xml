@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55e71380-a138-418d-bfba-62e0e9df7c40" name="Default Changelist" comment="Update HttpServices Front end">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/common/AuthInterceptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/common/AuthInterceptor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/common/Interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/common/Interfaces.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/Toolbars/sts-footer/sts-footer.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/Toolbars/sts-nav/sts-nav.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/Toolbars/sts-nav/sts-nav.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/Toolbars/sts-nav/sts-nav.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/auth/sign-in/sign-in.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-component/blog.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-container/blog-container.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/blogs/blog-modal/blog-modal.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/profile/profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/profile/profile.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/profile/profile.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/components/profile/profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/components/profile/profile.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/services/blogs.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/services/blogs.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/services/blogs.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/services/users.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/services/users.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +22,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../../../Sandbox/AfreximBank/Project/crisismanagementtool" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path" value="node" />
@@ -60,7 +42,9 @@
       <workItem from="1625552005033" duration="4715000" />
       <workItem from="1625579861395" duration="408000" />
       <workItem from="1625580426067" duration="9853000" />
-      <workItem from="1625663616173" duration="11164000" />
+      <workItem from="1625678499337" duration="595000" />
+      <workItem from="1625687164089" duration="648000" />
+      <workItem from="1625734281420" duration="40000" />
     </task>
     <servers />
   </component>
