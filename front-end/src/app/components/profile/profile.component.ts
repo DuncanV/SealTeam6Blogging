@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   firstname: string | undefined;
   lastname: string | undefined;
   password: string | undefined;
-  passwordConfirm: string | undefined;
+  passwordConfirmed: string | undefined;
   username: string | undefined;
 
   constructor(private service: UsersService, @Inject(MAT_DIALOG_DATA) data: any) {
@@ -26,12 +26,18 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
-    if (this.userData) {
-      if (this.password === this.passwordConfirm) {
-        this.service.updateProfile(this.userData);
-      } else {
-        // ERROR HERE
-      }
+    if (this.password === this.passwordConfirmed || !this.password) {
+      let data = {};
+
+      if (this.username) Object.assign(data, {username: this.username});
+      if (this.firstname) Object.assign(data, {firstname: this.firstname});
+      if (this.lastname) Object.assign(data, {lastname: this.lastname});
+      if (this.password) Object.assign(data, {password: this.password});
+      if (this.passwordConfirmed) Object.assign(data, {passwordConfirmed: this.passwordConfirmed});
+
+      this.service.updateProfile(data, this.userData ? this.userData : {} as IUser);
+    } else {
+      // ERROR HERE
     }
   }
 }

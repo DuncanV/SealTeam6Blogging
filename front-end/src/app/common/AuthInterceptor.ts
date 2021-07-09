@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(req_success).pipe(
       catchError((err, caught) => {
-        if (err.status === 401) {
+        if (err.status === 403 || err.error.message === 'Invalid Token') {
           this.handleAuthError();
           return of(err);
         }
