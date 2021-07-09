@@ -24,9 +24,11 @@ import { BlogsService } from './services/blogs.service';
 import { UsersService } from './services/users.service';
 import {AuthInterceptor} from "./common/AuthInterceptor";
 import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, CreateBlogComponent],
+  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,6 +38,7 @@ import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatSnackBarModule,
     MatIconModule,
     FormsModule,
     MatInputModule,
