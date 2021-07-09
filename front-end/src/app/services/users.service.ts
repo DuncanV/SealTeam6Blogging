@@ -1,9 +1,12 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {IUser} from '../common/Interfaces';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
-import {BlogsService} from "./blogs.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {SnackbarComponent} from "../components/snackbar/snackbar.component";
+import {ELoginMessages, ELogOutMessages, ESignUpMessages, ESnackBarType, EUpdateProfileMessages} from "../common/Enums";
+import {SNACKBAR_DURATION} from "../common/Constants";
 
 const BaseURL = 'http://localhost:3000';
 
@@ -23,7 +26,7 @@ export class UsersService {
   user$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>({} as IUser);
   getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  constructor(private http: HttpClient, private snackbar: MatSnackBar, public dialog: MatDialog) {
     if (this.isLoggedIn) {
       if (!localStorage.getItem('userData') && sessionStorage.getItem('userData')) {
         localStorage.setItem('userData', <string>sessionStorage.getItem('userData'));
@@ -87,7 +90,32 @@ export class UsersService {
         this.getBlogs$.next(true);
 
         this.dialog.closeAll();
+
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.success],
+          data: {
+            message: ELoginMessages.loginSuccess,
+          }
+        });
+      } else {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: ELoginMessages.loginFailure,
+          }
+        });
       }
+    },
+    error => {
+      this.snackbar.openFromComponent(SnackbarComponent, {
+        duration: SNACKBAR_DURATION,
+        panelClass: [ESnackBarType.error],
+        data: {
+          message: error.error.message,
+        }
+      });
     });
   }
 
@@ -105,9 +133,34 @@ export class UsersService {
     }).subscribe((response: HttpResponse<any>) => {
 
       if (response.status === 201) {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.success],
+          data: {
+            message: ESignUpMessages.signUpSuccess,
+          }
+        });
+
         this.login(data.username, data.password);
+      } else {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: ESignUpMessages.signUpFailure,
+          }
+        });
       }
-    });
+    },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
   }
 
   logout() {
@@ -123,10 +176,25 @@ export class UsersService {
         sessionStorage.clear();
         localStorage.clear();
 
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.success],
+          data: {
+            message: ELogOutMessages.logOutSuccess,
+            type: ESnackBarType.success
+          }
+        });
+
         this.getBlogs$.next(true);
       },
       error => {
-        console.log("BAD! Couldn't log out.")
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
       }
     );
   }
@@ -172,8 +240,33 @@ export class UsersService {
         localStorage.setItem('userData', JSON.stringify(data));
 
         this.dialog.closeAll();
+
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.success],
+          data: {
+            message: EUpdateProfileMessages.updateProfileSuccess,
+          }
+        });
+      } else {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: EUpdateProfileMessages.updateProfileFailure,
+          }
+        });
       }
-    });
+    },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
   }
 
   refreshToken() {

@@ -5,6 +5,10 @@ import {UsersService} from './users.service';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {SnackbarComponent} from "../components/snackbar/snackbar.component";
+import {ECreateBlogMessages, EDeleteBlogMessages, ESnackBarType, EUpdateBlogMessages} from "../common/Enums";
+import {SNACKBAR_DURATION} from "../common/Constants";
 
 const baseURL = 'http://localhost:3000';
 
@@ -21,7 +25,8 @@ export class BlogsService {
   myBlogs$: Observable<IContent[]> | undefined;
   getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private usersService: UsersService, private http: HttpClient, public dialog: MatDialog) {}
+  constructor(private usersService: UsersService, private http: HttpClient, private snackbar: MatSnackBar, public dialog: MatDialog) {
+  }
 
   getAllBlogs() {
     return this.http.get(baseURL + apiEndpoints.blogs, {
@@ -81,14 +86,37 @@ export class BlogsService {
     this.http.put(url, payload, {
       observe: 'response',
     }).subscribe((response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          this.getBlogs$.next(true);
 
+          this.dialog.closeAll();
 
-      if (response.status === 200) {
-        this.getBlogs$.next(true);
-
-        this.dialog.closeAll();
-      }
-    });
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.success],
+            data: {
+              message: EUpdateBlogMessages.updateBlogSuccess,
+            }
+          });
+        } else {
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.error],
+            data: {
+              message: EUpdateBlogMessages.updateBlogFailure,
+            }
+          });
+        }
+      },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
   }
 
   deleteBlog(blog: IContent) {
@@ -98,12 +126,37 @@ export class BlogsService {
     this.http.delete(url, {
       observe: 'response',
     }).subscribe((response: HttpResponse<any>) => {
-      if (response.status === 200) {
-        this.getBlogs$.next(true);
+        if (response.status === 200) {
+          this.getBlogs$.next(true);
 
-        this.dialog.closeAll();
-      }
-    });
+          this.dialog.closeAll();
+
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.success],
+            data: {
+              message: EDeleteBlogMessages.deleteBlogSuccess,
+            }
+          });
+        } else {
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.error],
+            data: {
+              message: EDeleteBlogMessages.deleteBlogFailure,
+            }
+          });
+        }
+      },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
   }
 
   createBlog(blog: IContent) {
@@ -115,12 +168,38 @@ export class BlogsService {
     this.http.post(baseURL + apiEndpoints.blogs, payload, {
       observe: 'response',
     }).subscribe((response: HttpResponse<any>) => {
-      if (response.status === 201) {
-        this.getBlogs$.next(true);
+        if (response.status === 201) {
+          this.getBlogs$.next(true);
 
-        this.dialog.closeAll();
-        this.getBlogs$.next(true);
-      }
-    });
+          this.dialog.closeAll();
+
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.success],
+            data: {
+              message: ECreateBlogMessages.createBlogSuccess,
+            }
+          });
+
+          this.getBlogs$.next(true);
+        } else {
+          this.snackbar.openFromComponent(SnackbarComponent, {
+            duration: SNACKBAR_DURATION,
+            panelClass: [ESnackBarType.error],
+            data: {
+              message: ECreateBlogMessages.createBlogFailure,
+            }
+          });
+        }
+      },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
   }
 }
