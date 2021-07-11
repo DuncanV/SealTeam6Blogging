@@ -1,15 +1,30 @@
+@import "src/styles/colors";
+
 .container {
   margin-top: 20px;
   padding: 60px 0 100px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background: $white-color;
 
   .blog-menu-button {
     position: fixed;
     right: 20px;
     bottom: 80px;
+    background: $primary-color-lighter;
   }
 }
 
+.showLoader {
+  height: calc(100% - 200px);
+}
+
 .my-blogs {
+  padding: 20px 0;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -21,5 +36,5 @@
 .expand-button-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }

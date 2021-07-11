@@ -40,8 +40,10 @@
           </div>
         </mat-form-field>
         <button mat-raised-button (click)="signIn()">Sign In</button><br>
-        <button class="astext" (click)="forgotPassword()">Forgot Password?</button><br>
-        <button class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+
+        <div class="text-button-container">
+          <button class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+        </div>
       </div>
     </ng-template>
   </div>

@@ -6,6 +6,7 @@ import {UsersService} from "../../../services/users.service";
 import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.animations";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateBlogComponent} from "../create-blog/create-blog.component";
+import {LoaderService} from "../../../services/loader.service";
 
 @Component({
   selector: 'app-blog-container',
@@ -14,6 +15,7 @@ import {CreateBlogComponent} from "../create-blog/create-blog.component";
   animations: [showMyBlogsAnimation, showDividerAnimation]
 })
 export class BlogContainerComponent implements OnInit, OnDestroy {
+  showLoader: boolean = true;
   blogs$: Observable<IContent[]> | undefined;
   myBlogs$: Observable<IContent[]> | undefined;
   loggedIn: boolean | undefined;
@@ -22,7 +24,7 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   myBlogsIsEmpty: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private blogsService: BlogsService, private usersService: UsersService, public dialog: MatDialog) {
+  constructor(private blogsService: BlogsService, private usersService: UsersService, private loaderService: LoaderService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -50,6 +52,13 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.usersService.user$.subscribe(value => {
         this.userData = value;
+      })
+    );
+
+    this.subscriptions.add(
+      this.loaderService.showBlogsLoader$.subscribe(value => {
+        this.showLoader = value;
+        console.log(this.showLoader)
       })
     );
 

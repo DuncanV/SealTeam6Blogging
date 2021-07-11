@@ -1,0 +1,67 @@
+@import "colors";
+
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(10px);
+}
+
+.mat-dialog-container {
+  background: rgba(255, 255, 255, 0.85);
+  color: $black-color;
+  border-radius: 0 !important;
+}
+
+.mat-raised-button {
+  background: $white-color;
+  color: $black-color;
+  border-radius: 0 !important;
+}
+
+.mat-focused .mat-form-field {
+  &-label {
+    color: $primary-color !important;
+  }
+
+  &-ripple {
+    background-color: $primary-color !important;
+  }
+}
+
+.mat-form-field {
+  &-flex {
+    color: $gray-color-darker;
+    border-radius: 0 !important;
+    border-bottom: 2px solid $gray-color-darker;
+  }
+
+  &-label {
+    color: $gray-color-darker;
+  }
+
+  &-underline {
+    color: $gray-color-darker;
+  }
+
+  input {
+    caret-color: $primary-color;
+  }
+}
+
+.mat-card {
+  background: $white-color-secondary;
+  color: $black-color;
+  box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 30%) !important
+}
+
+.mat-menu {
+  &-panel {
+    background: $white-color;
+  }
+
+  &-item {
+    color: $gray-color-darker;
+  }
+}
+
+.mat-spinner circle {
+  stroke: $red-color !important;
+}
