@@ -1,4 +1,4 @@
-FROM node:latest as build-step
+FROM node:14 as build-step
 RUN mkdir -p /front-end-app
 WORKDIR /front-end-app
 RUN npm install -g @angular/cli
@@ -11,9 +11,9 @@ WORKDIR /back-end-app
 RUN npm install -g tsc
 COPY back-end/ .
 RUN npm install && npm update
-RUN tsc
+RUN npm run build
 
-FROM node:latest as run
+FROM node:14 as run
 RUN curl https://musl.libc.org/releases/musl-1.2.2.tar.gz -o musl-1.2.2.tar.gz && tar -xvf musl-1.2.2.tar.gz && cd musl-1.2.2 && ./configure && make && make install
 COPY --from=build-step /front-end-app/dist/front-end/ /front-end/dist/front-end/
 COPY --from=build-step /front-end-app/node_modules/ /front-end/node_modules/
