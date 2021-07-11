@@ -1,3 +1,9 @@
+@import "src/styles/colors";
+
+main.dark {
+  background-color: $gray-color-lighter;
+}
+
 main {
   height: 100%;
 }

@@ -20,13 +20,13 @@
     *ngIf="loggedIn && isMyBlog"
     class="button-container"
   >
-    <button mat-icon-button (click)="deleteBlog()">
+    <button appDebounceClick mat-icon-button (click)="deleteBlog()">
       <mat-icon>delete_forever</mat-icon>
     </button>
-    <button mat-icon-button (click)="toggleEdit()">
+    <button appDebounceClick mat-icon-button (click)="toggleEdit()">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="toggleVisibility()">
+    <button appDebounceClick mat-icon-button (click)="toggleVisibility()">
       <mat-icon>{{blog.visible ? "visibility" : "visibility_off"}}</mat-icon>
     </button>
   </div>
@@ -56,18 +56,17 @@
   <div class="blog-action-buttons">
     <button
       *ngIf="showUpdateButtons"
-      mat-button
+      mat-raised-button
       mat-dialog-close
     >Cancel</button>
     <button
       *ngIf="showUpdateButtons"
-      mat-button
-      cdkFocusInitial
+      mat-raised-button
       (click)="updateBlog()"
     >Update</button>
     <button
       *ngIf="!showUpdateButtons"
-      mat-button
+      mat-raised-button
       mat-dialog-close
       cdkFocusInitial
     >Close</button>

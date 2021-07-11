@@ -1,12 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
 import {IContent, IUser} from "../../../common/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
 import {UsersService} from "../../../services/users.service";
 import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.animations";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreateBlogComponent} from "../create-blog/create-blog.component";
 import {LoaderService} from "../../../services/loader.service";
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-blog-container',
@@ -15,6 +16,8 @@ import {LoaderService} from "../../../services/loader.service";
   animations: [showMyBlogsAnimation, showDividerAnimation]
 })
 export class BlogContainerComponent implements OnInit, OnDestroy {
+  @Input() isDarkTheme: boolean = false;
+
   showLoader: boolean = true;
   blogs$: Observable<IContent[]> | undefined;
   myBlogs$: Observable<IContent[]> | undefined;
@@ -24,7 +27,11 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   myBlogsIsEmpty: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private blogsService: BlogsService, private usersService: UsersService, private loaderService: LoaderService, public dialog: MatDialog) {
+  constructor(private blogsService: BlogsService,
+              private usersService: UsersService,
+              private loaderService: LoaderService,
+              private themeService: ThemeService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -43,6 +50,12 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   }
 
   setupSubscriptions(): void {
+    this.subscriptions.add(
+      this.themeService.activateDarkTheme.subscribe(value => {
+        this.isDarkTheme = value;
+      })
+    );
+
     this.subscriptions.add(
       this.usersService.signedIn$.subscribe(value => {
         this.loggedIn = value;
@@ -85,7 +98,17 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   }
 
   openCreateBlogDialog() {
-    this.dialog.open(CreateBlogComponent);
+    const blogDialogConfig = new MatDialogConfig();
+
+    if (this.isDarkTheme) {
+      blogDialogConfig.panelClass = 'dark';
+    }
+
+    blogDialogConfig.data = {
+      isDarkTheme: this.isDarkTheme
+    }
+
+    this.dialog.open(CreateBlogComponent, blogDialogConfig);
   }
 
   ngOnDestroy() {
