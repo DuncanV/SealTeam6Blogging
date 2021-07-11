@@ -1,5 +1,11 @@
 @import "src/styles/colors";
 
+.dark {
+  .astext {
+    color: $white-color;
+  }
+}
+
 .singin {
   &-container {
     display: flex;
@@ -42,9 +48,9 @@
 }
 
 .astext {
-  background: none!important;
+  background: none !important;
   border: none;
-  padding: 0!important;
+  padding: 0 !important;
   color: $gray-color;
   text-decoration: underline;
   cursor: pointer;

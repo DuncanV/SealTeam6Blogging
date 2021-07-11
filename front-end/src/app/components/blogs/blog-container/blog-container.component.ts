@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
 import {IContent, IUser} from "../../../common/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
@@ -7,6 +7,7 @@ import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.anima
 import {MatDialog} from "@angular/material/dialog";
 import {CreateBlogComponent} from "../create-blog/create-blog.component";
 import {LoaderService} from "../../../services/loader.service";
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-blog-container',
@@ -15,6 +16,8 @@ import {LoaderService} from "../../../services/loader.service";
   animations: [showMyBlogsAnimation, showDividerAnimation]
 })
 export class BlogContainerComponent implements OnInit, OnDestroy {
+  @Input() isDarkTheme: boolean = false;
+
   showLoader: boolean = true;
   blogs$: Observable<IContent[]> | undefined;
   myBlogs$: Observable<IContent[]> | undefined;
@@ -24,7 +27,11 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   myBlogsIsEmpty: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private blogsService: BlogsService, private usersService: UsersService, private loaderService: LoaderService, public dialog: MatDialog) {
+  constructor(private blogsService: BlogsService,
+              private usersService: UsersService,
+              private loaderService: LoaderService,
+              private themeService: ThemeService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -43,6 +50,12 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   }
 
   setupSubscriptions(): void {
+    this.subscriptions.add(
+      this.themeService.activateDarkTheme.subscribe(value => {
+        this.isDarkTheme = value;
+      })
+    );
+
     this.subscriptions.add(
       this.usersService.signedIn$.subscribe(value => {
         this.loggedIn = value;

@@ -4,6 +4,57 @@
   backdrop-filter: blur(10px);
 }
 
+.dark {
+  .mat-dialog-container {
+    background: rgb(73, 73, 73, 0.95) !important;
+    color: $white-color;
+  }
+
+  .mat-form-field {
+    &-flex {
+      color: $white-color !important;
+      border-bottom: 2px solid $gray-color-lighter !important;
+    }
+
+    &-label {
+      color: $white-color !important;
+    }
+
+    &-underline {
+      color: $gray-color-lighter !important;
+    }
+  }
+
+  .mat-raised-button {
+    background: $gray-color-very-dark;
+    color: $white-color;
+
+    &:hover {
+      background: $gray-color-lighter !important;
+      color: $black-color;
+    }
+  }
+
+  .mat-card {
+    background: $gray-color-very-dark;
+    color: $white-color;
+  }
+
+  .mat-menu {
+    &-panel {
+      background: $gray-color-very-dark !important;
+    }
+
+    &-item {
+      color: $white-color;
+
+      &:hover {
+        background: $gray-color-lighter !important;
+      }
+    }
+  }
+}
+
 .mat-dialog-container {
   background: rgba(255, 255, 255, 0.85);
   color: $black-color;
@@ -14,6 +65,10 @@
   background: $white-color;
   color: $black-color;
   border-radius: 0 !important;
+
+  &:hover {
+    background: $gray-color-lighter !important;
+  }
 }
 
 .mat-focused .mat-form-field {
@@ -44,6 +99,10 @@
   input {
     caret-color: $primary-color;
   }
+
+  &-ripple {
+    background-color: $primary-color !important;
+  }
 }
 
 .mat-card {
@@ -59,6 +118,10 @@
 
   &-item {
     color: $gray-color-darker;
+
+    &:hover {
+      background: $gray-color-lighter !important;
+    }
   }
 }
 

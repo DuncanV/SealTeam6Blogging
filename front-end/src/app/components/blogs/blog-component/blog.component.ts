@@ -16,6 +16,7 @@ export class BlogComponent implements OnInit {
   @Input() blog: IContent = {} as IContent;
   @Input() loggedIn: boolean = false;
   @Input() username: string = '';
+  @Input() isDarkTheme: boolean = false;
   blogIsLiked: boolean = false;
 
   constructor(private blogService: BlogsService, public dialog: MatDialog) { }
@@ -41,8 +42,13 @@ export class BlogComponent implements OnInit {
 
     blogDialogConfig.width = '600px';
 
+    if (this.isDarkTheme) {
+      blogDialogConfig.panelClass = 'dark';
+    }
+
     blogDialogConfig.data = {
-      blog: blog
+      blog: blog,
+      isDarkTheme: this.isDarkTheme
     }
 
     this.dialog.open(BlogModalComponent, blogDialogConfig);
@@ -61,6 +67,13 @@ export class BlogComponent implements OnInit {
       const loginDialogConfig = new MatDialogConfig();
 
       loginDialogConfig.width = '600px';
+      loginDialogConfig.data = {
+        isDarkTheme: this.isDarkTheme
+      }
+
+      if (this.isDarkTheme) {
+        loginDialogConfig.panelClass = 'dark';
+      }
 
       this.dialog.open(SignInComponent, loginDialogConfig);
     }

@@ -1,11 +1,24 @@
-<mat-toolbar class="nav-bar">
+<mat-toolbar
+  class="nav-bar"
+  [ngClass]="{
+    'dark': isDarkTheme
+  }"
+>
   <img alt="#" src="../../../../assets/images/Seal.png" class="sts-icon"/>
   <span class="nav-bar-title"> STSBlogging </span>
   <span class="spacer"></span>
-  <button *ngIf="loggedIn" mat-icon-button class="profile-icon" (click)="openProfileDialog()">
+  <button
+    appDebounceClick
+    mat-icon-button
+    class="themes-icon"
+    (click)="toggleTheme()"
+  >
+    <mat-icon>brightness_4</mat-icon>
+  </button>
+  <button appDebounceClick *ngIf="loggedIn" mat-icon-button class="profile-icon" (click)="openProfileDialog()">
     <mat-icon>account_box</mat-icon>
   </button>
-  <button mat-icon-button class="auth-icon" (click)="toggleLogin()">
+  <button appDebounceClick mat-icon-button class="auth-icon" (click)="toggleLogin()">
     <mat-icon>{{ action }}</mat-icon>
   </button>
 </mat-toolbar>

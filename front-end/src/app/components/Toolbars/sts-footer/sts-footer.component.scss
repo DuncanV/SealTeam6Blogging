@@ -1,5 +1,13 @@
 @import './src/styles/colors';
 
+.sts-footer.dark {
+  background: $gray-color-very-dark;
+
+  span {
+    color: $white-color;
+  }
+}
+
 .sts-footer {
   display: flex;
   justify-content: center;
@@ -12,5 +20,10 @@
 
   span {
     color: $black-color;
+  }
+
+  .footer-url {
+    font-weight: 100;
+    cursor: pointer;
   }
 }

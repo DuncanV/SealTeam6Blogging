@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './components/profile/profile.component';
 import { BlogsModule } from './components/blogs/blogs.module';
-import { AuthModule } from './components/auth/auth.module';
 import { ToolbarsModule } from './components/Toolbars/toolbars.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,19 +25,22 @@ import {AuthInterceptor} from "./common/AuthInterceptor";
 import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { DebounceClickDirective } from './common/debounce-click.directive';
+import {ThemeService} from "./services/theme.service";
+import {AuthModule} from "./components/auth/auth.module";
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent],
+  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent, DebounceClickDirective],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     ToolbarsModule,
     BlogsModule,
-    AuthModule,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    AuthModule,
     MatIconModule,
     FormsModule,
     MatInputModule,
@@ -48,10 +50,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     BlogsService,
     UsersService
   ],
   bootstrap: [AppComponent],
+  exports: [
+    DebounceClickDirective
+  ]
 })
-export class AppModule {}
+export class AppModule{}

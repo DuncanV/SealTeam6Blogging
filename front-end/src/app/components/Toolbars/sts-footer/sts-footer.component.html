@@ -1,5 +1,10 @@
-<mat-toolbar class="sts-footer">
+<mat-toolbar
+  class="sts-footer"
+  [ngClass]="{
+    'dark': isDarkTheme
+  }"
+>
   <span>
-    Footer
+    &copy; {{ year }} Copyright: <span class="footer-url" (click)="showMessage()">STSBlogging.com</span>
   </span>
 </mat-toolbar>
