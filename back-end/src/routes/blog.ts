@@ -143,6 +143,13 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
     if (!queryResult.likes.includes(user)){
         liked = true;
         queryResult.likes.push(user);
+    }else{
+      for(let count = 0; count<queryResult.likes.length;count++){
+        if(queryResult.likes[count] === user){
+          queryResult.likes.splice(count,1);
+          break
+        }
+      }
     }
 
     if(liked){
@@ -151,7 +158,10 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
         res.status(200).json({message:"Blog Liked"});
       });
     }else{
-      res.status(200).json({message:"Blog Liked"});
+      await getConnection().updateOne(query, {$set:{likes: sanitize(queryResult.likes)}}, (err, result) =>{
+        if(err) throw new Error("Cannot unlike Blog")
+        res.status(200).json({message:"Blog unliked"});
+      });
     }
 
   }catch(e) {
