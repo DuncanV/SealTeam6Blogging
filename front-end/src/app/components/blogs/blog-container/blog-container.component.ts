@@ -4,7 +4,7 @@ import {IContent, IUser} from "../../../common/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
 import {UsersService} from "../../../services/users.service";
 import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.animations";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreateBlogComponent} from "../create-blog/create-blog.component";
 import {LoaderService} from "../../../services/loader.service";
 import {ThemeService} from "../../../services/theme.service";
@@ -98,7 +98,17 @@ export class BlogContainerComponent implements OnInit, OnDestroy {
   }
 
   openCreateBlogDialog() {
-    this.dialog.open(CreateBlogComponent);
+    const blogDialogConfig = new MatDialogConfig();
+
+    if (this.isDarkTheme) {
+      blogDialogConfig.panelClass = 'dark';
+    }
+
+    blogDialogConfig.data = {
+      isDarkTheme: this.isDarkTheme
+    }
+
+    this.dialog.open(CreateBlogComponent, blogDialogConfig);
   }
 
   ngOnDestroy() {
