@@ -1,7 +1,11 @@
-<main>
-  <sts-nav></sts-nav>
+<main
+  [ngClass]="{
+    'dark': isDarkTheme
+  }"
+>
+  <sts-nav [isDarkTheme]="isDarkTheme"></sts-nav>
 
-  <app-blog-container></app-blog-container>
+  <app-blog-container [isDarkTheme]="isDarkTheme"></app-blog-container>
 
-  <sts-footer></sts-footer>
+  <sts-footer [isDarkTheme]="isDarkTheme"></sts-footer>
 </main>

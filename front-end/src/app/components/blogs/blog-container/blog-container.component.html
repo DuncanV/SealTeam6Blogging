@@ -1,7 +1,8 @@
 <div
   class="container"
   [ngClass]="{
-    'showLoader': showLoader
+    'showLoader': showLoader,
+    'dark': isDarkTheme
   }"
 >
   <ng-container
@@ -25,6 +26,7 @@
       >
         <app-blog-component
           [blog]="blog"
+          [isDarkTheme]="isDarkTheme"
           [loggedIn]="loggedIn ? loggedIn : false"
           [username]="userData ? userData.username : ''"
         ></app-blog-component>
@@ -36,7 +38,7 @@
       class="expand-button-container"
       *ngIf="!myBlogsIsEmpty"
     >
-      <button mat-raised-button (click)="toggleMyBlogs()">
+      <button appDebounceClick mat-raised-button (click)="toggleMyBlogs()">
         <span *ngIf="showMyBlogs">Hide My Blogs</span>
         <mat-icon *ngIf="showMyBlogs">expand_less</mat-icon>
         <span *ngIf="!showMyBlogs">Show My Blogs</span>
@@ -58,13 +60,18 @@
       <ng-container
         *ngFor="let blog of blogs$ | async"
       >
-        <app-blog-component [blog]="blog" [loggedIn]="loggedIn ? loggedIn : false" [username]="userData ? userData.username : ''"></app-blog-component>
+        <app-blog-component
+          [blog]="blog"
+          [isDarkTheme]="isDarkTheme"
+          [loggedIn]="loggedIn ? loggedIn : false"
+          [username]="userData ? userData.username : ''"
+        ></app-blog-component>
       </ng-container>
     </div>
 
     <mat-menu #blogMenu="matMenu" yPosition="above">
       <ng-template matMenuContent>
-        <button mat-menu-item (click)="openCreateBlogDialog()">Add Post</button>
+        <button appDebounceClick mat-menu-item (click)="openCreateBlogDialog()">Add Post</button>
       </ng-template>
     </mat-menu>
 

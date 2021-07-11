@@ -17,6 +17,7 @@ export class BlogModalComponent implements OnInit, OnDestroy {
   originalVisibility: boolean | undefined;
   isMyBlog: boolean = false;
 
+
   private subscription = new Subscription();
 
   constructor(

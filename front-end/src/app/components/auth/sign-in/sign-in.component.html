@@ -1,4 +1,9 @@
-<div class="signin-header">
+<div
+  class="signin-header"
+  [ngClass]="{
+          'dark': isDarkTheme
+        }"
+>
   <div class="signin-titles-container">
     <h2 mat-dialog-title class="signin-title">{{action}}</h2>
     <div class="signup-container" *ngIf="signup; else signin">
@@ -8,14 +13,21 @@
         <mat-form-field appearance="fill">
           <mat-label>{{ field.label }}</mat-label>
           <input matInput [type]=field.type [(ngModel)]="field.value">
-          <button *ngIf="field.value" matSuffix mat-icon-button aria-label="Clear" (click)="field.value=''">
+          <button
+            appDebounceClick
+            *ngIf="field.value"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="field.value=''"
+          >
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
       </ng-container>
 
-      <button mat-raised-button (click)="signUp()">Sign Up</button><br>
-      <button class="astext" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
+      <button appDebounceClick mat-raised-button (click)="signUp()">Sign Up</button><br>
+      <button appDebounceClick class="astext" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
     </div>
 
     <ng-template #signin>
@@ -23,7 +35,7 @@
         <mat-form-field class="singin-username-input" appearance="fill">
           <mat-label>Enter Username</mat-label>
           <input matInput type="text" [(ngModel)]="usernameSignIn" required>
-          <button *ngIf="usernameSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="usernameSignIn=''">
+          <button appDebounceClick *ngIf="usernameSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="usernameSignIn=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
@@ -33,16 +45,16 @@
           <div class="input-button-container">
             <span class="input-button-container-content" [ngClass]="{ 'no-button': !passwordSignIn }">
               <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              <button *ngIf="passwordSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="passwordSignIn=''">
+              <button appDebounceClick *ngIf="passwordSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="passwordSignIn=''">
               <mat-icon>close</mat-icon>
             </button>
             </span>
           </div>
         </mat-form-field>
-        <button mat-raised-button (click)="signIn()">Sign In</button><br>
+        <button appDebounceClick mat-raised-button (click)="signIn()">Sign In</button><br>
 
         <div class="text-button-container">
-          <button class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+          <button appDebounceClick class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
         </div>
       </div>
     </ng-template>
@@ -51,6 +63,6 @@
 
 <mat-dialog-actions align="end">
   <div class="signin-action-buttons">
-    <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+    <button appDebounceClick mat-raised-button mat-dialog-close cdkFocusInitial>Close</button>
   </div>
 </mat-dialog-actions>

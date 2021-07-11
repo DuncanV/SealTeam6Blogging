@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {UsersService} from "../../../services/users.service";
-import {IUser} from '../../../common/Interfaces';
 import {Subscription} from "rxjs";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-sign-in',
@@ -9,6 +9,8 @@ import {Subscription} from "rxjs";
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit, OnDestroy {
+  isDarkTheme: boolean = false;
+
   signup: boolean = false;
   action: string = "Sign In";
   signUpForm: any;
@@ -21,9 +23,10 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(private service: UsersService) {
+  constructor(private service: UsersService, @Inject(MAT_DIALOG_DATA) data: any) {
     this.signup = false;
     this.action = "Sign In";
+    this.isDarkTheme = data.isDarkTheme;
   }
 
   ngOnInit(): void {

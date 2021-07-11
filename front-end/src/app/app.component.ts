@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {IUser} from "./common/Interfaces";
+import {ThemeService} from "./services/theme.service";
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,10 @@ import {IUser} from "./common/Interfaces";
 })
 export class AppComponent implements OnInit {
   title = 'front-end';
+  isDarkTheme: boolean = false;
+
+  constructor(private themeService: ThemeService) {
+  }
 
   ngOnInit() {
     const userData: IUser = JSON.parse(<string>sessionStorage.getItem('userData'));
@@ -15,6 +20,10 @@ export class AppComponent implements OnInit {
     if (userData) {
       localStorage.setItem('userData', JSON.stringify(userData));
     }
+
+    this.themeService.activateDarkTheme.subscribe(value => {
+      this.isDarkTheme = value;
+    });
   }
 
   @HostListener("window:beforeunload",["$event"])

@@ -1,3 +1,15 @@
+@import "./src/styles/colors";
+
+.dark {
+  ::ng-deep .mat-card-subtitle {
+    color: $white-color !important;
+  }
+
+  mat-icon {
+      color: $white-color !important;
+  }
+}
+
 .card {
   width: 300px;
   height: 205px;
@@ -7,6 +19,10 @@
   &-header {
     position: relative;
     left: -15px;
+
+    ::ng-deep .mat-card-subtitle {
+      color: $black-color !important;
+    }
   }
 
   &-content {
@@ -37,11 +53,11 @@
       float: right;
     }
   }
-}
 
-.card:hover {
-  transform: scale(1.1);
-  z-index: 10;
+  &:hover {
+    transform: scale(1.1);
+    z-index: 10;
+  }
 }
 
 .likes-amount {
