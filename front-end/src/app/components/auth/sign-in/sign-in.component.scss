@@ -1,3 +1,5 @@
+@import "src/styles/colors";
+
 .singin {
   &-container {
     display: flex;
@@ -34,11 +36,16 @@
   }
 }
 
+.text-button-container {
+  display: flex;
+  justify-content: center;
+}
+
 .astext {
   background: none!important;
   border: none;
   padding: 0!important;
-  color: #bfbfbf;
+  color: $gray-color;
   text-decoration: underline;
   cursor: pointer;
 }

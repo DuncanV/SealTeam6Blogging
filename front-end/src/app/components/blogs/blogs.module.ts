@@ -13,6 +13,7 @@ import {BlogContainerComponent} from "./blog-container/blog-container.component"
 import {FormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   exports: [
@@ -21,18 +22,19 @@ import {MatInputModule} from "@angular/material/input";
     BlogContainerComponent
   ],
   declarations: [BlogComponent, BlogModalComponent, BlogContainerComponent],
-  imports: [
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    FlexModule,
-    CommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatDividerModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        FlexModule,
+        CommonModule,
+        MatDialogModule,
+        MatMenuModule,
+        MatDividerModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule
+    ],
 })
 export class BlogsModule {}

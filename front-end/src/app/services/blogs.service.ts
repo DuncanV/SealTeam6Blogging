@@ -9,12 +9,14 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {SnackbarComponent} from "../components/snackbar/snackbar.component";
 import {ECreateBlogMessages, EDeleteBlogMessages, ESnackBarType, EUpdateBlogMessages} from "../common/Enums";
 import {SNACKBAR_DURATION} from "../common/Constants";
+import {LoaderService} from "./loader.service";
 
 const baseURL = 'http://localhost:3000';
 
 const apiEndpoints = {
   blogs: '/blogs',
   updateBlogs: '/blogs/{id}',
+  likeBlog: '/blogs/like/{id}'
 };
 
 @Injectable({
@@ -25,10 +27,12 @@ export class BlogsService {
   myBlogs$: Observable<IContent[]> | undefined;
   getBlogs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private usersService: UsersService, private http: HttpClient, private snackbar: MatSnackBar, public dialog: MatDialog) {
+  constructor(private usersService: UsersService, private loaderService: LoaderService, private http: HttpClient, private snackbar: MatSnackBar, public dialog: MatDialog) {
   }
 
   getAllBlogs() {
+    this.loaderService.showBlogsLoader$.next(true);
+
     return this.http.get(baseURL + apiEndpoints.blogs, {
       observe: 'response',
     });
@@ -56,6 +60,10 @@ export class BlogsService {
           })
         );
       }
+
+      new Promise(resolve => setTimeout(resolve, 2500)).then(r => {
+        this.loaderService.showBlogsLoader$.next(false);
+      });
     } else {
       this.blogs$ = allBlogs.pipe(
         map((response: HttpResponse<any>) => {
@@ -72,6 +80,9 @@ export class BlogsService {
     }
 
     this.getBlogs$.next(false);
+    new Promise(resolve => setTimeout(resolve, 2500)).then(r => {
+      this.loaderService.showBlogsLoader$.next(false);
+    });
   }
 
   updateBlog(blog: IContent) {
@@ -192,6 +203,29 @@ export class BlogsService {
           });
         }
       },
+      error => {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: error.error.message,
+          }
+        });
+      });
+  }
+
+  likeBlog(blogId: number, username: string) {
+    const payload = {
+      username
+    };
+
+    const url = baseURL + apiEndpoints.likeBlog.replace('{id}', String(blogId));
+
+    this.http.put(url, payload, {
+      observe: "response"
+    }).subscribe((response: HttpResponse<any>) => {
+        console.log(response);
+    },
       error => {
         this.snackbar.openFromComponent(SnackbarComponent, {
           duration: SNACKBAR_DURATION,

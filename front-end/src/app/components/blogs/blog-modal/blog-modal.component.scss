@@ -1,7 +1,3 @@
-::ng-deep .cdk-overlay-dark-backdrop { // NEVER EVER EVER DO THIS IN PRODUCTION BTW
-  backdrop-filter: blur(5px);
-}
-
 .blog {
   &-header {
     display: flex;
