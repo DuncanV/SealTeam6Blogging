@@ -22,21 +22,31 @@
 
     <div class="password-container">
       <h3>Change Password</h3>
-      <mat-form-field class="password-form-field" appearance="fill">
-        <mat-label>Password</mat-label>
-        <input matInput type="text" [(ngModel)]="password">
-        <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+      <div class="password-field-container">
+        <mat-icon
+          matTooltip="Password must be at least 10 characters and must contain at least one Uppercase, Lowercase and special character"
+        >
+          info
+        </mat-icon>
 
-      <mat-form-field class="confirm-password-form-field" appearance="fill">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput type="text" [(ngModel)]="passwordConfirmed">
-        <button *ngIf="passwordConfirmed" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmed=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <div>
+          <mat-form-field class="password-form-field" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="text" [(ngModel)]="password">
+            <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field class="confirm-password-form-field" appearance="fill">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput type="text" [(ngModel)]="passwordConfirmed">
+            <button *ngIf="passwordConfirmed" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmed=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </ng-container>
   <ng-container *ngIf="!userData">

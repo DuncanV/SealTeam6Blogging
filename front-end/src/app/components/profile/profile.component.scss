@@ -5,3 +5,11 @@
 .password-form-field {
   margin-right: 15px;
 }
+
+.password-field-container {
+  display: block;
+
+  mat-icon {
+    cursor: help;
+  }
+}

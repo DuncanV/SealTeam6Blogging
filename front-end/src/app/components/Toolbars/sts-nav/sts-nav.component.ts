@@ -60,7 +60,7 @@ export class StsNavComponent implements OnInit, OnDestroy {
   }
 
   toggleTheme() {
-    this.themeService.activateDarkTheme.next(!this.isDarkTheme);
+    this.themeService.changeTheme();
   }
 
   toggleLogin(): void {
