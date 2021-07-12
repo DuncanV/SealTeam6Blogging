@@ -34,20 +34,24 @@ export enum EUpdateProfileMessages {
   updateProfileFailure = "User profile could not be updated."
 }
 
-export enum EUpdateBlogMessages{
+export enum EUpdateBlogMessages {
   updateBlogSuccess = "Blog successfully updated.",
   updateBlogFailure = "Blog could not be updated."
 }
 
-export enum ECreateBlogMessages{
+export enum ECreateBlogMessages {
   createBlogSuccess = "Blog successfully created.",
   createBlogFailure = "Blog could not be created."
 }
 
-export enum EDeleteBlogMessages{
+export enum EDeleteBlogMessages {
   deleteBlogSuccess = "Blog successfully deleted.",
   deleteBlogFailure = "Blog could not be deleted."
 }
 
+export enum EPasswordsMessages {
+  passwordDoNotMatch = "The passwords do not match. Try again.",
+  invalidPassword = "Invalid password. Please enter a valid password."
+}
 
 

@@ -10,26 +10,34 @@
       <ng-container
         *ngFor="let field of signUpForm"
       >
-        <mat-form-field
-          appearance="fill"
-          [matTooltip]="field.label === 'Enter Password' ? 'Password must be at least 10 characters and must contain at least one Uppercase, Lowercase and special character' : ''"
-        >
-          <mat-label>{{ field.label }}</mat-label>
-          <input
-            matInput
-            [type]="field.type"
-            [(ngModel)]="field.value"
+        <div class="field-container">
+          <mat-icon
+            *ngIf="field.label === 'Enter Password'"
+            [matTooltip]="field.label === 'Enter Password' ? 'Password must be at least 10 characters and must contain at least one Uppercase, Lowercase and special character' : ''"
           >
-          <button
-            *ngIf="field.value"
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="field.value=''"
+            info
+          </mat-icon>
+
+          <mat-form-field
+            appearance="fill"
           >
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+            <mat-label>{{ field.label }}</mat-label>
+            <input
+              matInput
+              [type]="field.type"
+              [(ngModel)]="field.value"
+            >
+            <button
+              *ngIf="field.value"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="field.value=''"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
       </ng-container>
 
       <button appDebounceClick mat-raised-button (click)="signUp()">Sign Up</button>
