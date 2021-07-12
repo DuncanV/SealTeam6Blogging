@@ -287,7 +287,7 @@ UserRouter.put("/user", authenticateAccessToken, async (req, res) => {
             getConnection().updateOne(sanitize(queryResult), {$set: sanitize(objToAdd)}, (err, result) => {
                 if (err) return res.status(400).json({message: "Could not update user"})
                 logUsers("User updated Successfully", "info");
-                return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: req.body.username})})
+                return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: queryResult.username})})
             });
         }
     } catch (e) {
