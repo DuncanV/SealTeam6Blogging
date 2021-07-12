@@ -23,6 +23,10 @@ export class SignInComponent implements OnInit, OnDestroy {
   usernameSignIn: string = "";
   passwordSignIn: string = "";
 
+  humanQuestion: boolean = false;
+  humanChecked: boolean = false;
+  firstTimeLogin: boolean = true;
+
   signedIn: boolean | undefined;
 
   private subscriptions = new Subscription();
@@ -90,7 +94,11 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   signIn(): void {
-    this.service.login(this.usernameSignIn, this.passwordSignIn);
+    let autoReject = !(this.firstTimeLogin || this.humanChecked == this.humanQuestion);
+
+    this.service.login(this.usernameSignIn, this.passwordSignIn, autoReject);
+    this.firstTimeLogin = false;
+    this.humanQuestion = !this.humanQuestion;
   }
 
   signUp(): void {

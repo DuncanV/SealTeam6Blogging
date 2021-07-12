@@ -58,12 +58,22 @@ export class UsersService {
     return username;
   }
 
-  login(username: string, password: string): void {
+  login(username: string, password: string, autoReject: boolean=false): void {
     const payload = {
       username: username,
       password: password
     }
 
+    if (autoReject) {
+      this.snackbar.openFromComponent(SnackbarComponent, {
+        duration: SNACKBAR_DURATION,
+        panelClass: [ESnackBarType.error],
+        data: {
+          message: ELoginMessages.notHuman,
+        }
+      });
+      return;
+    }
     let userData: IUser = {} as IUser;
 
     this.http.post(BaseURL + ApiEndpoints.login, payload, {

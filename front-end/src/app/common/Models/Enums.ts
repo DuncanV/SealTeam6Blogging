@@ -16,7 +16,8 @@ export enum ESnackBarType {
 
 export enum ELoginMessages {
   loginSuccess = "User successfully logged in.",
-  loginFailure = "User could not log in. Please try again."
+  loginFailure = "User could not log in. Please try again.",
+  notHuman = "User admitted to not being human"
 }
 
 export enum ESignUpMessages {

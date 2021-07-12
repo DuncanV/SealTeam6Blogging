@@ -6,6 +6,7 @@ import {CommonModule} from "@angular/common";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {FormsModule} from "@angular/forms";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {STSCommonModule} from "../../common/Common.module";
@@ -22,6 +23,7 @@ import {STSCommonModule} from "../../common/Common.module";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatCheckboxModule,
     FormsModule,
     MatTooltipModule,
     STSCommonModule
