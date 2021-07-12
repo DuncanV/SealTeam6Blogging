@@ -1,8 +1,8 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {UsersService} from "../../services/users.service";
 import {Subscription} from "rxjs";
-import {IUser} from "../../common/Interfaces";
-import {ERole} from "../../common/Enums";
+import {IUser} from "../../common/Models/Interfaces";
+import {ERole} from "../../common/Models/Enums";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({

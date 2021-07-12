@@ -21,16 +21,16 @@ import {
 } from '@angular/common/http';
 import { BlogsService } from './services/blogs.service';
 import { UsersService } from './services/users.service';
-import {AuthInterceptor} from "./common/AuthInterceptor";
+import {AuthInterceptor} from "./common/Interceptors/AuthInterceptor";
 import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { DebounceClickDirective } from './common/debounce-click.directive';
-import {ThemeService} from "./services/theme.service";
 import {AuthModule} from "./components/auth/auth.module";
+import {DebounceClickDirective} from "./common/Directives/debounce-click.directive";
+import {STSCommonModule} from "./common/Common.module";
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent, DebounceClickDirective],
+  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,15 +48,13 @@ import {AuthModule} from "./components/auth/auth.module";
     MatDividerModule,
     MatMenuModule,
     HttpClientModule,
+    STSCommonModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     BlogsService,
     UsersService
   ],
-  bootstrap: [AppComponent],
-  exports: [
-    DebounceClickDirective
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule{}

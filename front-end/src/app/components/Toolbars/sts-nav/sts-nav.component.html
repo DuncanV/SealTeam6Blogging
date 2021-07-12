@@ -8,17 +8,16 @@
   <span class="nav-bar-title"> STSBlogging </span>
   <span class="spacer"></span>
   <button
-    appDebounceClick
     mat-icon-button
     class="themes-icon"
     (click)="toggleTheme()"
   >
     <mat-icon>brightness_4</mat-icon>
   </button>
-  <button appDebounceClick *ngIf="loggedIn" mat-icon-button class="profile-icon" (click)="openProfileDialog()">
+  <button *ngIf="loggedIn" mat-icon-button class="profile-icon" (click)="openProfileDialog()">
     <mat-icon>account_box</mat-icon>
   </button>
-  <button appDebounceClick mat-icon-button class="auth-icon" (click)="toggleLogin()">
+  <button mat-icon-button class="auth-icon" (click)="toggleLogin()">
     <mat-icon>{{ action }}</mat-icon>
   </button>
 </mat-toolbar>

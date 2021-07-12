@@ -23,10 +23,10 @@
     <button appDebounceClick mat-icon-button (click)="deleteBlog()">
       <mat-icon>delete_forever</mat-icon>
     </button>
-    <button appDebounceClick mat-icon-button (click)="toggleEdit()">
+    <button mat-icon-button (click)="toggleEdit()">
       <mat-icon>edit</mat-icon>
     </button>
-    <button appDebounceClick mat-icon-button (click)="toggleVisibility()">
+    <button mat-icon-button (click)="toggleVisibility()">
       <mat-icon>{{blog.visible ? "visibility" : "visibility_off"}}</mat-icon>
     </button>
   </div>
