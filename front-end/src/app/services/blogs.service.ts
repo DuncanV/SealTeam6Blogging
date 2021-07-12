@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IContent} from '../common/Interfaces';
+import {IContent} from '../common/Models/Interfaces';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {UsersService} from './users.service';
 import {HttpClient, HttpResponse} from '@angular/common/http';
@@ -7,8 +7,8 @@ import {map} from 'rxjs/operators';
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SnackbarComponent} from "../components/snackbar/snackbar.component";
-import {ECreateBlogMessages, EDeleteBlogMessages, ESnackBarType, EUpdateBlogMessages} from "../common/Enums";
-import {SNACKBAR_DURATION} from "../common/Constants";
+import {ECreateBlogMessages, EDeleteBlogMessages, ESnackBarType, EUpdateBlogMessages} from "../common/Models/Enums";
+import {SNACKBAR_DURATION} from "../common/Constants/Constants";
 import {LoaderService} from "./loader.service";
 
 const baseURL = 'http://localhost:3000';

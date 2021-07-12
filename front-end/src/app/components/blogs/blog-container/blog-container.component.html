@@ -38,7 +38,7 @@
       class="expand-button-container"
       *ngIf="!myBlogsIsEmpty"
     >
-      <button appDebounceClick mat-raised-button (click)="toggleMyBlogs()">
+      <button mat-raised-button (click)="toggleMyBlogs()">
         <span *ngIf="showMyBlogs">Hide My Blogs</span>
         <mat-icon *ngIf="showMyBlogs">expand_less</mat-icon>
         <span *ngIf="!showMyBlogs">Show My Blogs</span>
@@ -71,7 +71,7 @@
 
     <mat-menu #blogMenu="matMenu" yPosition="above">
       <ng-template matMenuContent>
-        <button appDebounceClick mat-menu-item (click)="openCreateBlogDialog()">Add Post</button>
+        <button mat-menu-item (click)="openCreateBlogDialog()">Add Post</button>
       </ng-template>
     </mat-menu>
 

@@ -1,5 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {IContent} from "../../../common/Interfaces";
+import {IContent} from "../../../common/Models/Interfaces";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {BlogsService} from "../../../services/blogs.service";
 import {UsersService} from "../../../services/users.service";

@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {IContent, IUser} from "../../../common/Interfaces";
+import {IContent, IUser} from "../../../common/Models/Interfaces";
 import {BlogsService} from "../../../services/blogs.service";
 import {UsersService} from "../../../services/users.service";
 import {showDividerAnimation, showMyBlogsAnimation} from "./blog-container.animations";

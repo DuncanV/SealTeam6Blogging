@@ -7,21 +7,25 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormsModule} from "@angular/forms";
-import {AppModule} from "../../app.module";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {STSCommonModule} from "../../common/Common.module";
 
 @NgModule({
-    exports: [
-        SignInComponent
-    ],
-    declarations: [SignInComponent],
-    imports: [
-        MatDialogModule,
-        MatIconModule,
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-    ]
+  exports: [
+    SignInComponent
+  ],
+  declarations: [SignInComponent],
+  imports: [
+    MatDialogModule,
+    MatIconModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatTooltipModule,
+    STSCommonModule
+  ]
 })
-export class AuthModule {}
+export class AuthModule {
+}
