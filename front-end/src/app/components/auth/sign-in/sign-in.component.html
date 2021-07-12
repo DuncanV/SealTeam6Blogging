@@ -52,6 +52,7 @@
           </div>
         </mat-form-field>
         <button appDebounceClick mat-raised-button (click)="signIn()">Sign In</button><br>
+        <mat-checkbox *ngIf="!firstTimeLogin" [(ngModel)]="HumanChecked">{{humanQuestion ? 'I am a human' : 'I am not a human'}}</mat-checkbox>
 
         <div class="text-button-container">
           <button appDebounceClick class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
