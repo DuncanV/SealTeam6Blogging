@@ -234,62 +234,17 @@ UserRouter.put("/user", authenticateAccessToken, async (req, res) => {
                 throw new UserError("Failed to update", "error", "putUser");
         }
         const objToAdd = {
-            username: isEmpty(req.body.username) ? queryResult.username : req.body.username,
             passwordHash: isEmpty(req.body.password) ? queryResult.passwordHash : passwordHash,
             firstname: isEmpty(req.body.firstname) ? queryResult.firstname : req.body.firstname,
             lastname: isEmpty(req.body.lastname) ? queryResult.lastname : req.body.lastname
         }
 
-        // Must change all blogs with that username as well as the user therefore need a transaction
-        if (!isEmpty(req.body.username) && req.body.username !== req.body.user.username) {
-            const alreadyUser = await getConnection().findOne({username:sanitize(req.body.username)});
-            if(alreadyUser)
-                throw new UserError("Cannot Use Given Username", "error", "putUser");
+        getConnection().updateOne(sanitize(queryResult), {$set: sanitize(objToAdd)}, (err, result) => {
+            if (err) return res.status(400).json({message: "Could not update user"})
+            logUsers("User updated Successfully", "info", "putUser");
+            return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: queryResult.username})})
+        });
 
-            const session = Mongo.client.startSession();
-
-            const transactionOptions: TransactionOptions = {
-                readPreference: 'primary',
-                readConcern: {level: 'local'},
-                writeConcern: {w: 'majority'}
-            };
-
-            try {
-
-                const transactionResults = await session.withTransaction(async () => {
-                    const blogUpdate = {username: req.body.username}
-                    const userUpdateResults = await getConnection().updateOne(
-                        sanitize(queryResult),
-                        {$set: sanitize(objToAdd)},
-                        {session});
-
-                    const blogUpdateResults = await Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs").updateMany(
-                        sanitize(query),
-                        {$set: sanitize(blogUpdate)},
-                        {session});
-
-                }, transactionOptions);
-
-                if (transactionResults) {
-                    logUsers("User and blogs updated", "info", "putUser");
-                    return res.status(200).json({message: "User and blogs updated", accessToken:generateAccessToken({username: req.body.username})})
-                } else {
-                    logUsers("Cannot update user and blogs", "error", "putUser");
-                    return res.status(400).json({message: "Cannot update user and blogs"})
-                }
-            } catch (e) {
-                logUsers(e.message, "error", "putUser");
-                return res.status(400).json({message:e.message});
-            } finally {
-                await session.endSession();
-            }
-        } else {
-            getConnection().updateOne(sanitize(queryResult), {$set: sanitize(objToAdd)}, (err, result) => {
-                if (err) return res.status(400).json({message: "Could not update user"})
-                logUsers("User updated Successfully", "info", "putUser");
-                return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: queryResult.username})})
-            });
-        }
     } catch (e) {
         return res.status(400).json({message: e.message});
     }
