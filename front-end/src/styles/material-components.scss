@@ -37,7 +37,11 @@
 
   .mat-card {
     background: $gray-color-very-dark;
-    color: $white-color;
+    color: $white-color !important;
+
+    &-subtitle {
+      color: $white-color !important;
+    }
   }
 
   .mat-menu {
@@ -109,6 +113,10 @@
   background: $white-color-secondary;
   color: $black-color;
   box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 30%) !important
+}
+
+.mat-card-subtitle {
+  color: $black-color;
 }
 
 .mat-menu {
