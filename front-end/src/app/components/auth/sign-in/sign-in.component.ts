@@ -19,7 +19,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   usernameSignIn: string = "";
   passwordSignIn: string = "";
 
-  humanQuestion: boolean = true;
+  humanQuestion: boolean = false;
   humanChecked: boolean = false;
   firstTimeLogin: boolean = true;
 
@@ -91,7 +91,7 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   signIn(): void {
     let autoReject = !(this.firstTimeLogin || this.humanChecked == this.humanQuestion);
-    
+
     this.service.login(this.usernameSignIn, this.passwordSignIn, autoReject);
     this.firstTimeLogin = false;
     this.humanQuestion = !this.humanQuestion;

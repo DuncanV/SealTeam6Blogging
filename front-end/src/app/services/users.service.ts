@@ -58,7 +58,7 @@ export class UsersService {
     return username;
   }
 
-  login(username: string, password: string, autoReject: boolean): void {
+  login(username: string, password: string, autoReject: boolean=false): void {
     const payload = {
       username: username,
       password: password
