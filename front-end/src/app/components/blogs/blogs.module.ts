@@ -15,6 +15,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {AppModule} from "../../app.module";
+import {STSCommonModule} from "../../common/Common.module";
 
 @NgModule({
   exports: [
@@ -36,6 +37,7 @@ import {AppModule} from "../../app.module";
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    STSCommonModule,
   ],
 })
 export class BlogsModule {}

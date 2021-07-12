@@ -17,7 +17,7 @@ export function authenticateAccessToken(req: any, res:any, next:any){
         return res.sendStatus(401);
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err: any, user: any) =>{
-        if(err) return res.status(403).json({message:"Invalid Token"});
+        if(err || user.username === undefined || user.username === null)  return res.status(403).json({message:"Invalid Token"});
         const query = {username: sanitize(user.username)};
         const result = await getConnection().findOne(query);
         req.body.role = result.role;

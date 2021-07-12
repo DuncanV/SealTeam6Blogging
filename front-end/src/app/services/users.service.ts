@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {IUser} from '../common/Interfaces';
+import {IUser} from '../common/Models/Interfaces';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SnackbarComponent} from "../components/snackbar/snackbar.component";
-import {ELoginMessages, ELogOutMessages, ESignUpMessages, ESnackBarType, EUpdateProfileMessages} from "../common/Enums";
-import {SNACKBAR_DURATION} from "../common/Constants";
+import {ELoginMessages, ELogOutMessages, ESignUpMessages, ESnackBarType, EUpdateProfileMessages} from "../common/Models/Enums";
+import {SNACKBAR_DURATION} from "../common/Constants/Constants";
 
 const BaseURL = 'http://localhost:3000';
 

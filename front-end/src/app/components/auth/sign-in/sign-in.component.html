@@ -10,24 +10,40 @@
       <ng-container
         *ngFor="let field of signUpForm"
       >
-        <mat-form-field appearance="fill">
-          <mat-label>{{ field.label }}</mat-label>
-          <input matInput [type]=field.type [(ngModel)]="field.value">
-          <button
-            appDebounceClick
-            *ngIf="field.value"
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="field.value=''"
+        <div class="field-container">
+          <mat-icon
+            *ngIf="field.label === 'Enter Password'"
+            [matTooltip]="field.label === 'Enter Password' ? 'Password must be at least 10 characters and must contain at least one Uppercase, Lowercase and special character' : ''"
           >
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+            info
+          </mat-icon>
+
+          <mat-form-field
+            appearance="fill"
+          >
+            <mat-label>{{ field.label }}</mat-label>
+            <input
+              matInput
+              [type]="field.type"
+              [(ngModel)]="field.value"
+            >
+            <button
+              *ngIf="field.value"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="field.value=''"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
       </ng-container>
 
-      <button appDebounceClick mat-raised-button (click)="signUp()">Sign Up</button><br>
-      <button appDebounceClick class="astext" (click)="toggleSignup()">Already Have an account? Sign In</button><br>
+      <button appDebounceClick mat-raised-button (click)="signUp()">Sign Up</button>
+      <br>
+      <button class="astext" (onEvent)="toggleSignup()">Already Have an account? Sign In</button>
+      <br>
     </div>
 
     <ng-template #signin>
@@ -35,7 +51,8 @@
         <mat-form-field class="singin-username-input" appearance="fill">
           <mat-label>Enter Username</mat-label>
           <input matInput type="text" [(ngModel)]="usernameSignIn" required>
-          <button appDebounceClick *ngIf="usernameSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="usernameSignIn=''">
+          <button *ngIf="usernameSignIn" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="usernameSignIn=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
@@ -45,17 +62,20 @@
           <div class="input-button-container">
             <span class="input-button-container-content" [ngClass]="{ 'no-button': !passwordSignIn }">
               <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              <button appDebounceClick *ngIf="passwordSignIn" matSuffix mat-icon-button aria-label="Clear" (click)="passwordSignIn=''">
+              <button *ngIf="passwordSignIn" matSuffix mat-icon-button aria-label="Clear"
+                      (click)="passwordSignIn=''">
               <mat-icon>close</mat-icon>
             </button>
             </span>
           </div>
         </mat-form-field>
         <mat-checkbox *ngIf="!firstTimeLogin" [(ngModel)]="humanChecked">{{humanQuestion ? 'I am a human' : 'I am not a human'}}</mat-checkbox>
-        <button appDebounceClick mat-raised-button (click)="signIn()">Sign In</button><br>
+        <button appDebounceClick mat-raised-button (onEvent)="signIn()">Sign In</button>
+        <br>
 
         <div class="text-button-container">
-          <button appDebounceClick class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button><br>
+          <button class="astext" (click)="toggleSignup()">Dont have an account? Join Now</button>
+          <br>
         </div>
       </div>
     </ng-template>
@@ -64,6 +84,6 @@
 
 <mat-dialog-actions align="end">
   <div class="signin-action-buttons">
-    <button appDebounceClick mat-raised-button mat-dialog-close cdkFocusInitial>Close</button>
+    <button mat-raised-button mat-dialog-close cdkFocusInitial>Close</button>
   </div>
 </mat-dialog-actions>

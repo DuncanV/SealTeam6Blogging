@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IContent} from "../../../common/Interfaces";
+import {IContent} from "../../../common/Models/Interfaces";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {BlogModalComponent} from "../blog-modal/blog-modal.component";
 import {BlogsService} from "../../../services/blogs.service";

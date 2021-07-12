@@ -15,7 +15,7 @@ const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("users");
   } catch{
-    throw new UserError("Invalid Connection to DB","error");
+    throw new UserError("Invalid Connection to DB","error", "getConnection");
   }
 }
 
@@ -49,15 +49,15 @@ Obtain:
  */
 UserRouter.post("/login", async (req, res) => {
     if (isEmpty(req.body.username))
-        throw new UserError("Missing Username","error");
+        throw new UserError("Missing Username","error", "login");
     if (isEmpty(req.body.password))
-        throw new UserError("Missing Password","error");
+        throw new UserError("Missing Password","error", "login");
     try {
         const userQuery = {username: req.body.username};
         const userResult = await getConnection().findOne(sanitize(userQuery));
-        logUsers("Prepare Login Username:" + req.body.username, "info");
+        logUsers("Prepare Login Username:" + req.body.username, "info", "login");
         if (!userResult)
-        throw new UserError("Username and Password Incorrect","error");
+        throw new UserError("Username and Password Incorrect","error", "login");
 
         if (await bcrypt.compare(req.body.password, userResult.passwordHash)) {
             const token = {username: userResult.username};
@@ -73,14 +73,14 @@ UserRouter.post("/login", async (req, res) => {
             };
             getConnection().updateOne(sanitize(userResult), {$set: {refreshToken}}, (err, result) => {
                 if (err) return res.status(500).json({message: "Could not update refresh token"})
-				logUsers(" logged in","info");
+				logUsers(" logged in","info", "login");
                 return res.status(200).json(objToReturn);
             });
 
-        logUsers("Login Successful", "info");
-        logUsers(objToReturn, "info");
+        logUsers("Login Successful", "info", "login");
+        logUsers(objToReturn, "info", "login");
         } else {
-            logUsers("Username and Password Incorrect", "error");
+            logUsers("Username and Password Incorrect", "error", "login");
             return res.status(401).send({message: "Username and Password Incorrect"})
         }
     } catch (e) {
@@ -106,23 +106,23 @@ Obtain:
 UserRouter.post("/signup", async (req, res) => {
     try {
         if (isEmpty(req.body.username))
-        throw new UserError("Missing Username","error");
+        throw new UserError("Missing Username","error", "signup");
         if (isEmpty(req.body.password))
-            throw new UserError("Missing Password","error");
+            throw new UserError("Missing Password","error", "signup");
         if (!isValidPassword(req.body.password))
-            throw new UserError("Invalid password","error");
+            throw new UserError("Invalid password","error", "signup");
         if (isEmpty(req.body.passwordConfirmed))
-            throw new UserError("Missing passwordConfirmed","error");
+            throw new UserError("Missing passwordConfirmed","error", "signup");
         if (req.body.passwordConfirmed !== req.body.password)
-            throw new UserError("Passwords Don't Match","error");
+            throw new UserError("Passwords Don't Match","error", "signup");
         if (isEmpty(req.body.firstname))
-            throw new UserError("Missing firstname","error");
+            throw new UserError("Missing firstname","error", "signup");
         if (isEmpty(req.body.lastname))
-            throw new UserError("Missing lastname","error");
+            throw new UserError("Missing lastname","error", "signup");
         // TODO possibly add email and use regex
         const currentUser = await getConnection().findOne({username:sanitize(req.body.username)});
         if(currentUser)
-            throw new UserError("Cannot Create User","error");
+            throw new UserError("Cannot Create User","error", "signup");
 
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
             if (err) return res.sendStatus(500);
@@ -141,7 +141,7 @@ UserRouter.post("/signup", async (req, res) => {
 
             await getConnection().insertOne(sanitize(objToAdd), (insErr, result) => {
                 if (insErr) return res.status(400).json({message: "Cannot Create User"})
-                logUsers("Sign up Successful", "info");
+                logUsers("Sign up Successful", "info", "signup");
                 return res.status(201).json({message: "User Created"})
             });
         });
@@ -166,16 +166,16 @@ UserRouter.post("/refresh", async (req, res) => {
                 (err: any, user: any) => {
                     if (err)
 					{
-						logUsers("Refresh failed "+user.username+"!","error");
+						logUsers("Refresh failed "+user.username+"!","error", "refresh");
 						return res.status(403).json({message: "Invalid Refresh Token"});
 					}
                     const accessToken = generateAccessToken({username: user.username});
-      				logUsers("Refresh worked for "+user.username+"!","info");
+      				logUsers("Refresh worked for "+user.username+"!","info", "refresh");
                     return res.status(200).json({accessToken});
                 }
             );
         }else{
-            throw new UserError("Invalid Token","error");
+            throw new UserError("Invalid Token","error", "refresh");
         }
     } catch (e) {
         return res.status(400).json({message: e.message});
@@ -188,15 +188,15 @@ Required: refreshToken - req.body
 UserRouter.delete("/logout", (req, res) => {
     try {
         if (isEmpty(req.body.refreshToken))
-            throw new UserError("Missing Refresh Token","error");
+            throw new UserError("Missing Refresh Token","error", "logout");
 
         const query = {refreshToken: req.body.refreshToken};
         getConnection().updateOne(sanitize(query), {$set: {refreshToken: null}}, (err, result) => {
             if (err) return res.status(400).json({message: "Cannot Log User Out"});
-			logUsers(" logged out","info");
+			logUsers(" logged out","info", "logout");
             return res.status(200).json({message: "User Logged Out"})
         });
-        logUsers("Logout Successful", "info");
+        logUsers("Logout Successful", "info", "logout");
     } catch (e) {
         return res.status(400).json({message: e.message});
     }
@@ -219,77 +219,32 @@ UserRouter.put("/user", authenticateAccessToken, async (req, res) => {
         const queryResult = await getConnection().findOne(sanitize(query));
 
         if (isEmpty(queryResult))
-            throw new UserError("No User Found", "error");
+            throw new UserError("No User Found", "error", "putUser");
         let passwordHash = null
         if (!isEmpty(req.body.password)) {
             if (!isValidPassword(req.body.password))
-                throw new UserError("Invalid Password", "error");
+                throw new UserError("Invalid Password", "error", "putUser");
             if (isEmpty(req.body.passwordConfirmed))
-                throw new UserError("Missing Confirmed Password", "error");
+                throw new UserError("Missing Confirmed Password", "error", "putUser");
             if (req.body.password !== req.body.passwordConfirmed)
-                throw new UserError("Password and Confirmed Password do not match", "error");
+                throw new UserError("Password and Confirmed Password do not match", "error", "putUser");
 
             passwordHash = await bcrypt.hash(req.body.password, 10)
             if (!passwordHash)
-                throw new UserError("Failed to update", "error");
+                throw new UserError("Failed to update", "error", "putUser");
         }
         const objToAdd = {
-            username: isEmpty(req.body.username) ? queryResult.username : req.body.username,
             passwordHash: isEmpty(req.body.password) ? queryResult.passwordHash : passwordHash,
             firstname: isEmpty(req.body.firstname) ? queryResult.firstname : req.body.firstname,
             lastname: isEmpty(req.body.lastname) ? queryResult.lastname : req.body.lastname
         }
 
-        // Must change all blogs with that username as well as the user therefore need a transaction
-        if (!isEmpty(req.body.username) && req.body.username !== req.body.user.username) {
-            const alreadyUser = await getConnection().findOne({username:sanitize(req.body.username)});
-            if(alreadyUser)
-                throw new UserError("Cannot Use Given Username", "error");
+        getConnection().updateOne(sanitize(queryResult), {$set: sanitize(objToAdd)}, (err, result) => {
+            if (err) return res.status(400).json({message: "Could not update user"})
+            logUsers("User updated Successfully", "info", "putUser");
+            return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: queryResult.username})})
+        });
 
-            const session = Mongo.client.startSession();
-
-            const transactionOptions: TransactionOptions = {
-                readPreference: 'primary',
-                readConcern: {level: 'local'},
-                writeConcern: {w: 'majority'}
-            };
-
-            try {
-
-                const transactionResults = await session.withTransaction(async () => {
-                    const blogUpdate = {username: req.body.username}
-                    const userUpdateResults = await getConnection().updateOne(
-                        sanitize(queryResult),
-                        {$set: sanitize(objToAdd)},
-                        {session});
-
-                    const blogUpdateResults = await Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs").updateMany(
-                        sanitize(query),
-                        {$set: sanitize(blogUpdate)},
-                        {session});
-
-                }, transactionOptions);
-
-                if (transactionResults) {
-                    logUsers("User and blogs updated", "info");
-                    return res.status(200).json({message: "User and blogs updated", accessToken:generateAccessToken({username: req.body.username})})
-                } else {
-                    logUsers("Cannot update user and blogs", "error");
-                    return res.status(400).json({message: "Cannot update user and blogs"})
-                }
-            } catch (e) {
-                logUsers(e.message, "error");
-                return res.status(400).json({message:e.message});
-            } finally {
-                await session.endSession();
-            }
-        } else {
-            getConnection().updateOne(sanitize(queryResult), {$set: sanitize(objToAdd)}, (err, result) => {
-                if (err) return res.status(400).json({message: "Could not update user"})
-                logUsers("User updated Successfully", "info");
-                return res.status(200).json({message: "User updated", accessToken:generateAccessToken({username: req.body.username})})
-            });
-        }
     } catch (e) {
         return res.status(400).json({message: e.message});
     }

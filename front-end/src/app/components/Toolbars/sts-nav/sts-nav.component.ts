@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IUser} from "../../../common/Interfaces";
+import {IUser} from "../../../common/Models/Interfaces";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProfileComponent} from "../../profile/profile.component";
 import {Subscription} from "rxjs";
@@ -60,7 +60,7 @@ export class StsNavComponent implements OnInit, OnDestroy {
   }
 
   toggleTheme() {
-    this.themeService.activateDarkTheme.next(!this.isDarkTheme);
+    this.themeService.changeTheme();
   }
 
   toggleLogin(): void {

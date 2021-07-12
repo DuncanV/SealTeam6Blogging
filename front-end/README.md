@@ -6,4 +6,4 @@ The STS Blogging app uses the following stack:
 * MongoDB
 
 ## Running the program
-To run the front-end on it's own please run: `npm start`
+To run the program do: `cd back-end && npm run start`

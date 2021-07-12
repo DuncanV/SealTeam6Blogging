@@ -6,7 +6,7 @@
       <mat-form-field class="first-name-form-field" appearance="fill">
         <mat-label>{{ user.firstname }}</mat-label>
         <input matInput type="text" [(ngModel)]="firstname">
-        <button appDebounceClick *ngIf="firstname" matSuffix mat-icon-button aria-label="Clear" (click)="firstname=''">
+        <button *ngIf="firstname" matSuffix mat-icon-button aria-label="Clear" (click)="firstname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -14,18 +14,7 @@
       <mat-form-field class="last-name-form-field" appearance="fill">
         <mat-label>{{ user.lastname }}</mat-label>
         <input matInput type="text" [(ngModel)]="lastname">
-        <button appDebounceClick *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
-
-    <div class="username-container">
-      <h3>Change Username</h3>
-      <mat-form-field class="username-form-field" appearance="fill">
-        <mat-label>{{ user.username }}</mat-label>
-        <input matInput type="text" [(ngModel)]="username">
-        <button appDebounceClick *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+        <button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -33,21 +22,31 @@
 
     <div class="password-container">
       <h3>Change Password</h3>
-      <mat-form-field class="password-form-field" appearance="fill">
-        <mat-label>Password</mat-label>
-        <input matInput type="text" [(ngModel)]="password">
-        <button appDebounceClick *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+      <div class="password-field-container">
+        <mat-icon
+          matTooltip="Password must be at least 10 characters and must contain at least one Uppercase, Lowercase and special character"
+        >
+          info
+        </mat-icon>
 
-      <mat-form-field class="confirm-password-form-field" appearance="fill">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput type="text" [(ngModel)]="passwordConfirmed">
-        <button appDebounceClick *ngIf="passwordConfirmed" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmed=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <div>
+          <mat-form-field class="password-form-field" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="text" [(ngModel)]="password">
+            <button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field class="confirm-password-form-field" appearance="fill">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput type="text" [(ngModel)]="passwordConfirmed">
+            <button *ngIf="passwordConfirmed" matSuffix mat-icon-button aria-label="Clear" (click)="passwordConfirmed=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </ng-container>
   <ng-container *ngIf="!userData">
@@ -55,6 +54,6 @@
   </ng-container>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button appDebounceClick mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-dialog-close>Cancel</button>
   <button appDebounceClick mat-button cdkFocusInitial (click)="updateProfile()">Update</button>
 </mat-dialog-actions>

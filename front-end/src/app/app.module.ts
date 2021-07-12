@@ -21,42 +21,42 @@ import {
 } from '@angular/common/http';
 import { BlogsService } from './services/blogs.service';
 import { UsersService } from './services/users.service';
-import {AuthInterceptor} from "./common/AuthInterceptor";
+import {AuthInterceptor} from "./common/Interceptors/AuthInterceptor";
 import { CreateBlogComponent } from './components/blogs/create-blog/create-blog.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { DebounceClickDirective } from './common/debounce-click.directive';
-import {ThemeService} from "./services/theme.service";
 import {AuthModule} from "./components/auth/auth.module";
+import {DebounceClickDirective} from "./common/Directives/debounce-click.directive";
+import {STSCommonModule} from "./common/Common.module";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent, DebounceClickDirective],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ToolbarsModule,
-    BlogsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSnackBarModule,
-    AuthModule,
-    MatIconModule,
-    FormsModule,
-    MatInputModule,
-    FlexModule,
-    MatDividerModule,
-    MatMenuModule,
-    HttpClientModule,
-  ],
+  declarations: [AppComponent, ProfileComponent, CreateBlogComponent, SnackbarComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ToolbarsModule,
+        BlogsModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSnackBarModule,
+        AuthModule,
+        MatIconModule,
+        FormsModule,
+        MatInputModule,
+        FlexModule,
+        MatDividerModule,
+        MatMenuModule,
+        HttpClientModule,
+        STSCommonModule,
+        MatTooltipModule,
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     BlogsService,
     UsersService
   ],
-  bootstrap: [AppComponent],
-  exports: [
-    DebounceClickDirective
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule{}

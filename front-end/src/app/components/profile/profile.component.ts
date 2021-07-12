@@ -1,9 +1,12 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {UsersService} from "../../services/users.service";
 import {Subscription} from "rxjs";
-import {IUser} from "../../common/Interfaces";
-import {ERole} from "../../common/Enums";
+import {IUser} from "../../common/Models/Interfaces";
+import {EPasswordsMessages, ERole, ESnackBarType} from "../../common/Models/Enums";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {SnackbarComponent} from "../snackbar/snackbar.component";
+import {SNACKBAR_DURATION} from "../../common/Constants/Constants";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +21,7 @@ export class ProfileComponent implements OnInit {
   passwordConfirmed: string | undefined;
   username: string | undefined;
 
-  constructor(private service: UsersService, @Inject(MAT_DIALOG_DATA) data: any) {
+  constructor(private service: UsersService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) data: any) {
     this.userData = data.userData;
   }
 
@@ -26,7 +29,19 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
-    if (this.password === this.passwordConfirmed || !this.password) {
+    if (this.password === this.passwordConfirmed) {
+      if (!!this.password && !this.CheckRegex(this.password)) {
+        this.snackbar.openFromComponent(SnackbarComponent, {
+          duration: SNACKBAR_DURATION,
+          panelClass: [ESnackBarType.error],
+          data: {
+            message: EPasswordsMessages.invalidPassword,
+          }
+        });
+
+        return;
+      }
+
       let data = {};
 
       if (this.username) Object.assign(data, {username: this.username});
@@ -37,7 +52,17 @@ export class ProfileComponent implements OnInit {
 
       this.service.updateProfile(data, this.userData ? this.userData : {} as IUser);
     } else {
-      // ERROR HERE
+      this.snackbar.openFromComponent(SnackbarComponent, {
+        duration: SNACKBAR_DURATION,
+        panelClass: [ESnackBarType.error],
+        data: {
+          message: EPasswordsMessages.passwordDoNotMatch,
+        }
+      });
     }
+  }
+
+  CheckRegex(password: string): RegExpMatchArray | null{
+    return password.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{10,})');
   }
 }

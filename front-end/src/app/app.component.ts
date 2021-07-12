@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {IUser} from "./common/Interfaces";
+import {IUser} from "./common/Models/Interfaces";
 import {ThemeService} from "./services/theme.service";
 
 @Component({
