@@ -6,31 +6,35 @@ const transports = winston.transports;
 const { combine, timestamp, label, prettyPrint  } = format;
 
 
-export  function logBlogs(mess: any, levelType:any){
+export  function logBlogs(mess: any, levelType:any, method:any){
   if(levelType==='info'){
     loggerBlogs.log({
       level: 'info',
       message: mess,
+      method: method,
     });
   }
   else if(levelType==='error'){
     loggerBlogs.log({
       level: 'error',
       message: mess,
+      method: method,
     });
   }
 }
-export  function logUsers(mess: any, levelType:any){
+export  function logUsers(mess: any, levelType:any, method:any){
   if(levelType==='info'){
   loggerUsers.log({
     level: 'info',
     message: mess,
+    method: method,
   });
 }
 else if(levelType==='error'){
   loggerUsers.log({
     level: 'error',
     message: mess,
+    method: method,
   });
 }
 }

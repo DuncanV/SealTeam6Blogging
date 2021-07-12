@@ -2,9 +2,9 @@ import { logUsers } from "../middleware/logger";
 
 export class UserError extends Error {
 
-    constructor(messsage: any, status: any) {
+    constructor(messsage: any, status: any, method:any) {
       super()
-      logUsers(messsage, status);
+      logUsers(messsage, status, method);
       throw new Error(messsage);
     }
 }
