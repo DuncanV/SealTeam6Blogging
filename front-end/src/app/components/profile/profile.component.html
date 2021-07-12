@@ -20,17 +20,6 @@
       </mat-form-field>
     </div>
 
-    <div class="username-container">
-      <h3>Change Username</h3>
-      <mat-form-field class="username-form-field" appearance="fill">
-        <mat-label>{{ user.username }}</mat-label>
-        <input matInput type="text" [(ngModel)]="username">
-        <button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
-
     <div class="password-container">
       <h3>Change Password</h3>
       <mat-form-field class="password-form-field" appearance="fill">
