@@ -12,7 +12,7 @@ const getConnection = () => {
   try{
     return Mongo.client.db(process.env.MONGO_DATABASE).collection("blogs");
   } catch{
-    throw new BlogError("Invalid Connection to DB", "error");
+    throw new BlogError("Invalid Connection to DB", "error", "getConnection");
   }
 }
 
@@ -40,9 +40,9 @@ BlogsRouter.get("/blogs", async (req, res) => {
     await getConnection().find(notDeleted).sort(sort).toArray( (err, result) => {
       if(err)
       {
-         throw new BlogError("Failed to retrieve blogs", "error");
+         throw new BlogError("Failed to retrieve blogs", "error", "getBlogs");
       }
-      logBlogs("Blogs retrieved","info");
+      logBlogs("Blogs retrieved","info", "getBlogs");
 
       res.status(200).json({message:"Blogs retrieved", data:result})
     });
@@ -65,22 +65,22 @@ BlogsRouter.delete("/blogs/:id", authenticateAccessToken, async(req, res) => {
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
     {
-      throw new BlogError("Invalid blog ID", "error");
+      throw new BlogError("Invalid blog ID", "error", "deleteBlogs");
     }
 
     if(queryResult.username !== user)
 	{
     if(role !== ERole.admin && queryResult.username !== user)
     {
-      throw new BlogError("Unauthorised To Delete Blog", "error");
+      throw new BlogError("Unauthorised To Delete Blog", "error", "deleteBlogs");
     }
 }
     await getConnection().updateOne(query, {$set:{deleted: true}}, (err, result) =>{
       if(err)
       {
-        throw new BlogError("Cannot Delete Blog", "error");
+        throw new BlogError("Cannot Delete Blog", "error", "deleteBlogs");
       }
-      logBlogs("Blogs Deleted","info");
+      logBlogs("Blogs Deleted","info", "deleteBlogs");
       res.status(200).json({message:"Blog Deleted"});
     });
   }catch(e) {
@@ -102,10 +102,10 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new BlogError("Invalid blog ID", "error");
+      throw new BlogError("Invalid blog ID", "error", "putBlogs");
 
     if(queryResult.username !== user)
-      throw new BlogError("Unauthorised To Update Blog", "error");
+      throw new BlogError("Unauthorised To Update Blog", "error", "putBlogs");
 
     const objToAdd = {
       content: isEmpty(req.body.content)?queryResult.content: req.body.content ,
@@ -116,9 +116,9 @@ BlogsRouter.put("/blogs/:id", authenticateAccessToken, async (req, res) => {
     await getConnection().updateOne(query, {$set:sanitize(objToAdd)}, (err, result) =>{
       if(err)
        {
-         throw new BlogError("Cannot Update Blog", "error");
+         throw new BlogError("Cannot Update Blog", "error", "putBlogs");
        }
-       logBlogs("Blog updated","info");
+       logBlogs("Blog updated","info", "putBlogs");
       res.status(200).json({message:"Blog Updated"});
     });
   }catch(e) {
@@ -137,7 +137,7 @@ BlogsRouter.put("/blogs/like/:id", authenticateAccessToken, async (req, res) => 
 
     const queryResult = await getConnection().findOne(query);
     if(isEmpty(queryResult))
-      throw new BlogError("Invalid blog ID", "error");
+      throw new BlogError("Invalid blog ID", "error", "likeBlogs");
 
     let liked = false;
     if (!queryResult.likes.includes(user)){
@@ -181,9 +181,9 @@ Obtain: id - from sequence
 BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
   try{
     if(isEmpty(req.body.content))
-      throw new BlogError("No Content", "error");
+      throw new BlogError("No Content", "error", "postBlogs");
     if(isEmpty(req.body.title))
-      throw new BlogError("No Title", "error");
+      throw new BlogError("No Title", "error", "postBlogs");
     const objToAdd: IContent = {
       content: req.body.content,
       created: new Date(),
@@ -197,9 +197,9 @@ BlogsRouter.post("/blogs", authenticateAccessToken, async (req, res) => {
     getConnection().insertOne(sanitize(objToAdd), (err, result) => {
       if(err)
       {
-        throw new BlogError("Cannot Create Blog", "error");
+        throw new BlogError("Cannot Create Blog", "error", "postBlogs");
       }
-      logBlogs("Blog Created","info");
+      logBlogs("Blog Created","info", "postBlogs");
       res.status(201).json({message:"Blog Created"})
     });
   }catch(e) {
